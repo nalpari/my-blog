@@ -227,14 +227,14 @@ export const blogApi = {
   },
 
   // 포스팅 조회수 증가
-  async incrementViews(postId: string): Promise<ApiResponse<void>> {
+  async incrementViews(postId: number): Promise<ApiResponse<void>> {
     try {
       console.log('incrementViews 호출됨:', {
         postId,
         postIdType: typeof postId,
       })
 
-      if (!postId || typeof postId !== 'string' || postId.trim() === '') {
+      if (!postId || typeof postId !== 'number' || !Number.isInteger(postId) || postId <= 0) {
         console.error('incrementViews: postId가 유효하지 않음', { postId, type: typeof postId })
         return { data: null, error: 'Invalid post ID', success: false }
       }
@@ -531,7 +531,7 @@ export const adminApi = {
 
   // 포스팅 수정
   async updatePost(
-    id: string,
+    id: number,
     updates: Partial<Post>,
   ): Promise<ApiResponse<Post>> {
     try {
@@ -618,7 +618,7 @@ export const adminApi = {
   },
 
   // 포스팅 삭제
-  async deletePost(id: string): Promise<ApiResponse<void>> {
+  async deletePost(id: number): Promise<ApiResponse<void>> {
     try {
       await prisma.posts.delete({
         where: { id },
@@ -635,7 +635,7 @@ export const adminApi = {
   },
 
   // ID로 포스팅 조회 (관리자용)
-  async getPostById(id: string): Promise<ApiResponse<Post>> {
+  async getPostById(id: number): Promise<ApiResponse<Post>> {
     try {
       const post = await prisma.posts.findUnique({
         where: { id },

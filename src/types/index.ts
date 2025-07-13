@@ -1,6 +1,6 @@
 // 카테고리 타입
 export interface Category {
-  id: string
+  id: number
   name: string
   slug: string
   description?: string
@@ -11,13 +11,13 @@ export interface Category {
 
 // 블로그 포스팅 관련 타입 정의
 export interface Post {
-  id: string
+  id: number
   created_at: string
   title: string
   content: string
   slug: string
   author_id: string
-  category_id?: string
+  category_id?: number
   published_at: string | null
   is_published: boolean
   tags: string[]
@@ -31,7 +31,8 @@ export interface Post {
 
 // 사용자 프로필 타입
 export interface Profile {
-  id: string
+  id: number
+  user_id: string
   email: string
   name: string
   avatar_url?: string
@@ -41,8 +42,8 @@ export interface Profile {
 
 // 댓글 타입 (향후 사용)
 export interface Comment {
-  id: string
-  post_id: string
+  id: number
+  post_id: number
   author_id: string
   content: string
   created_at: string
@@ -51,7 +52,7 @@ export interface Comment {
 
 // 태그 타입
 export interface Tag {
-  id: string
+  id: number
   name: string
   slug: string
   post_count: number

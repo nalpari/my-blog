@@ -2,11 +2,11 @@ import Link from 'next/link'
 import { AdminLayout } from '@/components/custom/admin/admin-layout'
 import { DeletePostButton } from '@/components/custom/admin/delete-post-button'
 import { adminApi } from '@/lib/prisma'
-import { formatDate } from '@/lib/utils'
+import { formatDateTime } from '@/lib/utils'
 
 export default async function AdminPostsPage() {
   const postsResult = await adminApi.getAllPosts()
-  const posts = postsResult.success ? postsResult.data : []
+  const posts = postsResult.success ? postsResult.data || [] : []
 
   return (
     <AdminLayout>
@@ -96,10 +96,10 @@ export default async function AdminPostsPage() {
                         {post.views.toLocaleString()}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {formatDate(post.created_at)}
+                        {formatDateTime(post.created_at)}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {post.published_at ? formatDate(post.published_at) : '-'}
+                        {post.published_at ? formatDateTime(post.published_at) : '-'}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2">
                         <Link

@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react'
 import { Post } from '@/types'
-import { blogApi } from '@/lib/prisma'
 import { Separator } from '@/components/ui/separator'
 import { Button } from '@/components/ui/button'
 import { Share2, BookOpen, Heart } from 'lucide-react'
@@ -37,13 +36,16 @@ export function PostDetailContent({ post }: PostDetailContentProps) {
 
         console.log('조회수 증가 시도:', { postId: post.id, title: post.title });
         
-        // posts 테이블의 views 컬럼 직접 업데이트
-        const result = await blogApi.incrementViews(post.id);
+        // API 호출로 조회수 증가
+        const response = await fetch(`/api/posts/${post.id}/views`, {
+          method: 'POST',
+        });
         
-        if (result.success) {
+        if (response.ok) {
           console.log('조회수 증가 완료:', post.title);
         } else {
-          console.error('조회수 증가 API 실패:', { error: result.error, postId: post.id });
+          const errorData = await response.json();
+          console.error('조회수 증가 API 실패:', { error: errorData.error, postId: post.id });
         }
       } catch (error) {
         console.error('조회수 증가 예외 발생:', error);

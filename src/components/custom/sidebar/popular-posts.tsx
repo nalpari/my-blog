@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { TrendingUp, Eye, Calendar } from 'lucide-react'
-import { blogApi } from '@/lib/prisma'
 import { Post } from '@/types'
 
 export const PopularPosts = () => {
@@ -14,9 +13,14 @@ export const PopularPosts = () => {
   useEffect(() => {
     const fetchPopularPosts = async () => {
       try {
-        const { data, success } = await blogApi.getPopularPosts(5)
-        if (success && data) {
-          setPopularPosts(data)
+        const response = await fetch('/api/posts/popular?limit=5')
+        if (response.ok) {
+          const result = await response.json()
+          if (result.success && result.data) {
+            setPopularPosts(result.data)
+          }
+        } else {
+          console.error('인기 포스트 API 호출 실패')
         }
       } catch (error) {
         console.error('인기 포스트 로딩 실패:', error)

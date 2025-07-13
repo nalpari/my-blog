@@ -51,12 +51,15 @@ export const BlogPostCard = ({
   // 조회수 업데이트 핸들러
   const handlePostClick = async () => {
     try {
-      const { incrementViews } = await import('@/lib/prisma').then(module => module.blogApi)
-      const result = await incrementViews(post.id)
-      if (result.success) {
+      const response = await fetch(`/api/posts/${post.id}/views`, {
+        method: 'POST',
+      })
+      
+      if (response.ok) {
         console.log('조회수 업데이트 성공:', post.id)
       } else {
-        console.error('조회수 업데이트 실패:', result.error)
+        const errorData = await response.json()
+        console.error('조회수 업데이트 실패:', errorData.error)
       }
     } catch (error) {
       console.error('조회수 업데이트 중 에러:', error)

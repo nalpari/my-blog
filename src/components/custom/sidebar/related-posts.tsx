@@ -13,7 +13,7 @@ export function RelatedPosts({ currentPost }: RelatedPostsProps) {
   // 임시 관련 포스트 데이터 (실제로는 태그 기반으로 필터링)
   const mockRelatedPosts: Post[] = [
     {
-      id: '2',
+      id: 2,
       title: 'Tailwind CSS와 shadcn/ui로 아름다운 UI 만들기',
       content: 'Tailwind CSS의 utility-first 접근법과 shadcn/ui의 재사용 가능한 컴포넌트들을 조합해서 모던하고 아름다운 사용자 인터페이스를 만드는 방법을 알아보겠습니다.',
       slug: 'tailwind-shadcn-ui-guide',
@@ -27,7 +27,7 @@ export function RelatedPosts({ currentPost }: RelatedPostsProps) {
       alt_text: 'UI 디자인과 컬러 팔레트가 표시된 디자인 작업 환경',
     },
     {
-      id: '5',
+      id: 5,
       title: 'TypeScript 고급 타입 활용법',
       content: 'TypeScript의 고급 타입 기능들을 활용해서 더 안전하고 표현력 있는 코드를 작성하는 방법을 알아보겠습니다. 제네릭, 유니온 타입, 조건부 타입 등을 다룹니다.',
       slug: 'typescript-advanced-types',
@@ -41,7 +41,7 @@ export function RelatedPosts({ currentPost }: RelatedPostsProps) {
       alt_text: 'TypeScript 코드와 타입 정의가 표시된 코드 에디터',
     },
     {
-      id: '4',
+      id: 4,
       title: 'React 성능 최적화 완벽 가이드',
       content: 'React 애플리케이션의 성능을 최적화하는 다양한 방법들을 소개합니다. 메모이제이션, 코드 스플리팅, 레이지 로딩 등 실무에서 바로 적용할 수 있는 기법들을 다룹니다.',
       slug: 'react-performance-optimization',
@@ -54,7 +54,7 @@ export function RelatedPosts({ currentPost }: RelatedPostsProps) {
       // 이미지 없이 두어서 이미지가 없는 경우 테스트
     },
     {
-      id: '3',
+      id: 3,
       title: 'Supabase로 풀스택 앱 개발하기',
       content: 'Supabase를 사용해서 인증, 데이터베이스, 스토리지 등 백엔드 기능들을 쉽게 구현하는 방법을 살펴보겠습니다. PostgreSQL과 Real-time 기능까지 활용해보세요.',
       slug: 'supabase-fullstack-development',

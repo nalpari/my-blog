@@ -15,7 +15,7 @@ export default function NewPostPage() {
     title: '',
     content: '',
     slug: '',
-    category_id: '',
+    category_id: 0,
     tags: '',
     image_url: '',
     alt_text: '',
@@ -54,7 +54,7 @@ export default function NewPostPage() {
         body: JSON.stringify({
           ...formData,
           tags: tagsArray,
-          category_id: formData.category_id || null,
+          category_id: formData.category_id > 0 ? formData.category_id : null,
           author_id: '00000000-0000-0000-0000-000000000001' // TODO: 실제 사용자 인증 구현 후 변경
         }),
       })
@@ -168,10 +168,10 @@ export default function NewPostPage() {
                 <select
                   id="category_id"
                   value={formData.category_id}
-                  onChange={(e) => setFormData(prev => ({ ...prev, category_id: e.target.value }))}
+                  onChange={(e) => setFormData(prev => ({ ...prev, category_id: parseInt(e.target.value, 10) || 0 }))}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
-                  <option value="">카테고리를 선택하세요</option>
+                  <option value={0}>카테고리를 선택하세요</option>
                   {categories.map((category) => (
                     <option key={category.id} value={category.id}>
                       {category.name}

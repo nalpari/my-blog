@@ -12,22 +12,60 @@ import {
   NavigationMenuLink,
 } from '@/components/ui/navigation-menu'
 import { Input } from '@/components/ui/input'
-import { Search, Menu, Sun, Moon } from 'lucide-react'
+import { Search, Menu, Sun, Moon, Settings } from 'lucide-react'
 import { useState, useEffect } from 'react'
+import { Category } from '@/types'
 
 interface BlogHeaderProps {
   siteTitle?: string
 }
 
+// 컴포넌트 외부로 이동해서 재생성 방지
+const CATEGORY_ORDER = ['tech', 'lifestyle', 'review', 'tutorial']
+
 export const BlogHeader = ({ siteTitle = 'My Blog' }: BlogHeaderProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
   const [mounted, setMounted] = useState(false)
+  const [categories, setCategories] = useState<Category[]>([])
   const { theme, setTheme } = useTheme()
 
   useEffect(() => {
     setMounted(true)
   }, [])
+
+  // 카테고리 데이터 가져오기
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch('/api/categories')
+        if (response.ok) {
+          const categoriesData = await response.json()
+          
+          // 원하는 순서대로 정렬
+          const sortedCategories = categoriesData.sort((a: Category, b: Category) => {
+            const aIndex = CATEGORY_ORDER.indexOf(a.slug)
+            const bIndex = CATEGORY_ORDER.indexOf(b.slug)
+            
+            // 순서에 없는 카테고리는 뒤로
+            if (aIndex === -1 && bIndex === -1) return 0
+            if (aIndex === -1) return 1
+            if (bIndex === -1) return -1
+            
+            return aIndex - bIndex
+          })
+          
+          setCategories(sortedCategories)
+        }
+      } catch (error) {
+        console.error('헤더 카테고리 로딩 실패:', error)
+      }
+    }
+
+    if (mounted) {
+      fetchCategories()
+    }
+  }, [mounted])
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault()
@@ -84,24 +122,26 @@ export const BlogHeader = ({ siteTitle = 'My Blog' }: BlogHeaderProps) => {
                   <NavigationMenuContent>
                     <div className="w-64 p-4">
                       <div className="space-y-2">
-                        <Link
-                          href="/blog/category/tech"
-                          className="block p-2 hover:bg-accent rounded-md"
-                        >
-                          기술
-                        </Link>
-                        <Link
-                          href="/blog/category/life"
-                          className="block p-2 hover:bg-accent rounded-md"
-                        >
-                          일상
-                        </Link>
-                        <Link
-                          href="/blog/category/review"
-                          className="block p-2 hover:bg-accent rounded-md"
-                        >
-                          리뷰
-                        </Link>
+                        {categories.length === 0 ? (
+                          <div className="p-2 text-sm text-muted-foreground">
+                            카테고리 로딩중...
+                          </div>
+                        ) : (
+                          categories.map((category) => (
+                            <Link
+                              key={category.id}
+                              href={`/blog/category/${category.slug}`}
+                              className="flex items-center justify-between p-2 hover:bg-accent rounded-md transition-colors"
+                            >
+                              <span className="text-sm font-medium">
+                                {category.name}
+                              </span>
+                              <span className="text-xs text-muted-foreground">
+                                ({category.post_count || 0})
+                              </span>
+                            </Link>
+                          ))
+                        )}
                       </div>
                     </div>
                   </NavigationMenuContent>
@@ -144,6 +184,14 @@ export const BlogHeader = ({ siteTitle = 'My Blog' }: BlogHeaderProps) => {
               <span className="sr-only">테마 변경</span>
             </Button>
 
+            {/* 관리자 버튼 */}
+            <Button variant="ghost" size="icon" asChild className="hidden sm:flex">
+              <Link href="/admin">
+                <Settings className="h-4 w-4" />
+                <span className="sr-only">관리자</span>
+              </Link>
+            </Button>
+
             {/* 모바일 메뉴 버튼 */}
             <Button
               variant="ghost"
@@ -173,11 +221,39 @@ export const BlogHeader = ({ siteTitle = 'My Blog' }: BlogHeaderProps) => {
               >
                 블로그
               </Link>
+              
+              {/* 모바일 카테고리 */}
+              <div className="space-y-1">
+                <div className="py-2 text-sm font-medium text-foreground">
+                  카테고리
+                </div>
+                <div className="pl-4 space-y-1">
+                  {categories.map((category) => (
+                    <Link
+                      key={category.id}
+                      href={`/blog/category/${category.slug}`}
+                      className="flex items-center justify-between py-1 text-sm text-muted-foreground hover:text-primary"
+                    >
+                      <span>{category.name}</span>
+                      <span className="text-xs">({category.post_count || 0})</span>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+              
               <Link
                 href="/about"
                 className="block py-2 text-sm font-medium text-foreground hover:text-primary"
               >
                 소개
+              </Link>
+              
+              {/* 모바일 관리자 버튼 */}
+              <Link
+                href="/admin"
+                className="block py-2 text-sm font-medium text-foreground hover:text-primary"
+              >
+                관리자
               </Link>
             </nav>
 

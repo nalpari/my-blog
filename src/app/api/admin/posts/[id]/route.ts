@@ -7,7 +7,13 @@ export async function GET(
 ) {
   try {
     const { id } = await params
-    const result = await adminApi.getPostById(id)
+    const postId = parseInt(id, 10)
+    
+    if (isNaN(postId) || postId <= 0) {
+      return NextResponse.json({ error: 'Invalid post ID' }, { status: 400 })
+    }
+    
+    const result = await adminApi.getPostById(postId)
     
     if (result.success) {
       return NextResponse.json(result.data)
@@ -27,8 +33,13 @@ export async function PUT(
   try {
     const { id } = await params
     const body = await request.json()
+    const postId = parseInt(id, 10)
     
-    const result = await adminApi.updatePost(id, body)
+    if (isNaN(postId) || postId <= 0) {
+      return NextResponse.json({ error: 'Invalid post ID' }, { status: 400 })
+    }
+    
+    const result = await adminApi.updatePost(postId, body)
     
     if (result.success) {
       return NextResponse.json(result.data)
@@ -47,7 +58,13 @@ export async function DELETE(
 ) {
   try {
     const { id } = await params
-    const result = await adminApi.deletePost(id)
+    const postId = parseInt(id, 10)
+    
+    if (isNaN(postId) || postId <= 0) {
+      return NextResponse.json({ error: 'Invalid post ID' }, { status: 400 })
+    }
+    
+    const result = await adminApi.deletePost(postId)
     
     if (result.success) {
       return NextResponse.json({ message: '포스트가 삭제되었습니다.' })

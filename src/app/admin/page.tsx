@@ -4,7 +4,7 @@ import { adminApi } from '@/lib/prisma'
 async function getStats() {
   try {
     const postsResult = await adminApi.getAllPosts()
-    const posts = postsResult.success ? postsResult.data : []
+    const posts = postsResult.success ? postsResult.data || [] : []
     
     const publishedPosts = posts.filter(post => post.is_published)
     const draftPosts = posts.filter(post => !post.is_published)

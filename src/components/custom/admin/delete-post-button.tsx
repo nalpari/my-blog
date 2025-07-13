@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 
 interface DeletePostButtonProps {
-  postId: string
+  postId: number
   postTitle: string
 }
 

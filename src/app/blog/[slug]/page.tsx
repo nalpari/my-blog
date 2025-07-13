@@ -10,7 +10,7 @@ interface PostPageProps {
 // 정적 매개변수 생성 (SEO 최적화)
 export async function generateStaticParams() {
   try {
-    const { data: posts } = await blogApi.getPosts(1, 100)
+    const { data: posts } = await blogApi.getPosts({ page: 1, limit: 100 })
     return posts?.map((post) => ({ slug: post.slug })) || []
   } catch (error) {
     console.error('Error generating static params:', error)
