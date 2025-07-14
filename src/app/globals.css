@@ -1,6 +1,10 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
 
+/* Syntax highlighting for code blocks */
+@import 'highlight.js/styles/github.css' layer(base);
+@import 'highlight.js/styles/github-dark.css' layer(base);
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
@@ -170,39 +174,132 @@
   }
 }
 
-/* 커스텀 스타일 */
+/* 마크다운 커스텀 스타일 */
 @layer components {
   .prose {
-    @apply text-foreground;
+    @apply text-foreground leading-relaxed;
+    --tw-prose-body: theme(colors.foreground);
+    --tw-prose-headings: theme(colors.foreground);
+    --tw-prose-lead: theme(colors.muted.foreground);
+    --tw-prose-links: theme(colors.primary.DEFAULT);
+    --tw-prose-bold: theme(colors.foreground);
+    --tw-prose-counters: theme(colors.muted.foreground);
+    --tw-prose-bullets: theme(colors.muted.foreground);
+    --tw-prose-hr: theme(colors.border);
+    --tw-prose-quotes: theme(colors.muted.foreground);
+    --tw-prose-quote-borders: theme(colors.border);
+    --tw-prose-captions: theme(colors.muted.foreground);
+    --tw-prose-code: theme(colors.foreground);
+    --tw-prose-pre-code: theme(colors.muted.foreground);
+    --tw-prose-pre-bg: theme(colors.muted.DEFAULT);
+    --tw-prose-th-borders: theme(colors.border);
+    --tw-prose-td-borders: theme(colors.border);
   }
 
-  .prose h1,
-  .prose h2,
-  .prose h3,
-  .prose h4,
+  /* 헤딩 스타일링 */
+  .prose h1 {
+    @apply text-3xl font-bold mb-6 mt-8 text-foreground border-b border-border pb-3;
+  }
+
+  .prose h2 {
+    @apply text-2xl font-semibold mb-4 mt-6 text-foreground border-b border-border/50 pb-2;
+  }
+
+  .prose h3 {
+    @apply text-xl font-semibold mb-3 mt-5 text-foreground;
+  }
+
+  .prose h4 {
+    @apply text-lg font-medium mb-2 mt-4 text-foreground;
+  }
+
   .prose h5,
   .prose h6 {
-    @apply text-foreground;
+    @apply text-base font-medium mb-2 mt-3 text-foreground;
+  }
+
+  /* 단락 및 링크 스타일링 */
+  .prose p {
+    @apply mb-4 leading-7 text-foreground;
   }
 
   .prose a {
-    @apply text-primary hover:text-primary/80;
+    @apply text-primary hover:text-primary/80 font-medium no-underline hover:underline transition-colors;
   }
 
+  /* 리스트 스타일링 */
+  .prose ul,
+  .prose ol {
+    @apply mb-4 pl-6;
+  }
+
+  .prose li {
+    @apply mb-2 text-foreground;
+  }
+
+  .prose ul > li {
+    @apply relative;
+  }
+
+  .prose ul > li::before {
+    @apply absolute -left-4 top-2 w-1.5 h-1.5 bg-primary rounded-full;
+    content: '';
+  }
+
+  /* 인용문 스타일링 */
   .prose blockquote {
-    @apply border-l-primary/20 text-muted-foreground;
+    @apply border-l-4 border-primary/30 pl-4 py-2 my-6 bg-muted/50 rounded-r-lg italic text-muted-foreground;
   }
 
+  /* 코드 스타일링 */
   .prose code {
-    @apply bg-muted text-muted-foreground px-1.5 py-0.5 rounded;
+    @apply bg-muted/80 text-foreground px-2 py-0.5 rounded-md font-mono text-sm border border-border/50;
   }
 
   .prose pre {
-    @apply bg-muted;
+    @apply bg-muted border border-border rounded-lg p-4 overflow-x-auto my-6;
   }
 
   .prose pre code {
-    @apply bg-transparent p-0;
+    @apply bg-transparent p-0 border-0 text-sm;
+  }
+
+  /* 테이블 스타일링 */
+  .prose table {
+    @apply w-full border-collapse border border-border rounded-lg overflow-hidden my-6;
+  }
+
+  .prose th {
+    @apply bg-muted border border-border px-4 py-2 text-left font-semibold text-foreground;
+  }
+
+  .prose td {
+    @apply border border-border px-4 py-2 text-foreground;
+  }
+
+  /* 구분선 스타일링 */
+  .prose hr {
+    @apply border-border my-8;
+  }
+
+  /* 이미지 스타일링 */
+  .prose img {
+    @apply rounded-lg shadow-md my-6;
+  }
+
+  /* 코드 하이라이팅 커스터마이징 */
+  .prose .hljs {
+    @apply bg-muted border border-border rounded-lg;
+  }
+
+  /* 다크 모드에서 코드 하이라이팅 */
+  .dark .prose .hljs {
+    @apply bg-muted text-foreground;
+  }
+
+  /* 인라인 코드 하이라이팅 비활성화 */
+  .prose :not(pre) > code .hljs {
+    @apply bg-transparent;
   }
 }
 

@@ -1,0 +1,93 @@
+{
+	"meta": {
+		"generatedAt": "2025-07-14T01:33:19.783Z",
+		"tasksAnalyzed": 10,
+		"totalTasks": 10,
+		"analysisCount": 10,
+		"thresholdScore": 5,
+		"projectName": "Taskmaster",
+		"usedResearch": false
+	},
+	"complexityAnalysis": [
+		{
+			"taskId": 1,
+			"taskTitle": "@uiw/react-markdown-preview 패키지 설정 및 임포트",
+			"complexityScore": 3,
+			"recommendedSubtasks": 2,
+			"expansionPrompt": "패키지 설치 및 임포트와 타입 정의 설정을 분리하여 각각의 서브태스크로 구성하세요.",
+			"reasoning": "단순한 패키지 임포트 작업이지만 TypeScript 타입 설정이 필요하여 중간 난이도입니다."
+		},
+		{
+			"taskId": 2,
+			"taskTitle": "기본 마크다운 렌더링 구현",
+			"complexityScore": 4,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "기존 코드 교체, 조건부 렌더링 구현, CSS 클래스 통합을 각각의 서브태스크로 분리하세요.",
+			"reasoning": "기존 코드를 교체하고 조건부 처리를 구현해야 하므로 중간 복잡도를 가집니다."
+		},
+		{
+			"taskId": 3,
+			"taskTitle": "테마 감지 시스템 통합",
+			"complexityScore": 5,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "useTheme 훅 설정, data-color-mode prop 구현, 실시간 테마 변경 처리를 분리하여 구성하세요.",
+			"reasoning": "테마 시스템과의 통합과 실시간 업데이트 로직이 필요하여 중간-높은 복잡도입니다."
+		},
+		{
+			"taskId": 4,
+			"taskTitle": "마크다운 렌더링 옵션 구성",
+			"complexityScore": 6,
+			"recommendedSubtasks": 4,
+			"expansionPrompt": "코드 하이라이팅 설정, 링크 처리 구성, 보안 설정 구현, 복사 버튼 기능을 각각 분리하세요.",
+			"reasoning": "다양한 고급 옵션과 보안 처리가 필요하여 높은 복잡도를 가집니다."
+		},
+		{
+			"taskId": 5,
+			"taskTitle": "반응형 디자인 및 Tailwind CSS 통합",
+			"complexityScore": 5,
+			"recommendedSubtasks": 4,
+			"expansionPrompt": "기본 반응형 클래스 적용, 모바일 최적화, 이미지 크기 제한, 레이아웃 조정을 분리하여 구성하세요.",
+			"reasoning": "다양한 디바이스 크기에 대한 최적화와 Tailwind 통합이 필요하여 중간-높은 복잡도입니다."
+		},
+		{
+			"taskId": 6,
+			"taskTitle": "마크다운 스타일 커스터마이징",
+			"complexityScore": 7,
+			"recommendedSubtasks": 5,
+			"expansionPrompt": "헤딩 스타일링, 단락 및 링크 스타일링, 코드 블록 스타일링, 다크모드 스타일링, 전체 테마 통합을 분리하세요.",
+			"reasoning": "다양한 마크다운 요소에 대한 세밀한 스타일링과 테마별 일관성 유지가 필요하여 높은 복잡도입니다."
+		},
+		{
+			"taskId": 7,
+			"taskTitle": "에러 처리 및 로딩 상태 구현",
+			"complexityScore": 6,
+			"recommendedSubtasks": 4,
+			"expansionPrompt": "에러 바운더리 구현, 콘텐츠 유효성 검사, 로딩 상태 UI, fallback 메커니즘을 분리하여 구성하세요.",
+			"reasoning": "다양한 에러 시나리오 처리와 Suspense 활용이 필요하여 높은 복잡도를 가집니다."
+		},
+		{
+			"taskId": 8,
+			"taskTitle": "접근성 기능 구현",
+			"complexityScore": 8,
+			"recommendedSubtasks": 5,
+			"expansionPrompt": "ARIA 레이블 구현, 헤딩 구조 최적화, 링크 접근성, 코드 블록 접근성, 키보드 네비게이션을 분리하세요.",
+			"reasoning": "접근성 표준 준수와 다양한 보조 기술 지원이 필요하여 매우 높은 복잡도입니다."
+		},
+		{
+			"taskId": 9,
+			"taskTitle": "성능 최적화 구현",
+			"complexityScore": 7,
+			"recommendedSubtasks": 5,
+			"expansionPrompt": "React.memo 적용, useMemo 최적화, 코드 스플리팅, 이미지 lazy loading, 동적 임포트를 분리하세요.",
+			"reasoning": "고급 React 최적화 기법과 번들 크기 관리가 필요하여 높은 복잡도입니다."
+		},
+		{
+			"taskId": 10,
+			"taskTitle": "통합 테스트 및 품질 보증",
+			"complexityScore": 8,
+			"recommendedSubtasks": 6,
+			"expansionPrompt": "단위 테스트 작성, E2E 테스트 구현, 크로스 브라우저 테스트, 모바일 테스트, 성능 테스트, 회귀 테스트를 분리하세요.",
+			"reasoning": "포괄적인 테스트 전략과 다양한 환경에서의 검증이 필요하여 매우 높은 복잡도입니다."
+		}
+	]
+}
