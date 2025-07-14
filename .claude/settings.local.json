@@ -19,7 +19,9 @@
       "mcp__supabase__execute_sql",
       "Bash(pkill:*)",
       "Bash(lsof:*)",
-      "Bash(grep:*)"
+      "Bash(grep:*)",
+      "Bash(task-master:*)",
+      "Bash(find:*)"
     ],
     "deny": []
   },
