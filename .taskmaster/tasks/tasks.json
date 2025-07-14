@@ -1,0 +1,366 @@
+{
+  "master": {
+    "tasks": [
+      {
+        "id": 1,
+        "title": "@uiw/react-markdown-preview 패키지 설정 및 임포트",
+        "description": "PostDetailContent 컴포넌트에 마크다운 렌더링을 위한 패키지를 임포트하고 기본 설정을 구성합니다.",
+        "details": "src/components/custom/post-detail-content.tsx 파일에서 @uiw/react-markdown-preview를 임포트합니다. 기본 렌더링 옵션을 설정하고 현재 텍스트 렌더링 코드(77-80번 라인)를 식별합니다. import MarkdownPreview from '@uiw/react-markdown-preview' 구문을 추가하고 컴포넌트 상단에 필요한 타입 정의를 포함합니다.",
+        "testStrategy": "임포트가 올바르게 작동하는지 확인하고 TypeScript 컴파일 오류가 없는지 검증합니다. 개발 서버를 실행하여 컴포넌트가 정상적으로 로드되는지 테스트합니다.",
+        "priority": "high",
+        "dependencies": [],
+        "status": "done",
+        "subtasks": []
+      },
+      {
+        "id": 2,
+        "title": "기본 마크다운 렌더링 구현",
+        "description": "기존의 raw 텍스트 렌더링을 MarkdownPreview 컴포넌트로 교체하여 기본적인 마크다운 파싱 기능을 구현합니다.",
+        "details": "77-80번 라인의 기존 텍스트 렌더링 코드를 <MarkdownPreview source={post.content} /> 형태로 교체합니다. 기본 props 설정을 포함하고 content가 undefined인 경우를 처리하는 조건부 렌더링을 구현합니다. 기존 CSS 클래스 구조를 유지하면서 마크다운 컨테이너를 감쌉니다.",
+        "testStrategy": "기존 블로그 포스트들과 함께 테스트하여 마크다운이 올바르게 HTML로 변환되는지 확인합니다. 헤딩, 링크, 리스트, 코드 블록 등 다양한 마크다운 요소가 정상 렌더링되는지 검증합니다.",
+        "priority": "high",
+        "dependencies": [
+          1
+        ],
+        "status": "done",
+        "subtasks": []
+      },
+      {
+        "id": 3,
+        "title": "테마 감지 시스템 통합",
+        "description": "다크/라이트 모드 감지를 위한 테마 시스템을 마크다운 렌더링에 통합합니다.",
+        "details": "Next.js Theme Provider를 사용하여 현재 테마 상태를 감지합니다. useTheme 훅을 임포트하고 theme 값을 가져옵니다. MarkdownPreview 컴포넌트에 data-color-mode prop을 추가하여 theme === 'dark' ? 'dark' : 'light' 값을 전달합니다. 테마 변경 시 실시간으로 마크다운 스타일이 업데이트되도록 구현합니다.",
+        "testStrategy": "테마 토글 기능을 사용하여 마크다운 콘텐츠가 다크/라이트 모드에서 올바르게 표시되는지 테스트합니다. 브라우저 개발자 도구에서 data-color-mode 속성이 테마에 따라 변경되는지 확인합니다.",
+        "priority": "high",
+        "dependencies": [
+          2
+        ],
+        "status": "done",
+        "subtasks": []
+      },
+      {
+        "id": 4,
+        "title": "마크다운 렌더링 옵션 구성",
+        "description": "코드 하이라이팅, 링크 처리, 보안 설정 등 마크다운 렌더링의 고급 옵션을 구성합니다.",
+        "details": "MarkdownPreview 컴포넌트에 다음 props를 설정합니다: rehypePlugins={[rehypeHighlight]} (코드 하이라이팅), skipHtml={false} (HTML 태그 허용), linkTarget='_blank' (외부 링크), rehypeRewrite 함수로 보안 처리를 구현합니다. 코드 블록에 대한 언어별 하이라이팅과 복사 버튼 기능을 활성화합니다.",
+        "testStrategy": "다양한 프로그래밍 언어의 코드 블록이 올바르게 하이라이팅되는지 테스트합니다. 외부 링크가 새 탭에서 열리는지 확인하고 HTML 콘텐츠가 안전하게 렌더링되는지 검증합니다.",
+        "priority": "medium",
+        "dependencies": [
+          3
+        ],
+        "status": "done",
+        "subtasks": []
+      },
+      {
+        "id": 5,
+        "title": "반응형 디자인 및 Tailwind CSS 통합",
+        "description": "마크다운 콘텐츠가 모든 디바이스 크기에서 올바르게 표시되도록 반응형 스타일링을 구현합니다.",
+        "details": "MarkdownPreview 컴포넌트를 Tailwind CSS 클래스로 감싸서 반응형 디자인을 구현합니다. w-full, max-w-none, prose, prose-lg, md:prose-xl 등의 클래스를 적용합니다. 모바일에서 코드 블록의 가로 스크롤을 처리하고 이미지의 최대 너비를 설정합니다. 기존 레이아웃 구조와 일치하도록 spacing과 typography를 조정합니다.",
+        "testStrategy": "다양한 화면 크기(모바일, 태블릿, 데스크톱)에서 마크다운 콘텐츠가 올바르게 표시되는지 테스트합니다. 긴 코드 블록과 이미지가 레이아웃을 깨뜨리지 않는지 확인합니다.",
+        "priority": "medium",
+        "dependencies": [
+          4
+        ],
+        "status": "done",
+        "subtasks": []
+      },
+      {
+        "id": 6,
+        "title": "마크다운 스타일 커스터마이징",
+        "description": "사이트의 전체적인 디자인과 일치하도록 마크다운 요소들의 스타일을 커스터마이징합니다.",
+        "details": "CSS-in-JS 또는 Tailwind의 @apply 지시문을 사용하여 마크다운 요소들의 스타일을 정의합니다. 헤딩의 폰트 크기와 여백, 단락의 line-height, 링크 색상, 코드 블록의 배경색 등을 기존 사이트 디자인과 일치시킵니다. 다크 모드와 라이트 모드 모두에서 일관된 스타일링을 보장합니다.",
+        "testStrategy": "렌더링된 마크다운 요소들이 사이트의 다른 컴포넌트들과 시각적으로 일관성을 유지하는지 확인합니다. 폰트 크기, 색상, 여백이 적절한지 검증합니다.",
+        "priority": "medium",
+        "dependencies": [
+          5
+        ],
+        "status": "done",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "헤딩 스타일링 커스터마이징",
+            "description": "h1-h6 헤딩 요소들의 폰트 크기, 여백, 색상을 사이트 디자인과 일치하도록 스타일링합니다.",
+            "dependencies": [],
+            "details": "Tailwind CSS 클래스나 CSS-in-JS를 사용하여 헤딩 요소들의 스타일을 정의합니다. 폰트 크기는 계층적으로 설정하고, 위아래 여백을 적절히 조정합니다. 다크/라이트 모드에서 적절한 색상 대비를 유지합니다.",
+            "status": "done",
+            "testStrategy": ""
+          },
+          {
+            "id": 2,
+            "title": "단락 및 링크 스타일링",
+            "description": "단락의 line-height와 링크의 색상, 호버 효과를 사이트 테마에 맞게 커스터마이징합니다.",
+            "dependencies": [
+              1
+            ],
+            "details": "단락 요소의 가독성을 위한 line-height 조정과 여백 설정을 구현합니다. 링크 요소의 기본 색상, 방문한 링크 색상, 호버 상태 색상을 브랜드 컬러에 맞게 설정합니다. 접근성을 고려한 언더라인 스타일을 적용합니다.",
+            "status": "done",
+            "testStrategy": ""
+          },
+          {
+            "id": 3,
+            "title": "코드 블록 스타일링 구현",
+            "description": "인라인 코드와 코드 블록의 배경색, 테두리, 폰트를 커스터마이징합니다.",
+            "dependencies": [
+              2
+            ],
+            "details": "인라인 코드의 배경색과 패딩을 설정하고, 코드 블록의 배경색, 테두리 반경, 내부 여백을 조정합니다. 코드 폰트는 monospace 계열로 설정하고 적절한 크기를 지정합니다. 시택스 하이라이팅 색상 테마를 적용합니다.",
+            "status": "done",
+            "testStrategy": ""
+          },
+          {
+            "id": 4,
+            "title": "다크모드 스타일링 최적화",
+            "description": "다크모드에서 모든 마크다운 요소들이 적절한 대비와 가독성을 갖도록 스타일을 조정합니다.",
+            "dependencies": [
+              3
+            ],
+            "details": "다크모드 상태에서 텍스트 색상, 배경색, 테두리 색상을 조정합니다. 코드 블록과 인라인 코드의 다크모드 배경색을 설정하고, 링크의 다크모드 색상을 정의합니다. WCAG 접근성 가이드라인을 준수하는 색상 대비를 유지합니다.",
+            "status": "done",
+            "testStrategy": ""
+          },
+          {
+            "id": 5,
+            "title": "전체 테마 통합 및 일관성 검증",
+            "description": "모든 마크다운 스타일이 사이트의 전체 디자인 시스템과 일관성을 유지하도록 통합하고 검증합니다.",
+            "dependencies": [
+              4
+            ],
+            "details": "기존 컴포넌트들의 스타일과 일관성을 확인하고 필요시 조정합니다. 다양한 마크다운 요소 조합에서 스타일 충돌이 없는지 테스트합니다. 반응형 디자인에서 마크다운 요소들이 올바르게 표시되는지 검증합니다. 브랜드 가이드라인과의 일치성을 최종 확인합니다.",
+            "status": "done",
+            "testStrategy": ""
+          }
+        ]
+      },
+      {
+        "id": 7,
+        "title": "에러 처리 및 로딩 상태 구현",
+        "description": "마크다운 렌더링 실패 시 적절한 에러 처리와 로딩 상태를 구현합니다.",
+        "details": "try-catch 블록으로 마크다운 렌더링 에러를 처리하고 fallback UI를 제공합니다. post.content가 null이거나 빈 문자열인 경우의 처리를 구현합니다. 큰 마크다운 파일의 경우 로딩 스피너를 표시하고 React.Suspense를 활용하여 지연 로딩을 구현합니다. 에러 발생 시 원본 텍스트로 fallback하는 메커니즘을 추가합니다.",
+        "testStrategy": "의도적으로 잘못된 마크다운 문법을 포함한 콘텐츠로 테스트하여 에러 처리가 올바르게 작동하는지 확인합니다. 네트워크 연결이 느린 환경에서 로딩 상태가 적절히 표시되는지 검증합니다.",
+        "priority": "medium",
+        "dependencies": [
+          6
+        ],
+        "status": "done",
+        "subtasks": []
+      },
+      {
+        "id": 8,
+        "title": "접근성 기능 구현",
+        "description": "시각 장애인 사용자와 키보드 사용자를 위한 접근성 기능을 구현합니다.",
+        "details": "마크다운 컨테이너에 role='article'과 aria-label을 추가합니다. 헤딩 구조의 계층을 확인하고 적절한 heading level을 유지합니다. 링크에 aria-describedby 속성을 추가하고 외부 링크임을 나타내는 텍스트를 포함합니다. 코드 블록에 language 정보를 screen reader가 읽을 수 있도록 aria-label을 추가합니다. 키보드로 모든 인터랙티브 요소에 접근할 수 있는지 확인합니다.",
+        "testStrategy": "스크린 리더(NVDA, JAWS)로 테스트하여 콘텐츠가 올바르게 읽히는지 확인합니다. 키보드만으로 모든 링크와 버튼에 접근할 수 있는지 검증합니다. axe-core 라이브러리로 접근성 검사를 실행합니다.",
+        "priority": "low",
+        "dependencies": [
+          7
+        ],
+        "status": "done",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "ARIA 레이블 및 역할 속성 구현",
+            "description": "마크다운 컨테이너와 주요 요소들에 적절한 ARIA 레이블과 역할 속성을 추가하여 스크린 리더 호환성을 개선합니다.",
+            "dependencies": [],
+            "details": "MarkdownPreview 컴포넌트를 article 역할의 컨테이너로 감싸고 aria-label='블로그 포스트 콘텐츠'를 추가합니다. 코드 블록에는 role='code'와 aria-label을 추가하고, 인용문에는 role='blockquote'를 설정합니다. 목록 요소에는 적절한 aria-labelledby 속성을 구현합니다.",
+            "status": "done",
+            "testStrategy": ""
+          },
+          {
+            "id": 2,
+            "title": "헤딩 구조 계층 최적화",
+            "description": "마크다운 헤딩의 계층 구조를 분석하고 적절한 heading level을 유지하여 스크린 리더 네비게이션을 개선합니다.",
+            "dependencies": [
+              1
+            ],
+            "details": "마크다운 헤딩(#, ##, ###)이 올바른 HTML 헤딩 태그(h1, h2, h3)로 변환되는지 확인합니다. 헤딩 레벨이 건너뛰지 않도록 검증하고, 필요시 custom heading 컴포넌트를 구현합니다. 각 헤딩에 고유한 id를 생성하여 앵커 링크 기능을 지원합니다.",
+            "status": "done",
+            "testStrategy": ""
+          },
+          {
+            "id": 3,
+            "title": "링크 접근성 향상",
+            "description": "모든 링크에 대해 접근성을 개선하고 외부 링크와 내부 링크를 구별할 수 있도록 구현합니다.",
+            "dependencies": [
+              2
+            ],
+            "details": "외부 링크에 aria-describedby 속성과 '새 창에서 열림' 텍스트를 추가합니다. 링크 텍스트가 불명확한 경우 aria-label로 설명을 보완합니다. rel='noopener noreferrer'를 외부 링크에 자동 추가하고, 링크의 목적지를 명확히 하는 스크린 리더용 텍스트를 구현합니다.",
+            "status": "done",
+            "testStrategy": ""
+          },
+          {
+            "id": 4,
+            "title": "코드 블록 접근성 구현",
+            "description": "코드 블록과 인라인 코드에 대한 접근성 기능을 구현하여 스크린 리더가 코드 내용을 적절히 읽을 수 있도록 합니다.",
+            "dependencies": [
+              3
+            ],
+            "details": "코드 블록에 프로그래밍 언어 정보를 포함한 aria-label을 추가합니다 (예: 'JavaScript 코드 블록'). 인라인 코드에는 role='code'를 설정하고, 긴 코드 블록에는 aria-describedby로 언어와 코드 설명을 제공합니다. 코드 복사 버튼이 있다면 적절한 aria-label을 추가합니다.",
+            "status": "done",
+            "testStrategy": ""
+          },
+          {
+            "id": 5,
+            "title": "키보드 네비게이션 지원",
+            "description": "키보드만으로 모든 인터랙티브 요소에 접근할 수 있도록 키보드 네비게이션을 구현합니다.",
+            "dependencies": [
+              4
+            ],
+            "details": "모든 링크와 버튼에 Tab 키로 접근 가능하도록 tabindex를 설정합니다. Focus 표시자가 명확히 보이도록 CSS outline을 구현합니다. 키보드 트랩이나 포커스 손실 없이 순차적인 네비게이션이 가능하도록 보장합니다. Enter와 Space 키로 링크와 버튼을 활성화할 수 있도록 이벤트 핸들러를 구현합니다.",
+            "status": "done",
+            "testStrategy": ""
+          }
+        ]
+      },
+      {
+        "id": 9,
+        "title": "성능 최적화 구현",
+        "description": "마크다운 렌더링의 성능을 최적화하고 메모이제이션을 구현합니다.",
+        "details": "React.memo로 MarkdownPreview 컴포넌트를 감싸서 불필요한 리렌더링을 방지합니다. useMemo 훅을 사용하여 마크다운 옵션 객체를 메모이제이션합니다. 큰 콘텐츠의 경우 React.lazy와 Suspense를 활용한 코드 스플리팅을 구현합니다. 이미지 lazy loading을 활성화하고 코드 하이라이팅을 위한 언어별 동적 임포트를 구현합니다.",
+        "testStrategy": "React DevTools Profiler로 렌더링 성능을 측정합니다. 큰 마크다운 파일(>1MB)에서 초기 로딩 시간과 스크롤 성능을 테스트합니다. Lighthouse로 페이지 성능 점수를 확인합니다.",
+        "priority": "low",
+        "dependencies": [
+          8
+        ],
+        "status": "done",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "React.memo를 사용한 컴포넌트 메모이제이션 구현",
+            "description": "MarkdownPreview 컴포넌트와 관련 컴포넌트들에 React.memo를 적용하여 불필요한 리렌더링을 방지합니다.",
+            "dependencies": [],
+            "details": "PostDetailContent 컴포넌트를 React.memo로 감싸고, props 비교 함수를 구현하여 post.content가 변경될 때만 리렌더링되도록 최적화합니다. MarkdownPreview의 props 변경 감지를 위한 커스텀 비교 함수를 작성합니다.",
+            "status": "done",
+            "testStrategy": ""
+          },
+          {
+            "id": 2,
+            "title": "useMemo를 활용한 마크다운 옵션 메모이제이션",
+            "description": "마크다운 렌더링 옵션 객체와 테마 관련 설정을 useMemo로 메모이제이션하여 성능을 최적화합니다.",
+            "dependencies": [
+              1
+            ],
+            "details": "MarkdownPreview에 전달되는 옵션 객체(rehypePlugins, remarkPlugins, 테마 설정 등)를 useMemo로 메모이제이션합니다. 테마 상태와 콘텐츠가 변경될 때만 옵션을 재계산하도록 의존성 배열을 설정합니다.",
+            "status": "done",
+            "testStrategy": ""
+          },
+          {
+            "id": 3,
+            "title": "React.lazy와 Suspense를 활용한 코드 스플리팅 구현",
+            "description": "큰 마크다운 콘텐츠와 복잡한 렌더링 컴포넌트를 위한 코드 스플리팅을 구현합니다.",
+            "dependencies": [
+              2
+            ],
+            "details": "MarkdownPreview 컴포넌트를 React.lazy로 동적 임포트하고 Suspense로 감쌉니다. 로딩 상태를 위한 스켈레톤 UI 또는 스피너 컴포넌트를 구현합니다. 콘텐츠 크기에 따른 조건부 lazy loading 로직을 추가합니다.",
+            "status": "done",
+            "testStrategy": ""
+          },
+          {
+            "id": 4,
+            "title": "이미지 lazy loading 및 최적화 구현",
+            "description": "마크다운 내 이미지에 대한 lazy loading과 성능 최적화를 구현합니다.",
+            "dependencies": [
+              3
+            ],
+            "details": "MarkdownPreview의 components prop을 사용하여 img 태그를 커스텀 컴포넌트로 교체합니다. Intersection Observer API 또는 Next.js Image 컴포넌트를 활용한 lazy loading을 구현합니다. 이미지 로딩 상태와 에러 처리를 포함합니다.",
+            "status": "done",
+            "testStrategy": ""
+          },
+          {
+            "id": 5,
+            "title": "코드 하이라이팅을 위한 동적 임포트 시스템 구현",
+            "description": "프로그래밍 언어별 syntax highlighting을 위한 동적 임포트 시스템을 구현합니다.",
+            "dependencies": [
+              4
+            ],
+            "details": "rehype-highlight 또는 prism.js의 언어별 모듈을 동적으로 임포트하는 시스템을 구현합니다. 코드 블록에서 사용된 언어를 감지하고 필요한 언어 파일만 로드하는 로직을 작성합니다. 언어 로딩 상태와 캐싱 메커니즘을 포함합니다.",
+            "status": "done",
+            "testStrategy": ""
+          }
+        ]
+      },
+      {
+        "id": 10,
+        "title": "통합 테스트 및 품질 보증",
+        "description": "다양한 마크다운 콘텐츠와 브라우저에서 전체 기능을 테스트하고 품질을 보증합니다.",
+        "details": "기존 블로그 포스트들을 사용하여 회귀 테스트를 실행합니다. 다양한 마크다운 요소(표, 수식, 이모지, 특수 문자)가 포함된 테스트 케이스를 작성합니다. Chrome, Firefox, Safari, Edge에서 크로스 브라우저 테스트를 실행합니다. 모바일 디바이스(iOS Safari, Chrome Android)에서 터치 인터랙션을 테스트합니다. 백워드 호환성을 확인하고 롤백 계획을 검증합니다.",
+        "testStrategy": "Jest와 React Testing Library로 단위 테스트를 작성합니다. Cypress나 Playwright로 E2E 테스트를 구현합니다. 다양한 마크다운 포맷(.md, .mdx)과 콘텐츠 크기에서 테스트를 실행합니다. 성능 회귀가 없는지 벤치마크 테스트를 수행합니다.",
+        "priority": "medium",
+        "dependencies": [
+          9
+        ],
+        "status": "done",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "단위 테스트 작성",
+            "description": "마크다운 렌더링 컴포넌트와 테마 통합 기능에 대한 단위 테스트를 작성합니다.",
+            "dependencies": [],
+            "details": "Jest와 React Testing Library를 사용하여 PostDetailContent 컴포넌트의 마크다운 렌더링, 테마 변경, props 전달 등의 단위 테스트를 작성합니다. MarkdownPreview 컴포넌트가 올바른 props를 받는지, 테마에 따라 data-color-mode가 설정되는지, content가 undefined일 때 처리되는지 테스트합니다.",
+            "status": "done",
+            "testStrategy": ""
+          },
+          {
+            "id": 2,
+            "title": "E2E 테스트 구현",
+            "description": "사용자 시나리오 기반 종단간 테스트를 구현합니다.",
+            "dependencies": [
+              1
+            ],
+            "details": "Cypress 또는 Playwright를 사용하여 실제 사용자 워크플로우를 테스트합니다. 블로그 포스트 페이지 접근, 마크다운 콘텐츠 렌더링 확인, 테마 토글 후 마크다운 스타일 변경 확인, 다양한 마크다운 요소(헤딩, 링크, 코드블록, 리스트) 렌더링 검증을 포함합니다.",
+            "status": "done",
+            "testStrategy": ""
+          },
+          {
+            "id": 3,
+            "title": "크로스 브라우저 테스트",
+            "description": "Chrome, Firefox, Safari, Edge에서 마크다운 렌더링과 테마 기능을 테스트합니다.",
+            "dependencies": [
+              2
+            ],
+            "details": "주요 브라우저별로 마크다운 렌더링 호환성을 확인합니다. CSS 지원도, 폰트 렌더링, 코드 하이라이팅, 다크/라이트 모드 스타일링이 일관되게 작동하는지 검증합니다. 브라우저별 특이사항과 fallback 처리를 확인합니다.",
+            "status": "done",
+            "testStrategy": ""
+          },
+          {
+            "id": 4,
+            "title": "모바일 테스트",
+            "description": "iOS Safari와 Chrome Android에서 모바일 터치 인터랙션과 반응형 디자인을 테스트합니다.",
+            "dependencies": [
+              3
+            ],
+            "details": "모바일 기기에서 마크다운 콘텐츠의 스크롤, 터치 제스처, 확대/축소 기능을 테스트합니다. 반응형 레이아웃에서 마크다운 요소들이 올바르게 표시되는지, 코드 블록의 가로 스크롤이 작동하는지, 테마 토글이 터치로 정상 작동하는지 확인합니다.",
+            "status": "done",
+            "testStrategy": ""
+          },
+          {
+            "id": 5,
+            "title": "성능 테스트",
+            "description": "마크다운 렌더링 성능과 메모리 사용량을 측정하고 최적화를 검증합니다.",
+            "dependencies": [
+              4
+            ],
+            "details": "Lighthouse를 사용하여 페이지 성능 점수를 측정합니다. 큰 마크다운 파일(>1MB) 렌더링 시간, 메모이제이션 효과, 코드 스플리팅 성능을 분석합니다. React DevTools Profiler로 컴포넌트 리렌더링 최적화를 확인하고 메모리 누수가 없는지 검증합니다.",
+            "status": "done",
+            "testStrategy": ""
+          },
+          {
+            "id": 6,
+            "title": "회귀 테스트",
+            "description": "기존 기능의 호환성과 백워드 호환성을 확인하는 회귀 테스트를 실행합니다.",
+            "dependencies": [
+              5
+            ],
+            "details": "기존 블로그 포스트들을 사용하여 마크다운 변환 전후의 렌더링 결과를 비교합니다. 특수 문자, 이모지, 수식, 표 등 다양한 마크다운 요소가 포함된 테스트 케이스로 회귀 테스트를 수행합니다. 기존 CSS 스타일과의 충돌이 없는지, 레이아웃 깨짐이 없는지 확인하고 롤백 계획을 검증합니다.",
+            "status": "done",
+            "testStrategy": ""
+          }
+        ]
+      }
+    ],
+    "metadata": {
+      "created": "2025-07-14T01:31:49.695Z",
+      "updated": "2025-07-14T02:16:41.325Z",
+      "description": "Tasks for master context"
+    }
+  }
+}
