@@ -25,6 +25,21 @@
         "--profile",
         "mighty-anaconda-syGDMe"
       ]
+    },
+    "Github": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@smithery/cli@latest",
+        "run",
+        "@smithery-ai/github",
+        "--key",
+        "96683616-f0ac-4cb2-b93c-de8aa08b2521",
+        "--profile",
+        "mighty-anaconda-syGDMe"
+      ],
+      "env": {}
     }
   }
 }

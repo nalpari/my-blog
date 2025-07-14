@@ -21,7 +21,10 @@
       "Bash(lsof:*)",
       "Bash(grep:*)",
       "Bash(task-master:*)",
-      "Bash(find:*)"
+      "Bash(find:*)",
+      "Bash(git push:*)",
+      "Bash(gh pr create:*)",
+      "Bash(gh auth:*)"
     ],
     "deny": []
   },
