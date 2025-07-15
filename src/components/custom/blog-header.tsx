@@ -71,7 +71,6 @@ export const BlogHeader = ({ siteTitle = 'My Blog' }: BlogHeaderProps) => {
     e.preventDefault()
     if (searchQuery.trim()) {
       // 검색 기능 구현
-      console.log('검색:', searchQuery)
     }
   }
 

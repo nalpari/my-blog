@@ -9,7 +9,6 @@ import { blogApi } from '@/lib/prisma'
 
 export default async function Home() {
   const { data: posts, error } = await blogApi.getPosts({ page: 1, limit: 6 })
-  console.log('메인 페이지 포스트 목록:', posts)
   return (
     <div className="min-h-screen bg-background">
       <BlogHeader siteTitle="개발 블로그" />

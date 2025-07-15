@@ -55,9 +55,7 @@ export const BlogPostCard = ({
         method: 'POST',
       })
       
-      if (response.ok) {
-        console.log('조회수 업데이트 성공:', post.id)
-      } else {
+      if (!response.ok) {
         const errorData = await response.json()
         console.error('조회수 업데이트 실패:', errorData.error)
       }
@@ -120,12 +118,7 @@ export const BlogPostCard = ({
     )
   }
 
-  // 포스트 데이터 로깅
-  console.log('BlogPostCard 렌더링:', { 
-    id: post.id, 
-    title: post.title,
-    slug: post.slug
-  });
+
 
   return (
     <Card className="blog-card group cursor-pointer">
