@@ -1,153 +1,177 @@
 <context>
 # Overview  
-This project addresses a critical user experience issue in the blog post detail view where markdown content is displayed as raw text instead of properly formatted HTML. The problem affects readability and user engagement, making the blog posts difficult to read and unprofessional in appearance. The solution involves implementing proper markdown rendering using existing packages to transform markdown syntax into beautifully formatted content with syntax highlighting, proper typography, and responsive design.
+블로그 플랫폼의 관리자 페이지에 안전한 접근을 위한 인증 시스템을 구현합니다. 메인 화면에서 `/admin` 경로로 라우팅 전환 시 Supabase Authentication을 이용한 로그인 기능을 제공하여, 인증된 사용자만이 관리자 기능에 접근할 수 있도록 보안을 강화합니다. 이는 블로그 콘텐츠 관리의 보안성과 사용자 경험을 동시에 향상시키는 핵심 기능입니다.
 
 # Core Features  
-## Markdown Rendering Engine
-- **What it does**: Converts markdown syntax to properly formatted HTML in real-time
-- **Why it's important**: Essential for blog readability and professional appearance
-- **How it works**: Utilizes `@uiw/react-markdown-preview` to parse and render markdown content
+## 1. Supabase 기반 인증 시스템
+- **기능**: 이메일/패스워드 기반의 안전한 로그인 시스템
+- **중요성**: 관리자 페이지의 보안을 담보하고 무단 접근을 방지
+- **동작 방식**: Supabase Authentication API를 통한 사용자 인증 및 세션 관리
 
-## Syntax Highlighting
-- **What it does**: Applies color coding and formatting to code blocks
-- **Why it's important**: Improves code readability for technical blog posts
-- **How it works**: Built-in feature of the markdown preview component
+## 2. 라우트 보호 미들웨어
+- **기능**: `/admin` 경로에 대한 자동 인증 상태 확인 및 접근 제어
+- **중요성**: 인증되지 않은 사용자의 관리자 페이지 접근을 원천 차단
+- **동작 방식**: Next.js 미들웨어를 통한 요청 인터셉트 및 리다이렉트 처리
 
-## Dark Mode Support
-- **What it does**: Dynamically adjusts markdown rendering based on user's theme preference
-- **Why it's important**: Maintains consistency with the overall site theme
-- **How it works**: Theme detection and conditional styling application
+## 3. 사용자 친화적 로그인 인터페이스
+- **기능**: 직관적이고 반응형인 로그인 폼과 에러 처리
+- **중요성**: 관리자의 원활한 시스템 접근과 사용성 향상
+- **동작 방식**: React 컴포넌트 기반의 폼 검증 및 상태 관리
 
-## Responsive Design
-- **What it does**: Ensures markdown content displays properly across all device sizes
-- **Why it's important**: Mobile-first approach for better user experience
-- **How it works**: Integration with Tailwind CSS responsive utilities
+## 4. 전역 인증 상태 관리
+- **기능**: 애플리케이션 전반에 걸친 사용자 인증 상태 추적
+- **중요성**: 일관된 사용자 경험과 세션 지속성 보장
+- **동작 방식**: React Context API를 통한 전역 상태 관리
 
 # User Experience  
-## User Personas
-- **Primary**: Blog readers seeking well-formatted technical content
-- **Secondary**: Content creators who need to preview their markdown posts
+## 사용자 페르소나
+- **주요 사용자**: 블로그 관리자 (콘텐츠 작성자, 사이트 운영자)
+- **사용 목적**: 블로그 포스트 작성, 수정, 삭제 및 사이트 관리
+- **기술 수준**: 중급 이상의 웹 사용 경험
 
-## Key User Flows
-1. User navigates to blog post detail page
-2. Markdown content is automatically rendered as formatted HTML
-3. Code blocks are highlighted for better readability
-4. Links, images, and other elements are properly styled
-5. Content adapts to user's theme preference (light/dark mode)
+## 핵심 사용자 플로우
+1. **인증되지 않은 사용자**:
+   - `/admin` 접근 시도 → 자동 로그인 페이지 리다이렉트 → 로그인 완료 → 원래 요청 페이지로 이동
 
-## UI/UX Considerations
-- Maintain existing layout structure and spacing
-- Preserve accessibility features
-- Ensure consistent typography with site design
-- Optimize for reading experience with proper line spacing and font sizing
+2. **인증된 사용자**:
+   - `/admin` 직접 접근 → 즉시 관리자 페이지 표시
+
+3. **세션 만료 사용자**:
+   - 관리자 페이지 사용 중 세션 만료 감지 → 자동 로그인 페이지 리다이렉트
+
+## UI/UX 고려사항
+- **반응형 디자인**: 모바일, 태블릿, 데스크톱 환경 지원
+- **접근성**: WCAG 2.1 가이드라인 준수
+- **일관성**: 기존 블로그 디자인 시스템과의 조화
+- **피드백**: 로딩 상태, 에러 메시지, 성공 알림의 명확한 표시
 </context>
+
 <PRD>
 # Technical Architecture  
-## System Components
-- **PostDetailContent Component**: Main container that handles markdown rendering
-- **MarkdownPreview Component**: Core rendering engine from @uiw/react-markdown-preview
-- **Theme Provider**: Manages dark/light mode state for proper styling
+## 시스템 컴포넌트
+- **Frontend**: Next.js 14+ App Router, React 18+, TypeScript
+- **Authentication**: Supabase Authentication Service
+- **Styling**: Tailwind CSS, shadcn/ui 컴포넌트
+- **State Management**: React Context API + useReducer
 
-## Data Models
-- **Post Content**: Existing markdown string stored in database
-- **Theme State**: Boolean flag for dark/light mode preference
-- **Rendering Options**: Configuration object for markdown preview settings
+## 데이터 모델
+```typescript
+interface User {
+  id: string;
+  email: string;
+  created_at: string;
+  last_sign_in_at: string;
+}
 
-## APIs and Integrations
-- **@uiw/react-markdown-preview**: Primary markdown rendering library
-- **@uiw/react-md-editor**: Secondary option with additional features
-- **Tailwind CSS**: Styling framework integration
-- **Next.js Theme Provider**: Dark mode state management
+interface AuthState {
+  user: User | null;
+  loading: boolean;
+  error: string | null;
+}
+```
 
-## Infrastructure Requirements
-- No additional infrastructure changes required
-- Existing packages already installed
-- Client-side rendering approach maintains performance
+## API 및 통합
+- **Supabase Client**: `@supabase/supabase-js`
+- **환경 변수**: `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+- **API Routes**: 
+  - `/api/auth/callback`: OAuth 콜백 처리
+  - `/api/auth/signout`: 로그아웃 처리
+
+## 인프라 요구사항
+- **Supabase 프로젝트**: Authentication 서비스 활성화
+- **Next.js 미들웨어**: `middleware.ts` 파일 구성
+- **환경 설정**: `.env.local` 파일 보안 관리
 
 # Development Roadmap  
-## Phase 1: Core Markdown Rendering (MVP)
-- Replace raw text rendering with MarkdownPreview component
-- Import and configure @uiw/react-markdown-preview
-- Basic markdown parsing and HTML output
-- Test with existing blog posts
+## MVP 요구사항 (Phase 1)
+- Supabase 프로젝트 설정 및 환경 변수 구성
+- 기본 AuthProvider 컨텍스트 구현
+- 간단한 로그인 폼 컴포넌트 생성
+- `/admin` 경로에 대한 기본 보호 로직
 
-## Phase 2: Enhanced Styling and Theme Support
-- Implement dark mode detection and styling
-- Apply consistent typography and spacing
-- Integrate with existing Tailwind CSS classes
-- Responsive design optimization
+## 핵심 기능 완성 (Phase 2)
+- 완전한 로그인/로그아웃 플로우 구현
+- Next.js 미들웨어를 통한 라우트 보호
+- 에러 처리 및 사용자 피드백 시스템
+- 세션 지속성 및 자동 갱신
 
-## Phase 3: Advanced Features
-- Table of contents generation from headings
-- Enhanced link handling and security
-- Image optimization and lazy loading
-- Custom syntax highlighting themes
+## 사용자 경험 개선 (Phase 3)
+- 로딩 상태 및 스켈레톤 UI
+- 폼 유효성 검사 강화
+- 접근성 개선 (키보드 네비게이션, 스크린 리더 지원)
+- 반응형 디자인 최적화
 
-## Phase 4: Performance and Accessibility
-- Optimize rendering performance
-- Implement accessibility features (ARIA labels, keyboard navigation)
-- Add loading states for large content
-- Testing across different devices and browsers
+## 고급 기능 (Phase 4)
+- 비밀번호 재설정 기능
+- 이메일 인증 플로우
+- 다중 인증 (MFA) 옵션
+- 관리자 권한 레벨 구분
 
 # Logical Dependency Chain
-## Foundation Layer (Must be built first)
-1. **Import and Setup**: Add MarkdownPreview component import
-2. **Basic Rendering**: Replace existing text rendering with markdown component
-3. **Configuration**: Set up basic rendering options
+## 기초 설정 (Foundation)
+1. **Supabase 프로젝트 설정**: 모든 인증 기능의 기반
+2. **환경 변수 구성**: 보안 설정의 전제 조건
+3. **Supabase 클라이언트 초기화**: API 통신의 기본 요소
 
-## Core Functionality Layer
-4. **Theme Integration**: Implement dynamic theme detection
-5. **Styling Application**: Apply consistent CSS classes and responsive design
-6. **Content Testing**: Validate rendering with various markdown formats
+## 핵심 인증 로직 (Core Authentication)
+4. **AuthProvider 컨텍스트**: 전역 상태 관리의 중심
+5. **로그인 폼 컴포넌트**: 사용자 인터페이스의 진입점
+6. **인증 상태 확인 로직**: 보안 검증의 핵심
 
-## Enhancement Layer (Build upon foundation)
-7. **Advanced Features**: Add table of contents, enhanced links
-8. **Performance Optimization**: Implement lazy loading and caching
-9. **Accessibility**: Add ARIA labels and keyboard navigation
+## 라우트 보호 (Route Protection)
+7. **Next.js 미들웨어**: 자동 접근 제어 시스템
+8. **리다이렉트 로직**: 사용자 플로우 관리
+9. **세션 관리**: 지속적인 인증 상태 유지
 
-## Quick Win Strategy
-- Start with basic markdown rendering to get immediate visual improvement
-- Focus on single file modification for minimal risk
-- Leverage existing packages to avoid reinventing functionality
-- Test incrementally with real blog content
+## 사용자 경험 (User Experience)
+10. **에러 처리**: 안정적인 사용자 경험
+11. **로딩 상태**: 반응성 있는 인터페이스
+12. **접근성 개선**: 포용적인 사용자 경험
 
 # Risks and Mitigations  
-## Technical Challenges
-- **Risk**: Markdown rendering breaks existing layout
-- **Mitigation**: Preserve existing CSS classes and test thoroughly
+## 기술적 도전과제
+- **위험**: Supabase 서비스 의존성으로 인한 단일 장애점
+- **완화**: 로컬 세션 백업 및 오프라인 모드 고려
 
-- **Risk**: Performance impact on large blog posts
-- **Mitigation**: Implement lazy loading and content chunking
+- **위험**: Next.js 미들웨어의 복잡성으로 인한 성능 저하
+- **완화**: 효율적인 인증 상태 캐싱 및 최적화된 리다이렉트 로직
 
-## MVP Scope Management
-- **Risk**: Feature creep during implementation
-- **Mitigation**: Focus on core rendering first, add features incrementally
+## MVP 구현 전략
+- **위험**: 과도한 기능 구현으로 인한 개발 지연
+- **완화**: 핵심 로그인/로그아웃 기능에 집중, 점진적 기능 확장
 
-- **Risk**: Breaking existing functionality
-- **Mitigation**: Maintain backward compatibility and test with existing content
+- **위험**: 보안 취약점 발생 가능성
+- **완화**: Supabase의 검증된 보안 기능 활용, 정기적인 보안 검토
 
-## Resource Constraints
-- **Risk**: Complex integration with existing theme system
-- **Mitigation**: Use existing theme provider patterns and documentation
+## 리소스 제약
+- **위험**: 프론트엔드 개발자의 백엔드 인증 시스템 이해 부족
+- **완화**: Supabase 문서 활용 및 단계별 구현 가이드 작성
 
-- **Risk**: Browser compatibility issues
-- **Mitigation**: Test across major browsers and implement fallbacks
+- **위험**: 디자인 시스템과의 일관성 유지 어려움
+- **완화**: 기존 UI 컴포넌트 라이브러리 최대 활용
 
 # Appendix  
-## Research Findings
-- @uiw/react-markdown-preview is already installed and maintained
-- Component supports theme switching out of the box
-- Performance benchmarks show minimal impact on render time
-- Accessibility features are built-in with proper ARIA support
+## 기술 사양
+- **Node.js**: 18.17.0 이상
+- **Next.js**: 14.0.0 이상
+- **React**: 18.0.0 이상
+- **TypeScript**: 5.0.0 이상
+- **Supabase**: 최신 stable 버전
 
-## Technical Specifications
-- **Target File**: `src/components/custom/post-detail-content.tsx`
-- **Lines to Modify**: 77-80 (current text rendering)
-- **Dependencies**: No additional packages required
-- **Testing Strategy**: Manual testing with existing blog posts
-- **Rollback Plan**: Simple revert to original text rendering
+## 보안 고려사항
+- **HTTPS**: 프로덕션 환경에서 필수
+- **환경 변수**: 민감한 정보의 안전한 관리
+- **CSRF 보호**: Next.js 내장 보안 기능 활용
+- **세션 만료**: 적절한 토큰 갱신 주기 설정
 
-## Implementation Priority
-1. **High Priority**: Basic markdown rendering functionality
-2. **Medium Priority**: Theme support and responsive design
-3. **Low Priority**: Advanced features and performance optimization 
+## 성능 최적화
+- **코드 스플리팅**: 인증 관련 컴포넌트의 지연 로딩
+- **캐싱 전략**: 사용자 세션 정보의 효율적 관리
+- **번들 크기**: Supabase 클라이언트 최적화
+
+## 테스트 전략
+- **단위 테스트**: 인증 로직 및 컴포넌트
+- **통합 테스트**: 로그인 플로우 전체
+- **E2E 테스트**: 사용자 시나리오 기반
+- **보안 테스트**: 인증 우회 시도 및 세션 관리
+</PRD>
