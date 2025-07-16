@@ -9,7 +9,7 @@
         "testStrategy": "환경 변수 로드 테스트, Supabase 연결 상태 확인, 인증 서비스 활성화 상태 검증",
         "priority": "high",
         "dependencies": [],
-        "status": "pending",
+        "status": "completed",
         "subtasks": [
           {
             "id": 1,
@@ -17,7 +17,7 @@
             "description": "Supabase 대시보드에서 새 프로젝트를 생성하고 Authentication 서비스를 활성화합니다.",
             "dependencies": [],
             "details": "1. Supabase 대시보드 접속 및 로그인\n2. 새 프로젝트 생성 (프로젝트명, 데이터베이스 패스워드 설정)\n3. Authentication 서비스 활성화\n4. 이메일/패스워드 인증 제공자 활성화\n5. 프로젝트 URL과 익명 키 확인 및 기록\n6. 인증 설정 검증 및 테스트",
-            "status": "pending",
+            "status": "completed",
             "testStrategy": ""
           },
           {
@@ -28,7 +28,7 @@
               1
             ],
             "details": "1. 프로젝트 루트에 .env.local 파일 생성\n2. NEXT_PUBLIC_SUPABASE_URL 환경 변수 설정\n3. NEXT_PUBLIC_SUPABASE_ANON_KEY 환경 변수 설정\n4. 환경 변수 값 검증 및 테스트\n5. Next.js 환경 변수 로드 확인\n6. 개발 서버 재시작 및 변수 로드 테스트",
-            "status": "pending",
+            "status": "completed",
             "testStrategy": ""
           },
           {
@@ -39,7 +39,7 @@
               2
             ],
             "details": "1. .gitignore 파일에 .env.local 추가\n2. .env.example 파일 생성 (환경 변수 템플릿)\n3. Git 상태 확인 및 민감한 정보 제외 검증\n4. Supabase 프로젝트 보안 설정 검토\n5. RLS (Row Level Security) 기본 설정 확인\n6. 보안 설정 문서화 및 팀원 가이드 작성",
-            "status": "pending",
+            "status": "completed",
             "testStrategy": ""
           }
         ]
@@ -54,7 +54,7 @@
         "dependencies": [
           11
         ],
-        "status": "pending",
+        "status": "completed",
         "subtasks": [
           {
             "id": 1,
@@ -62,7 +62,7 @@
             "description": "@supabase/supabase-js 패키지를 npm을 통해 설치합니다.",
             "dependencies": [],
             "details": "npm install @supabase/supabase-js 명령어를 실행하여 Supabase JavaScript 클라이언트 라이브러리를 프로젝트에 추가합니다. package.json에 의존성이 정확히 추가되었는지 확인합니다.",
-            "status": "pending",
+            "status": "completed",
             "testStrategy": ""
           },
           {
@@ -73,7 +73,7 @@
               1
             ],
             "details": "lib 디렉토리에 supabase.ts 파일을 생성하고, createClient 함수를 import하여 환경 변수를 사용한 클라이언트 인스턴스를 생성합니다. 생성된 클라이언트를 export하여 다른 파일에서 사용할 수 있도록 합니다.",
-            "status": "pending",
+            "status": "completed",
             "testStrategy": ""
           },
           {
@@ -84,7 +84,7 @@
               2
             ],
             "details": "TypeScript 타입 정의를 추가하여 타입 안정성을 확보합니다. 환경 변수에 대한 타입 선언을 추가하고, Supabase 클라이언트 인스턴스의 타입을 명시적으로 정의합니다. 필요시 types 디렉토리에 추가 타입 정의 파일을 생성합니다.",
-            "status": "pending",
+            "status": "completed",
             "testStrategy": ""
           }
         ]
@@ -99,7 +99,7 @@
         "dependencies": [
           12
         ],
-        "status": "pending",
+        "status": "completed",
         "subtasks": [
           {
             "id": 1,
@@ -107,7 +107,7 @@
             "description": "TypeScript를 사용하여 인증 상태 관리에 필요한 타입들을 정의합니다. AuthState 인터페이스(user, loading, error)와 User 타입(id, email, created_at, last_sign_in_at)을 포함합니다.",
             "dependencies": [],
             "details": "1. contexts/AuthContext.tsx 파일 생성\n2. User 인터페이스 정의 (id: string, email: string, created_at: string, last_sign_in_at: string)\n3. AuthState 인터페이스 정의 (user: User | null, loading: boolean, error: string | null)\n4. AuthAction 타입 정의 (로그인, 로그아웃, 로딩, 에러 액션)\n5. 타입 export 설정",
-            "status": "pending",
+            "status": "completed",
             "testStrategy": ""
           },
           {
@@ -118,7 +118,7 @@
               1
             ],
             "details": "1. AuthContext 생성 (createContext 사용)\n2. authReducer 함수 구현 (상태 업데이트 로직)\n3. AuthProvider 컴포넌트 구현\n4. useReducer를 사용한 상태 관리\n5. Context.Provider로 children 컴포넌트 감싸기\n6. 초기 상태 설정 (user: null, loading: true, error: null)",
-            "status": "pending",
+            "status": "completed",
             "testStrategy": ""
           },
           {
@@ -129,7 +129,7 @@
               2
             ],
             "details": "1. useAuth 훅 구현 (useContext 사용)\n2. Context 존재 여부 검증\n3. signIn, signOut, signUp 메서드 구현\n4. Supabase 인증 함수와 연동\n5. 에러 처리 및 로딩 상태 관리\n6. 타입 안정성 보장",
-            "status": "pending",
+            "status": "completed",
             "testStrategy": ""
           },
           {
@@ -140,7 +140,7 @@
               3
             ],
             "details": "1. useEffect를 사용한 초기 세션 확인\n2. supabase.auth.onAuthStateChange 리스너 설정\n3. 세션 변경 시 상태 업데이트\n4. 컴포넌트 언마운트 시 리스너 정리\n5. 세션 갱신 로직 추가\n6. 에러 발생 시 적절한 상태 업데이트",
-            "status": "pending",
+            "status": "completed",
             "testStrategy": ""
           }
         ]
@@ -155,7 +155,7 @@
         "dependencies": [
           13
         ],
-        "status": "pending",
+        "status": "completed",
         "subtasks": []
       },
       {
@@ -168,7 +168,7 @@
         "dependencies": [
           13
         ],
-        "status": "pending",
+        "status": "completed",
         "subtasks": [
           {
             "id": 1,
@@ -176,7 +176,7 @@
             "description": "middleware.ts 파일을 생성하고 Next.js 미들웨어 기본 구조를 설정하며 /admin 경로에 대한 매칭 로직을 구현합니다.",
             "dependencies": [],
             "details": "1. 프로젝트 루트에 middleware.ts 파일 생성\n2. NextRequest, NextResponse 타입 import\n3. Supabase 미들웨어 설정을 위한 기본 구조 작성\n4. /admin 경로 패턴 매칭 로직 구현\n5. matcher 설정으로 대상 경로 지정\n6. 미들웨어 실행 흐름 기본 틀 구성",
-            "status": "pending",
+            "status": "completed",
             "testStrategy": ""
           },
           {
@@ -187,7 +187,7 @@
               1
             ],
             "details": "1. Supabase 클라이언트를 통한 인증 상태 확인\n2. 세션 유효성 검증 로직\n3. 미인증 사용자 감지 시 로그인 페이지 리다이렉트\n4. 인증된 사용자 요청 통과 처리\n5. 리다이렉트 URL 파라미터 설정\n6. 에러 처리 및 예외 상황 대응",
-            "status": "pending",
+            "status": "completed",
             "testStrategy": ""
           },
           {
@@ -198,7 +198,7 @@
               2
             ],
             "details": "1. 세션 만료 감지 및 자동 갱신 로직\n2. 토큰 갱신 처리\n3. 보안 헤더 설정 (CSRF 보호 등)\n4. 세션 상태 변경 감지\n5. 미들웨어 성능 최적화\n6. 로깅 및 모니터링 설정\n7. 세션 갱신 실패 시 처리 로직",
-            "status": "pending",
+            "status": "completed",
             "testStrategy": ""
           }
         ]
@@ -213,7 +213,7 @@
         "dependencies": [
           14
         ],
-        "status": "pending",
+        "status": "completed",
         "subtasks": []
       },
       {
@@ -226,7 +226,7 @@
         "dependencies": [
           12
         ],
-        "status": "pending",
+        "status": "completed",
         "subtasks": []
       },
       {
@@ -239,7 +239,7 @@
         "dependencies": [
           15
         ],
-        "status": "pending",
+        "status": "completed",
         "subtasks": []
       },
       {
@@ -253,7 +253,7 @@
           16,
           17
         ],
-        "status": "pending",
+        "status": "completed",
         "subtasks": []
       },
       {
@@ -267,7 +267,7 @@
           13,
           17
         ],
-        "status": "pending",
+        "status": "completed",
         "subtasks": [
           {
             "id": 1,
@@ -275,7 +275,7 @@
             "description": "JWT 토큰의 만료 시간을 감지하고 자동으로 토큰을 갱신하는 시스템을 구현합니다.",
             "dependencies": [],
             "details": "JWT 토큰 디코딩을 통한 만료 시간 확인, refresh token을 사용한 자동 갱신 로직, 갱신 실패 시 재시도 메커니즘, 갱신 중 API 호출 대기 큐 관리",
-            "status": "pending",
+            "status": "completed",
             "testStrategy": ""
           },
           {
@@ -286,7 +286,7 @@
               1
             ],
             "details": "Supabase 세션 상태 변경 이벤트 리스너 구현, 로컬 스토리지 세션 데이터 백업, 세션 상태 동기화 로직, 중복 세션 방지 메커니즘",
-            "status": "pending",
+            "status": "completed",
             "testStrategy": ""
           },
           {
@@ -297,7 +297,7 @@
               2
             ],
             "details": "마우스 이벤트, 키보드 이벤트 등 사용자 활동 감지, 비활성 타이머 관리, 페이지 새로고침 시 세션 복원, 탭 간 세션 동기화",
-            "status": "pending",
+            "status": "completed",
             "testStrategy": ""
           },
           {
@@ -308,7 +308,7 @@
               3
             ],
             "details": "세션 만료 전 경고 타이머 설정, 모달 또는 토스트 알림 UI 구현, 세션 연장 확인 버튼, 카운트다운 표시 기능",
-            "status": "pending",
+            "status": "completed",
             "testStrategy": ""
           },
           {
@@ -319,7 +319,7 @@
               4
             ],
             "details": "토큰 무효화 처리, 로컬 스토리지 세션 데이터 정리, 보안 이벤트 감지 로직, 리다이렉트 및 인증 상태 초기화, 동시 세션 제한 처리",
-            "status": "pending",
+            "status": "completed",
             "testStrategy": ""
           }
         ]

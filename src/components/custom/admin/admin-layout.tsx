@@ -1,8 +1,11 @@
 'use client'
 
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
+import { useEffect } from 'react'
 import { cn } from '@/lib/utils'
+import { useAuth } from '@/contexts/AuthContext'
+import { Button } from '@/components/ui/button'
 
 interface AdminLayoutProps {
   children: React.ReactNode
@@ -16,6 +19,33 @@ const navigation = [
 
 export function AdminLayout({ children }: AdminLayoutProps) {
   const pathname = usePathname()
+  const router = useRouter()
+  const { user, loading, signOut } = useAuth()
+
+  // 인증 상태 확인 및 리다이렉트
+  useEffect(() => {
+    if (!loading && !user) {
+      router.push('/auth/login')
+    }
+  }, [loading, user, router])
+
+  // 로딩 중이거나 사용자가 없으면 로딩 UI 표시
+  if (loading || !user) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
+          <p className="text-gray-600">로딩 중...</p>
+        </div>
+      </div>
+    )
+  }
+
+  // 로그아웃 핸들러
+  const handleLogout = async () => {
+    await signOut()
+    router.push('/auth/login')
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -31,12 +61,24 @@ export function AdminLayout({ children }: AdminLayoutProps) {
                 관리자 페이지
               </Link>
             </div>
-            <Link 
-              href="/"
-              className="text-sm text-gray-600 hover:text-gray-900"
-            >
-              블로그로 돌아가기
-            </Link>
+            <div className="flex items-center space-x-4">
+              <div className="text-sm text-gray-600">
+                {user.email}
+              </div>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={handleLogout}
+              >
+                로그아웃
+              </Button>
+              <Link 
+                href="/"
+                className="text-sm text-gray-600 hover:text-gray-900"
+              >
+                블로그로 돌아가기
+              </Link>
+            </div>
           </div>
         </div>
       </header>
