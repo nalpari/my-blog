@@ -104,16 +104,43 @@ export default async function AdminDashboard() {
           <div className="flex flex-wrap gap-4">
             <a
               href="/admin/posts/new"
-              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
+              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 transition-colors"
             >
-              새 포스트 작성
+              ➕ 새 포스트 작성
             </a>
             <a
               href="/admin/posts"
-              className="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
+              className="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 transition-colors"
             >
-              포스트 관리
+              📝 포스트 관리
             </a>
+            <a
+              href="/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 transition-colors"
+            >
+              🌐 블로그 보기
+            </a>
+          </div>
+        </div>
+
+        {/* 시스템 정보 */}
+        <div className="bg-white p-6 rounded-lg shadow-sm border">
+          <h2 className="text-lg font-semibold text-gray-900 mb-4">시스템 정보</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+            <div className="flex justify-between">
+              <span className="text-gray-500">버전:</span>
+              <span className="font-medium">v1.0.0</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-gray-500">마지막 업데이트:</span>
+              <span className="font-medium">{new Date().toLocaleDateString('ko-KR')}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-gray-500">상태:</span>
+              <span className="font-medium text-green-600">정상</span>
+            </div>
           </div>
         </div>
       </div>

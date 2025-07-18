@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
@@ -17,10 +17,16 @@ export default function SignUpPage() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [passwordError, setPasswordError] = useState('');
 
-  // 이미 로그인된 경우 대시보드로 리다이렉트
+  // 이미 로그인된 경우 대시보드로 리다이렉트 (useEffect 사용)
+  useEffect(() => {
+    if (user) {
+      router.push('/admin');
+    }
+  }, [user, router]);
+
+  // 이미 로그인된 경우 로딩 표시
   if (user) {
-    router.push('/admin');
-    return null;
+    return <div className="flex min-h-screen items-center justify-center">리다이렉트 중...</div>;
   }
 
   const handleSubmit = async (e: React.FormEvent) => {

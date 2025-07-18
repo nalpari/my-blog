@@ -1,93 +1,51 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Label } from '@/components/ui/label';
-import Link from 'next/link';
+import { LoginForm } from '@/components/auth/LoginForm';
+
 
 export default function LoginPage() {
   const router = useRouter();
-  const { signIn, loading, error, user } = useAuth();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const { user, loading, error } = useAuth();
 
-  // 이미 로그인된 경우 대시보드로 리다이렉트
-  if (user) {
-    router.push('/admin');
-    return null;
+  // 이미 로그인된 경우 대시보드로 리다이렉트 (useEffect 사용)
+  useEffect(() => {
+    if (user && !loading) {
+      const redirectTo = new URLSearchParams(window.location.search).get('redirectTo');
+      router.push(redirectTo || '/admin');
+    }
+  }, [user, loading, router]);
+
+  // 로딩 중이거나 이미 로그인된 경우 로딩 표시
+  if (loading || user) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-gray-50">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto mb-4"></div>
+          <p className="text-gray-600">
+            {user ? '대시보드로 이동 중...' : '로딩 중...'}
+          </p>
+        </div>
+      </div>
+    );
   }
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    await signIn(email, password);
+  const handleLoginSuccess = () => {
+    const redirectTo = new URLSearchParams(window.location.search).get('redirectTo');
+    router.push(redirectTo || '/admin');
   };
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <Card className="w-full max-w-md">
-        <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl font-bold">로그인</CardTitle>
-          <CardDescription>
-            계정에 로그인하여 블로그를 관리하세요
-          </CardDescription>
-        </CardHeader>
-        <form onSubmit={handleSubmit}>
-          <CardContent className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="email">이메일</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="your-email@example.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="password">비밀번호</Label>
-              <Input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-            </div>
-            {error && (
-              <div className="text-sm text-red-500">
-                {error}
-              </div>
-            )}
-          </CardContent>
-          <CardFooter className="flex flex-col space-y-4">
-            <Button
-              type="submit"
-              className="w-full"
-              disabled={loading}
-            >
-              {loading ? '로그인 중...' : '로그인'}
-            </Button>
-            <div className="flex flex-col space-y-2 text-sm text-center text-gray-500">
-              <div>
-                계정이 없으신가요?{' '}
-                <Link href="/auth/signup" className="text-blue-600 hover:text-blue-800">
-                  회원가입
-                </Link>
-              </div>
-              <div>
-                <Link href="/auth/reset-password" className="text-blue-600 hover:text-blue-800">
-                  비밀번호를 잊으셨나요?
-                </Link>
-              </div>
-            </div>
-          </CardFooter>
-        </form>
-      </Card>
+      <div className="w-full max-w-md">
+        <div className="text-center mb-8">
+          <h1 className="text-3xl font-bold text-gray-900">관리자 로그인</h1>
+          <p className="mt-2 text-gray-600">블로그 관리 시스템에 접속하세요</p>
+        </div>
+        <LoginForm onSuccess={handleLoginSuccess} />
+      </div>
     </div>
   );
 }

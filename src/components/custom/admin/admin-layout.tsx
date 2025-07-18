@@ -6,6 +6,7 @@ import { useEffect } from 'react'
 import { cn } from '@/lib/utils'
 import { useAuth } from '@/contexts/AuthContext'
 import { Button } from '@/components/ui/button'
+import ErrorBoundary from './error-boundary'
 
 interface AdminLayoutProps {
   children: React.ReactNode
@@ -110,7 +111,9 @@ export function AdminLayout({ children }: AdminLayoutProps) {
 
         {/* 메인 콘텐츠 */}
         <main className="flex-1 p-8">
-          {children}
+          <ErrorBoundary>
+            {children}
+          </ErrorBoundary>
         </main>
       </div>
     </div>

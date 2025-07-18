@@ -122,15 +122,31 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const signOut = async () => {
     try {
       dispatch({ type: 'LOADING', payload: true });
-      const { error } = await supabase.auth.signOut();
-      
-      if (error) {
-        throw error;
+
+      // API 엔드포인트를 통한 로그아웃
+      const response = await fetch('/api/auth/signout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include', // 쿠키 포함
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to sign out');
       }
+
+      // 클라이언트 사이드에서도 Supabase 로그아웃 실행
+      await supabase.auth.signOut();
 
       dispatch({ type: 'LOGOUT' });
     } catch (error) {
+      console.error('Signout error:', error);
       dispatch({ type: 'ERROR', payload: (error as Error).message });
+      
+      // 에러가 발생해도 로컬 상태는 초기화
+      dispatch({ type: 'LOGOUT' });
     }
   };
 
