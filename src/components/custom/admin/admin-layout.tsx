@@ -67,18 +67,23 @@ export function AdminLayout({ children }: AdminLayoutProps) {
                 {user.email}
               </div>
               <Button 
-                variant="outline" 
+                variant="destructive" 
                 size="sm" 
                 onClick={handleLogout}
+                className="font-medium hover:bg-red-700"
               >
                 로그아웃
               </Button>
-              <Link 
-                href="/"
-                className="text-sm text-gray-600 hover:text-gray-900"
+              <Button 
+                variant="default" 
+                size="sm" 
+                className="bg-blue-500 hover:bg-blue-600 text-white font-medium ml-2"
+                asChild
               >
-                블로그로 돌아가기
-              </Link>
+                <Link href="/">
+                  블로그로 돌아가기
+                </Link>
+              </Button>
             </div>
           </div>
         </div>
