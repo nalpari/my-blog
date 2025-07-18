@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -32,6 +32,7 @@ interface LoginFormProps {
 export function LoginForm({ onSuccess }: LoginFormProps) {
   const { signIn, loading, error } = useAuth();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [customError, setCustomError] = useState<string | null>(null);
 
   const {
     register,
@@ -47,8 +48,10 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
   });
 
   const onSubmit = async (data: LoginFormData) => {
+    setIsSubmitting(true);
+    setCustomError(null); // 새 요청 시 커스텀 에러 초기화
+    
     try {
-      setIsSubmitting(true);
       await signIn(data.email, data.password);
       
       // 성공 시 폼 리셋 및 콜백 실행
@@ -58,10 +61,24 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
       }
     } catch (err) {
       console.error('Login error:', err);
+      // 리프레시 토큰 오류인 경우 특별 처리
+      if (err instanceof Error && 
+          (err.message.includes('Refresh Token') || 
+           err.message.includes('Invalid Refresh Token'))) {
+        setCustomError('인증 세션이 만료되었습니다. 다시 로그인해 주세요.');
+      }
+      // 다른 에러는 useAuth 내부에서 처리됨
     } finally {
       setIsSubmitting(false);
     }
   };
+
+  // error가 변경될 때 customError 초기화
+  useEffect(() => {
+    if (error) {
+      setCustomError(null);
+    }
+  }, [error]);
 
   const isLoading = loading || isSubmitting;
 
@@ -120,18 +137,18 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
             )}
           </div>
 
-          {error && (
+          {(error || customError) && (
             <div 
               className="text-sm text-red-500 p-3 bg-red-50 border border-red-200 rounded-md"
               role="alert"
               aria-live="polite"
             >
-              {error}
+              {customError || error}
             </div>
           )}
         </CardContent>
 
-        <CardFooter className="flex flex-col space-y-4">
+        <CardFooter className="flex flex-col space-y-4 pt-4">
           <Button
             type="submit"
             className="w-full"
