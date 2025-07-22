@@ -2,332 +2,348 @@
   "master": {
     "tasks": [
       {
-        "id": 11,
-        "title": "Supabase 프로젝트 설정 및 환경 변수 구성",
-        "description": "Supabase 인증 프로젝트를 생성하고 환경 변수를 설정하여 블로그 관리자 인증 시스템의 기반을 마련합니다.",
-        "details": "1. Supabase 대시보드에서 새 프로젝트 생성\n2. Authentication 서비스 활성화\n3. 프로젝트 URL과 익명 키 확인\n4. .env.local 파일 생성 및 환경 변수 설정:\n   - NEXT_PUBLIC_SUPABASE_URL\n   - NEXT_PUBLIC_SUPABASE_ANON_KEY\n5. .env.local을 .gitignore에 추가하여 보안 유지\n6. 이메일/패스워드 인증 제공자 활성화",
-        "testStrategy": "환경 변수 로드 테스트, Supabase 연결 상태 확인, 인증 서비스 활성화 상태 검증",
+        "id": 1,
+        "title": "검색 모달 컴포넌트 기본 구조 구현",
+        "description": "검색 모달의 기본 컴포넌트 구조와 오버레이 마스크를 구현합니다",
+        "details": "React 컴포넌트로 SearchModal을 생성하고, 전체 화면 오버레이(bg-black/50 backdrop-blur-sm)와 중앙 정렬된 검색 컨테이너(max-width: 600px)를 구현합니다. portal을 사용하여 body에 렌더링하고, ESC 키와 배경 클릭으로 닫기 기능을 추가합니다. Tailwind CSS와 shadcn/ui를 활용하여 스타일링합니다.",
+        "testStrategy": "모달이 정상적으로 열리고 닫히는지, 오버레이가 올바르게 표시되는지, ESC 키와 배경 클릭이 작동하는지 테스트합니다.",
         "priority": "high",
         "dependencies": [],
-        "status": "completed",
-        "subtasks": [
-          {
-            "id": 1,
-            "title": "Supabase 프로젝트 생성 및 기본 설정",
-            "description": "Supabase 대시보드에서 새 프로젝트를 생성하고 Authentication 서비스를 활성화합니다.",
-            "dependencies": [],
-            "details": "1. Supabase 대시보드 접속 및 로그인\n2. 새 프로젝트 생성 (프로젝트명, 데이터베이스 패스워드 설정)\n3. Authentication 서비스 활성화\n4. 이메일/패스워드 인증 제공자 활성화\n5. 프로젝트 URL과 익명 키 확인 및 기록\n6. 인증 설정 검증 및 테스트",
-            "status": "completed",
-            "testStrategy": ""
-          },
-          {
-            "id": 2,
-            "title": "환경 변수 파일 생성 및 설정",
-            "description": "프로젝트 루트에 .env.local 파일을 생성하고 Supabase 연결에 필요한 환경 변수를 설정합니다.",
-            "dependencies": [
-              1
-            ],
-            "details": "1. 프로젝트 루트에 .env.local 파일 생성\n2. NEXT_PUBLIC_SUPABASE_URL 환경 변수 설정\n3. NEXT_PUBLIC_SUPABASE_ANON_KEY 환경 변수 설정\n4. 환경 변수 값 검증 및 테스트\n5. Next.js 환경 변수 로드 확인\n6. 개발 서버 재시작 및 변수 로드 테스트",
-            "status": "completed",
-            "testStrategy": ""
-          },
-          {
-            "id": 3,
-            "title": "보안 설정 및 .gitignore 업데이트",
-            "description": "환경 변수 파일의 보안을 위해 .gitignore에 추가하고 추가적인 보안 설정을 구성합니다.",
-            "dependencies": [
-              2
-            ],
-            "details": "1. .gitignore 파일에 .env.local 추가\n2. .env.example 파일 생성 (환경 변수 템플릿)\n3. Git 상태 확인 및 민감한 정보 제외 검증\n4. Supabase 프로젝트 보안 설정 검토\n5. RLS (Row Level Security) 기본 설정 확인\n6. 보안 설정 문서화 및 팀원 가이드 작성",
-            "status": "completed",
-            "testStrategy": ""
-          }
-        ]
-      },
-      {
-        "id": 12,
-        "title": "Supabase 클라이언트 초기화 및 의존성 설치",
-        "description": "@supabase/supabase-js 패키지를 설치하고 Next.js 앱에서 사용할 수 있도록 Supabase 클라이언트를 초기화합니다.",
-        "details": "1. @supabase/supabase-js 패키지 설치: npm install @supabase/supabase-js\n2. lib/supabase.ts 파일 생성\n3. createClient 함수를 사용하여 Supabase 클라이언트 초기화\n4. 환경 변수를 사용한 클라이언트 설정\n5. TypeScript 타입 정의 추가\n6. 클라이언트 인스턴스 export",
-        "testStrategy": "Supabase 클라이언트 초기화 테스트, 환경 변수 로드 검증, TypeScript 타입 체크",
-        "priority": "high",
-        "dependencies": [
-          11
-        ],
-        "status": "completed",
-        "subtasks": [
-          {
-            "id": 1,
-            "title": "Supabase 패키지 설치",
-            "description": "@supabase/supabase-js 패키지를 npm을 통해 설치합니다.",
-            "dependencies": [],
-            "details": "npm install @supabase/supabase-js 명령어를 실행하여 Supabase JavaScript 클라이언트 라이브러리를 프로젝트에 추가합니다. package.json에 의존성이 정확히 추가되었는지 확인합니다.",
-            "status": "completed",
-            "testStrategy": ""
-          },
-          {
-            "id": 2,
-            "title": "Supabase 클라이언트 초기화 파일 생성",
-            "description": "lib/supabase.ts 파일을 생성하고 createClient 함수를 사용하여 Supabase 클라이언트를 초기화합니다.",
-            "dependencies": [
-              1
-            ],
-            "details": "lib 디렉토리에 supabase.ts 파일을 생성하고, createClient 함수를 import하여 환경 변수를 사용한 클라이언트 인스턴스를 생성합니다. 생성된 클라이언트를 export하여 다른 파일에서 사용할 수 있도록 합니다.",
-            "status": "completed",
-            "testStrategy": ""
-          },
-          {
-            "id": 3,
-            "title": "TypeScript 타입 정의 설정",
-            "description": "Supabase 클라이언트용 TypeScript 타입 정의를 추가하고 환경 변수 타입을 설정합니다.",
-            "dependencies": [
-              2
-            ],
-            "details": "TypeScript 타입 정의를 추가하여 타입 안정성을 확보합니다. 환경 변수에 대한 타입 선언을 추가하고, Supabase 클라이언트 인스턴스의 타입을 명시적으로 정의합니다. 필요시 types 디렉토리에 추가 타입 정의 파일을 생성합니다.",
-            "status": "completed",
-            "testStrategy": ""
-          }
-        ]
-      },
-      {
-        "id": 13,
-        "title": "AuthProvider 컨텍스트 구현",
-        "description": "React Context API를 사용하여 전역 인증 상태를 관리하는 AuthProvider를 구현합니다.",
-        "details": "1. contexts/AuthContext.tsx 파일 생성\n2. AuthState 인터페이스 정의 (user, loading, error)\n3. User 타입 정의 (id, email, created_at, last_sign_in_at)\n4. AuthProvider 컴포넌트 구현\n5. useAuth 커스텀 훅 생성\n6. useReducer를 사용한 상태 관리\n7. Supabase 인증 상태 변경 리스너 구현\n8. 초기 세션 확인 로직 추가",
-        "testStrategy": "Context Provider 렌더링 테스트, 인증 상태 변경 시뮬레이션, 커스텀 훅 기능 검증",
-        "priority": "high",
-        "dependencies": [
-          12
-        ],
-        "status": "completed",
-        "subtasks": [
-          {
-            "id": 1,
-            "title": "AuthState 인터페이스 및 User 타입 정의",
-            "description": "TypeScript를 사용하여 인증 상태 관리에 필요한 타입들을 정의합니다. AuthState 인터페이스(user, loading, error)와 User 타입(id, email, created_at, last_sign_in_at)을 포함합니다.",
-            "dependencies": [],
-            "details": "1. contexts/AuthContext.tsx 파일 생성\n2. User 인터페이스 정의 (id: string, email: string, created_at: string, last_sign_in_at: string)\n3. AuthState 인터페이스 정의 (user: User | null, loading: boolean, error: string | null)\n4. AuthAction 타입 정의 (로그인, 로그아웃, 로딩, 에러 액션)\n5. 타입 export 설정",
-            "status": "completed",
-            "testStrategy": ""
-          },
-          {
-            "id": 2,
-            "title": "AuthProvider 컨텍스트 구현",
-            "description": "React Context API와 useReducer를 사용하여 전역 인증 상태를 관리하는 AuthProvider 컴포넌트를 구현합니다.",
-            "dependencies": [
-              1
-            ],
-            "details": "1. AuthContext 생성 (createContext 사용)\n2. authReducer 함수 구현 (상태 업데이트 로직)\n3. AuthProvider 컴포넌트 구현\n4. useReducer를 사용한 상태 관리\n5. Context.Provider로 children 컴포넌트 감싸기\n6. 초기 상태 설정 (user: null, loading: true, error: null)",
-            "status": "completed",
-            "testStrategy": ""
-          },
-          {
-            "id": 3,
-            "title": "useAuth 커스텀 훅 생성",
-            "description": "AuthContext를 쉽게 사용할 수 있도록 하는 커스텀 훅을 생성하고, 인증 관련 메서드들을 제공합니다.",
-            "dependencies": [
-              2
-            ],
-            "details": "1. useAuth 훅 구현 (useContext 사용)\n2. Context 존재 여부 검증\n3. signIn, signOut, signUp 메서드 구현\n4. Supabase 인증 함수와 연동\n5. 에러 처리 및 로딩 상태 관리\n6. 타입 안정성 보장",
-            "status": "completed",
-            "testStrategy": ""
-          },
-          {
-            "id": 4,
-            "title": "인증 상태 변경 리스너 및 세션 확인 로직 구현",
-            "description": "Supabase 인증 상태 변경을 감지하고 세션을 자동으로 확인하는 리스너 시스템을 구현합니다.",
-            "dependencies": [
-              3
-            ],
-            "details": "1. useEffect를 사용한 초기 세션 확인\n2. supabase.auth.onAuthStateChange 리스너 설정\n3. 세션 변경 시 상태 업데이트\n4. 컴포넌트 언마운트 시 리스너 정리\n5. 세션 갱신 로직 추가\n6. 에러 발생 시 적절한 상태 업데이트",
-            "status": "completed",
-            "testStrategy": ""
-          }
-        ]
-      },
-      {
-        "id": 14,
-        "title": "로그인 폼 컴포넌트 생성",
-        "description": "사용자가 이메일과 패스워드로 로그인할 수 있는 반응형 로그인 폼을 구현합니다.",
-        "details": "1. components/auth/LoginForm.tsx 파일 생성\n2. shadcn/ui 컴포넌트 활용 (Form, Input, Button, Card)\n3. react-hook-form을 사용한 폼 관리\n4. 이메일 및 패스워드 유효성 검사\n5. 로딩 상태 표시\n6. 에러 메시지 표시\n7. Supabase signInWithPassword 함수 연동\n8. 접근성 고려 (aria-label, 키보드 네비게이션)\n9. 반응형 디자인 적용",
-        "testStrategy": "폼 유효성 검사 테스트, 로그인 기능 통합 테스트, 접근성 테스트, 반응형 디자인 검증",
-        "priority": "medium",
-        "dependencies": [
-          13
-        ],
-        "status": "completed",
-        "subtasks": []
-      },
-      {
-        "id": 15,
-        "title": "Next.js 미들웨어 구현",
-        "description": "/admin 경로에 대한 자동 인증 상태 확인 및 접근 제어를 위한 미들웨어를 구현합니다.",
-        "details": "1. middleware.ts 파일 생성 (프로젝트 루트)\n2. NextRequest, NextResponse 타입 import\n3. Supabase 미들웨어 설정\n4. /admin 경로 패턴 매칭\n5. 인증 상태 확인 로직\n6. 미인증 사용자 로그인 페이지 리다이렉트\n7. 인증된 사용자 요청 통과 처리\n8. 세션 갱신 로직 추가\n9. matcher 설정으로 대상 경로 지정",
-        "testStrategy": "미들웨어 실행 테스트, 리다이렉트 로직 검증, 인증 상태별 접근 제어 테스트",
-        "priority": "high",
-        "dependencies": [
-          13
-        ],
         "status": "done",
         "subtasks": [
           {
             "id": 1,
-            "title": "기본 미들웨어 구조 및 경로 매칭 설정",
-            "description": "middleware.ts 파일을 생성하고 Next.js 미들웨어 기본 구조를 설정하며 /admin 경로에 대한 매칭 로직을 구현합니다.",
+            "title": "Portal과 오버레이 기본 구조 구현",
+            "description": "React Portal을 사용하여 body에 렌더링되는 모달 기반 구조와 전체 화면 오버레이를 구현합니다",
             "dependencies": [],
-            "details": "1. 프로젝트 루트에 middleware.ts 파일 생성\n2. NextRequest, NextResponse 타입 import\n3. Supabase 미들웨어 설정을 위한 기본 구조 작성\n4. /admin 경로 패턴 매칭 로직 구현\n5. matcher 설정으로 대상 경로 지정\n6. 미들웨어 실행 흐름 기본 틀 구성",
-            "status": "completed",
-            "testStrategy": ""
+            "details": "createPortal을 사용하여 document.body에 모달을 렌더링하고, 전체 화면을 덮는 오버레이(bg-black/50 backdrop-blur-sm)를 구현합니다. z-index를 적절히 설정하여 다른 요소들 위에 표시되도록 합니다.",
+            "status": "done",
+            "testStrategy": "모달이 DOM의 body 하위에 정확히 렌더링되는지, 오버레이가 전체 화면을 덮는지 확인합니다"
           },
           {
             "id": 2,
-            "title": "인증 상태 확인 및 리다이렉트 로직 구현",
-            "description": "사용자의 인증 상태를 확인하고 미인증 사용자를 로그인 페이지로 리다이렉트하는 로직을 구현합니다.",
-            "dependencies": [
-              1
-            ],
-            "details": "1. Supabase 클라이언트를 통한 인증 상태 확인\n2. 세션 유효성 검증 로직\n3. 미인증 사용자 감지 시 로그인 페이지 리다이렉트\n4. 인증된 사용자 요청 통과 처리\n5. 리다이렉트 URL 파라미터 설정\n6. 에러 처리 및 예외 상황 대응",
-            "status": "completed",
-            "testStrategy": ""
-          },
-          {
-            "id": 3,
-            "title": "세션 갱신 및 보안 설정 구현",
-            "description": "사용자 세션의 자동 갱신과 보안 헤더 설정을 통해 안전한 인증 환경을 구축합니다.",
-            "dependencies": [
-              2
-            ],
-            "details": "1. 세션 만료 감지 및 자동 갱신 로직\n2. 토큰 갱신 처리\n3. 보안 헤더 설정 (CSRF 보호 등)\n4. 세션 상태 변경 감지\n5. 미들웨어 성능 최적화\n6. 로깅 및 모니터링 설정\n7. 세션 갱신 실패 시 처리 로직",
-            "status": "completed",
-            "testStrategy": ""
-          }
-        ]
-      },
-      {
-        "id": 16,
-        "title": "로그인 페이지 구현",
-        "description": "/login 경로에 대한 전용 로그인 페이지를 구현하고 사용자 경험을 최적화합니다.",
-        "details": "1. app/login/page.tsx 파일 생성\n2. LoginForm 컴포넌트 통합\n3. 페이지 레이아웃 및 스타일링\n4. 로그인 성공 후 리다이렉트 로직\n5. 이미 로그인한 사용자 처리\n6. 페이지 메타데이터 설정\n7. 로딩 상태 처리\n8. 에러 바운더리 추가",
-        "testStrategy": "페이지 렌더링 테스트, 로그인 플로우 E2E 테스트, 리다이렉트 로직 검증",
-        "priority": "medium",
-        "dependencies": [
-          14
-        ],
-        "status": "completed",
-        "subtasks": []
-      },
-      {
-        "id": 17,
-        "title": "API 라우트 핸들러 구현",
-        "description": "인증 관련 API 엔드포인트를 구현하여 OAuth 콜백과 로그아웃 처리를 담당합니다.",
-        "details": "1. app/api/auth/callback/route.ts 파일 생성\n2. OAuth 콜백 처리 로직 구현\n3. 세션 쿠키 설정\n4. app/api/auth/signout/route.ts 파일 생성\n5. 로그아웃 처리 및 세션 삭제\n6. 에러 처리 및 응답 상태 코드 설정\n7. CORS 설정 (필요시)\n8. 보안 헤더 설정",
-        "testStrategy": "API 엔드포인트 응답 테스트, 세션 처리 검증, 에러 처리 테스트",
-        "priority": "medium",
-        "dependencies": [
-          12
-        ],
-        "status": "done",
-        "subtasks": []
-      },
-      {
-        "id": 18,
-        "title": "관리자 페이지 기본 구조 구현",
-        "description": "인증된 사용자만 접근할 수 있는 /admin 경로의 기본 관리자 페이지를 구현합니다.",
-        "details": "1. app/admin/page.tsx 파일 생성\n2. 관리자 대시보드 기본 레이아웃\n3. 사용자 정보 표시\n4. 로그아웃 버튼 구현\n5. 관리자 메뉴 네비게이션\n6. 인증 상태 확인 클라이언트 사이드 가드\n7. 로딩 상태 처리\n8. 에러 바운더리 추가",
-        "testStrategy": "관리자 페이지 접근 제어 테스트, 로그아웃 기능 검증, 사용자 정보 표시 테스트",
-        "priority": "medium",
-        "dependencies": [
-          15
-        ],
-        "status": "completed",
-        "subtasks": []
-      },
-      {
-        "id": 19,
-        "title": "에러 처리 및 사용자 피드백 시스템",
-        "description": "인증 과정에서 발생할 수 있는 다양한 에러 상황을 처리하고 사용자에게 적절한 피드백을 제공합니다.",
-        "details": "1. components/ui/Toast.tsx 알림 컴포넌트 구현\n2. 에러 타입별 메시지 정의\n3. 네트워크 오류 처리\n4. 인증 실패 메시지 표시\n5. 세션 만료 알림\n6. 성공 메시지 표시\n7. 에러 바운더리 컴포넌트 생성\n8. 전역 에러 핸들러 구현",
-        "testStrategy": "에러 시나리오별 메시지 표시 테스트, 알림 컴포넌트 기능 검증, 에러 바운더리 동작 테스트",
-        "priority": "medium",
-        "dependencies": [
-          16,
-          17
-        ],
-        "status": "completed",
-        "subtasks": []
-      },
-      {
-        "id": 20,
-        "title": "세션 관리 및 자동 갱신 시스템",
-        "description": "사용자 세션의 지속성을 보장하고 자동 갱신을 통해 원활한 사용자 경험을 제공합니다.",
-        "details": "1. 세션 만료 감지 로직 구현\n2. 자동 토큰 갱신 메커니즘\n3. 세션 상태 변경 리스너\n4. 로컬 스토리지 세션 백업\n5. 세션 복원 로직\n6. 유저 활동 감지\n7. 세션 만료 전 경고 알림\n8. 강제 로그아웃 처리",
-        "testStrategy": "세션 만료 시나리오 테스트, 자동 갱신 기능 검증, 세션 복원 테스트",
-        "priority": "medium",
-        "dependencies": [
-          13,
-          17
-        ],
-        "status": "completed",
-        "subtasks": [
-          {
-            "id": 1,
-            "title": "세션 만료 감지 및 자동 갱신 메커니즘 구현",
-            "description": "JWT 토큰의 만료 시간을 감지하고 자동으로 토큰을 갱신하는 시스템을 구현합니다.",
+            "title": "중앙 정렬 검색 컨테이너 구현",
+            "description": "오버레이 위에 중앙 정렬된 검색 컨테이너를 구현하고 기본 스타일링을 적용합니다",
             "dependencies": [],
-            "details": "JWT 토큰 디코딩을 통한 만료 시간 확인, refresh token을 사용한 자동 갱신 로직, 갱신 실패 시 재시도 메커니즘, 갱신 중 API 호출 대기 큐 관리",
-            "status": "completed",
-            "testStrategy": ""
-          },
-          {
-            "id": 2,
-            "title": "세션 상태 변경 리스너 및 백업 시스템 구현",
-            "description": "세션 상태 변경을 감지하는 리스너와 로컬 스토리지를 활용한 세션 백업 시스템을 구현합니다.",
-            "dependencies": [
-              1
-            ],
-            "details": "Supabase 세션 상태 변경 이벤트 리스너 구현, 로컬 스토리지 세션 데이터 백업, 세션 상태 동기화 로직, 중복 세션 방지 메커니즘",
-            "status": "completed",
-            "testStrategy": ""
+            "details": "max-width 600px의 검색 컨테이너를 구현하고 flex와 justify-center, items-center를 사용하여 화면 중앙에 정렬합니다. Tailwind CSS와 shadcn/ui를 활용하여 둥근 모서리, 그림자, 배경색 등 기본 스타일을 적용합니다.",
+            "status": "done",
+            "testStrategy": "컨테이너가 화면 중앙에 정확히 정렬되는지, 다양한 화면 크기에서 반응형으로 작동하는지 확인합니다"
           },
           {
             "id": 3,
-            "title": "사용자 활동 감지 및 세션 복원 로직 구현",
-            "description": "사용자의 활동을 감지하여 세션을 유지하고 페이지 새로고침 시 세션을 복원하는 로직을 구현합니다.",
-            "dependencies": [
-              2
-            ],
-            "details": "마우스 이벤트, 키보드 이벤트 등 사용자 활동 감지, 비활성 타이머 관리, 페이지 새로고침 시 세션 복원, 탭 간 세션 동기화",
-            "status": "completed",
-            "testStrategy": ""
+            "title": "모달 상태 관리 시스템 구현",
+            "description": "모달의 열림/닫힘 상태를 관리하는 시스템을 구현합니다",
+            "dependencies": [],
+            "details": "useState를 사용하여 모달 상태를 관리하고, isOpen prop을 통해 외부에서 제어할 수 있도록 구현합니다. 모달 열림/닫힘을 위한 onOpen, onClose 콜백 함수들을 정의하고, 애니메이션을 위한 상태 전환 로직을 추가합니다.",
+            "status": "done",
+            "testStrategy": "모달 상태가 정확히 관리되는지, 외부 컴포넌트에서 모달을 제어할 수 있는지 확인합니다"
           },
           {
             "id": 4,
-            "title": "세션 만료 경고 알림 시스템 구현",
-            "description": "세션 만료 전 사용자에게 경고 알림을 표시하고 세션 연장 옵션을 제공하는 시스템을 구현합니다.",
-            "dependencies": [
-              3
-            ],
-            "details": "세션 만료 전 경고 타이머 설정, 모달 또는 토스트 알림 UI 구현, 세션 연장 확인 버튼, 카운트다운 표시 기능",
-            "status": "completed",
-            "testStrategy": ""
+            "title": "키보드 및 배경 클릭 닫기 기능 구현",
+            "description": "ESC 키 입력과 오버레이 배경 클릭으로 모달을 닫는 기능을 구현합니다",
+            "dependencies": [],
+            "details": "useEffect와 addEventListener를 사용하여 ESC 키 이벤트를 감지하고 모달을 닫도록 구현합니다. 오버레이 클릭 시 모달이 닫히도록 onClick 핸들러를 추가하되, 검색 컨테이너 클릭 시에는 이벤트 전파를 막아 모달이 닫히지 않도록 구현합니다.",
+            "status": "done",
+            "testStrategy": "ESC 키 입력 시 모달이 닫히는지, 오버레이 클릭 시 닫히는지, 컨테이너 내부 클릭 시 닫히지 않는지 확인합니다"
           },
           {
             "id": 5,
-            "title": "강제 로그아웃 및 보안 처리 로직 구현",
-            "description": "보안 이슈 발생 시 강제 로그아웃을 수행하고 세션 정리를 처리하는 로직을 구현합니다.",
+            "title": "SearchModal 컴포넌트 통합 및 export",
+            "description": "모든 기능을 통합한 완성된 SearchModal 컴포넌트를 만들고 외부에서 사용할 수 있도록 export합니다",
+            "dependencies": [],
+            "details": "앞서 구현한 모든 기능들을 하나의 SearchModal 컴포넌트로 통합합니다. TypeScript 인터페이스를 정의하여 props 타입을 명확히 하고, 컴포넌트를 export하여 다른 컴포넌트에서 import하여 사용할 수 있도록 합니다. 기본적인 검색 입력 필드를 포함하여 완전한 모달 구조를 완성합니다.",
+            "status": "done",
+            "testStrategy": "전체 모달 컴포넌트가 정상적으로 작동하는지, 다른 컴포넌트에서 import하여 사용할 수 있는지, 모든 기능이 통합되어 작동하는지 확인합니다"
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "title": "헤더 검색창과 모달 연동",
+        "description": "메인 헤더의 검색 영역에 포커스가 들어가면 검색 모달이 열리도록 연동합니다",
+        "details": "헤더의 기존 검색 input에 onFocus 이벤트 핸들러를 추가하여 SearchModal을 열도록 구현합니다. 모달이 열리면 자동으로 검색창에 포커스가 설정되도록 useRef와 useEffect를 활용합니다. 모달 상태 관리를 위해 useState를 사용합니다.",
+        "testStrategy": "헤더 검색창 클릭/포커스 시 모달이 열리는지, 모달 내 검색창에 자동 포커스가 설정되는지 테스트합니다.",
+        "priority": "high",
+        "dependencies": [
+          1
+        ],
+        "status": "done",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "헤더 컴포넌트에서 검색 input 요소 식별 및 분석",
+            "description": "기존 헤더 컴포넌트에서 검색 input 요소를 찾고 현재 구조를 분석합니다",
+            "dependencies": [],
+            "details": "헤더 컴포넌트 파일을 찾아 검색 input 요소의 현재 구조, 스타일링, 이벤트 핸들러를 확인합니다. 검색 input의 selector나 ref 접근 방법을 파악하고, 기존 onFocus 이벤트가 있는지 확인합니다. 컴포넌트의 상태 관리 방식과 props 구조도 분석합니다.",
+            "status": "done",
+            "testStrategy": "헤더 컴포넌트가 올바르게 렌더링되고 검색 input이 존재하는지 확인합니다"
+          },
+          {
+            "id": 2,
+            "title": "검색 모달 상태 관리 구현",
+            "description": "검색 모달의 열림/닫힘 상태를 관리하는 useState 훅을 구현합니다",
             "dependencies": [
-              4
+              "2.1"
             ],
-            "details": "토큰 무효화 처리, 로컬 스토리지 세션 데이터 정리, 보안 이벤트 감지 로직, 리다이렉트 및 인증 상태 초기화, 동시 세션 제한 처리",
-            "status": "completed",
-            "testStrategy": ""
+            "details": "헤더 컴포넌트에서 const [isSearchModalOpen, setIsSearchModalOpen] = useState(false) 상태를 추가합니다. 모달을 여는 handleSearchModalOpen 함수와 닫는 handleSearchModalClose 함수를 생성합니다. 필요시 useCallback으로 함수를 최적화합니다.",
+            "status": "done",
+            "testStrategy": "상태 변경 시 컴포넌트가 올바르게 리렌더링되는지 테스트합니다"
+          },
+          {
+            "id": 3,
+            "title": "헤더 검색 input에 onFocus 이벤트 핸들러 추가",
+            "description": "검색 input에 포커스 시 모달이 열리도록 이벤트 핸들러를 연결합니다",
+            "dependencies": [
+              "2.2"
+            ],
+            "details": "검색 input 요소에 onFocus={handleSearchModalOpen} 이벤트 핸들러를 추가합니다. 기존 onFocus 이벤트가 있다면 함수를 조합하여 기존 동작을 유지합니다. 포커스 시 input의 blur() 메서드를 호출하여 모달 열림과 동시에 헤더 input의 포커스를 해제합니다.",
+            "status": "done",
+            "testStrategy": "헤더 검색창 클릭/포커스 시 모달이 정상적으로 열리는지 테스트합니다"
+          },
+          {
+            "id": 4,
+            "title": "SearchModal 컴포넌트 import 및 조건부 렌더링",
+            "description": "헤더 컴포넌트에서 SearchModal을 import하고 조건부로 렌더링합니다",
+            "dependencies": [
+              "2.2"
+            ],
+            "details": "SearchModal 컴포넌트를 import하고, {isSearchModalOpen && <SearchModal onClose={handleSearchModalClose} />} 형태로 조건부 렌더링합니다. SearchModal에 필요한 props(onClose 콜백)를 전달하고, 모달 컴포넌트가 올바른 위치에 렌더링되도록 JSX 구조를 조정합니다.",
+            "status": "done",
+            "testStrategy": "모달 상태에 따라 SearchModal이 올바르게 표시/숨김되는지 테스트합니다"
+          },
+          {
+            "id": 5,
+            "title": "SearchModal 내부 검색창 자동 포커스 구현",
+            "description": "모달이 열릴 때 내부 검색창에 자동으로 포커스가 설정되도록 구현합니다",
+            "dependencies": [
+              "2.4"
+            ],
+            "details": "SearchModal 컴포넌트에서 useRef를 사용하여 검색 input에 대한 ref를 생성합니다. useEffect를 사용하여 컴포넌트가 마운트될 때 자동으로 포커스를 설정합니다. useEffect(() => { if (searchInputRef.current) { searchInputRef.current.focus(); } }, []); 형태로 구현하고, 접근성을 위해 적절한 지연시간을 고려합니다.",
+            "status": "done",
+            "testStrategy": "모달이 열릴 때 내부 검색창에 자동으로 포커스가 설정되는지, 키보드 입력이 즉시 가능한지 테스트합니다"
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "title": "검색 API 엔드포인트 구현",
+        "description": "기존 /api/search 엔드포인트를 활용하여 검색 기능을 구현합니다",
+        "details": "Next.js API 라우트에서 /api/search 엔드포인트를 구현합니다. Prisma ORM을 사용하여 PostgreSQL 데이터베이스에서 제목, 내용, 태그 기반 전문 검색을 수행합니다. 검색 결과에는 제목, 요약, 카테고리, 날짜 정보를 포함하고, 검색어 하이라이트를 위한 매칭 정보를 함께 반환합니다. Rate limiting을 적용하여 보안을 강화합니다.",
+        "testStrategy": "다양한 검색어로 API 호출 시 정확한 결과가 반환되는지, 응답 시간이 500ms 이하인지, Rate limiting이 작동하는지 테스트합니다.",
+        "priority": "high",
+        "dependencies": [],
+        "status": "done",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Prisma 스키마 정의 및 데이터베이스 모델 준비",
+            "description": "검색 기능에 필요한 데이터베이스 스키마를 정의하고 Prisma 모델을 설정합니다",
+            "dependencies": [],
+            "details": "Prisma schema.prisma 파일에서 Post, Category, Tag 모델을 정의합니다. 전문 검색을 위한 인덱스를 추가하고, 제목, 내용, 태그 필드에 대한 검색 최적화를 위한 복합 인덱스를 설정합니다. PostgreSQL의 full-text search 기능을 활용할 수 있도록 tsvector 타입 고려합니다.",
+            "status": "done",
+            "testStrategy": "Prisma migrate를 통해 스키마가 올바르게 적용되는지, 인덱스가 생성되는지 확인합니다"
+          },
+          {
+            "id": 2,
+            "title": "검색 쿼리 로직 및 데이터베이스 연동 구현",
+            "description": "Prisma ORM을 사용하여 제목, 내용, 태그 기반 전문 검색 로직을 구현합니다",
+            "dependencies": [
+              "3.1"
+            ],
+            "details": "검색어를 받아 Prisma의 where 절을 사용하여 OR 조건으로 title, content, tags에서 contains 검색을 수행합니다. 검색 결과에는 id, title, summary, category, createdAt, updatedAt을 포함하고, 매칭된 필드 정보도 함께 반환합니다. 페이지네이션을 위한 skip, take 파라미터도 지원합니다.",
+            "status": "done",
+            "testStrategy": "다양한 검색어로 데이터베이스 쿼리가 올바르게 실행되는지, 예상된 결과가 반환되는지 단위 테스트로 검증합니다"
+          },
+          {
+            "id": 3,
+            "title": "Next.js API 라우트 엔드포인트 구현",
+            "description": "/api/search GET 엔드포인트를 구현하고 요청 파라미터 검증을 추가합니다",
+            "dependencies": [
+              "3.2"
+            ],
+            "details": "pages/api/search.js 또는 app/api/search/route.js에서 GET 요청을 처리합니다. 쿼리 파라미터로 q(검색어), page, limit을 받아 검증하고, 이전 단계에서 구현한 검색 로직을 호출합니다. 응답은 { results: [], total: number, page: number, limit: number } 형태로 반환합니다. 에러 처리를 포함하여 적절한 HTTP 상태 코드를 반환합니다.",
+            "status": "done",
+            "testStrategy": "Postman이나 curl을 사용하여 API 엔드포인트가 올바른 응답을 반환하는지, 잘못된 파라미터에 대해 적절한 에러를 반환하는지 테스트합니다"
+          },
+          {
+            "id": 4,
+            "title": "Rate limiting 및 보안 강화 구현",
+            "description": "API 호출에 대한 속도 제한과 보안 미들웨어를 구현합니다",
+            "dependencies": [
+              "3.3"
+            ],
+            "details": "next-rate-limit 라이브러리나 Redis를 사용하여 IP당 분당 최대 30회 요청으로 제한합니다. 검색어에 대한 XSS 방지를 위해 입력값을 sanitize하고, SQL injection 방지를 위해 Prisma ORM의 안전한 파라미터 바인딩을 사용합니다. CORS 설정을 추가하고, 적절한 보안 헤더를 설정합니다.",
+            "status": "done",
+            "testStrategy": "동일 IP에서 연속으로 많은 요청을 보내 rate limiting이 작동하는지, 악의적인 입력값에 대해 적절히 차단되는지 테스트합니다"
+          },
+          {
+            "id": 5,
+            "title": "검색어 하이라이트 및 응답 최적화 구현",
+            "description": "검색 결과에서 매칭된 텍스트 하이라이트 정보를 제공하고 응답 성능을 최적화합니다",
+            "dependencies": [
+              "3.4"
+            ],
+            "details": "검색어와 매칭된 부분의 위치 정보를 계산하여 클라이언트에서 하이라이트 처리할 수 있도록 matchInfo 객체를 응답에 포함합니다. 검색 결과의 summary는 검색어 주변 텍스트로 동적 생성하고, 불필요한 필드는 제외하여 응답 크기를 최적화합니다. 캐싱 헤더를 설정하여 동일한 검색어에 대한 반복 요청을 최적화합니다.",
+            "status": "done",
+            "testStrategy": "검색 결과의 하이라이트 정보가 정확한지, 응답 시간이 500ms 이하인지, 캐싱이 올바르게 작동하는지 성능 테스트를 수행합니다"
+          }
+        ]
+      },
+      {
+        "id": 4,
+        "title": "실시간 검색 기능 구현",
+        "description": "Debounce를 활용한 실시간 검색과 로딩 상태 표시를 구현합니다",
+        "details": "useDebounce 훅을 구현하여 300ms 디바운스로 실시간 검색을 처리합니다. useState로 검색어, 검색 결과, 로딩 상태를 관리하고, useEffect에서 검색 API를 호출합니다. 로딩 중에는 스켈레톤 UI를 표시하고, 에러 발생 시 에러 메시지를 표시합니다. fetch API를 사용하여 비동기 통신을 처리합니다.",
+        "testStrategy": "타이핑 중 적절한 디바운스가 적용되는지, 로딩 상태가 올바르게 표시되는지, 검색 결과가 실시간으로 업데이트되는지 테스트합니다.",
+        "priority": "medium",
+        "dependencies": [
+          3
+        ],
+        "status": "done",
+        "subtasks": []
+      },
+      {
+        "id": 5,
+        "title": "검색 결과 표시 컴포넌트 구현",
+        "description": "검색 결과를 표시하고 검색어 하이라이트 기능을 구현합니다",
+        "details": "SearchResults 컴포넌트를 생성하여 검색 결과를 카드 형태로 표시합니다. 각 결과에는 제목, 요약, 카테고리, 날짜를 포함하고, 검색어는 하이라이트 처리합니다. 결과 클릭 시 해당 포스트로 이동하도록 Next.js Router를 활용합니다. XSS 방지를 위해 HTML 이스케이프를 적용하고, dangerouslySetInnerHTML 대신 안전한 하이라이트 방법을 사용합니다.",
+        "testStrategy": "검색 결과가 올바르게 표시되는지, 검색어 하이라이트가 작동하는지, 결과 클릭 시 정확한 페이지로 이동하는지, XSS 공격이 차단되는지 테스트합니다.",
+        "priority": "medium",
+        "dependencies": [
+          4
+        ],
+        "status": "done",
+        "subtasks": []
+      },
+      {
+        "id": 6,
+        "title": "키보드 네비게이션 구현",
+        "description": "화살표 키로 검색 결과 탐색과 엔터 키 선택 기능을 구현합니다",
+        "details": "useState로 현재 선택된 결과 인덱스를 관리하고, useEffect에서 키보드 이벤트 리스너를 등록합니다. ArrowUp/ArrowDown으로 결과 간 이동, Enter로 선택된 결과로 이동, ESC로 모달 닫기를 구현합니다. 선택된 결과는 시각적으로 하이라이트 처리하고, 스크롤이 필요한 경우 자동으로 뷰포트에 맞춥니다. 키보드 접근성을 위해 적절한 ARIA 속성을 추가합니다.",
+        "testStrategy": "화살표 키로 결과 탐색이 가능한지, 엔터 키로 선택이 되는지, 선택된 항목이 시각적으로 표시되는지, 접근성이 적절히 구현되었는지 테스트합니다.",
+        "priority": "medium",
+        "dependencies": [
+          5
+        ],
+        "status": "done",
+        "subtasks": []
+      },
+      {
+        "id": 7,
+        "title": "모달 애니메이션 효과 구현",
+        "description": "부드러운 fade-in/out 애니메이션과 트랜지션 효과를 구현합니다",
+        "details": "CSS transitions 또는 Framer Motion을 사용하여 모달의 등장/사라짐 애니메이션을 구현합니다. 오버레이는 opacity 0에서 1로, 모달 컨테이너는 scale 0.95에서 1로 애니메이션합니다. 애니메이션 시간은 200ms 이하로 설정하여 빠른 반응성을 제공합니다. transform-gpu를 사용하여 하드웨어 가속을 활용합니다.",
+        "testStrategy": "모달 열기/닫기 시 애니메이션이 부드럽게 작동하는지, 애니메이션 시간이 200ms 이하인지, 다양한 디바이스에서 성능이 좋은지 테스트합니다.",
+        "priority": "medium",
+        "dependencies": [
+          2
+        ],
+        "status": "done",
+        "subtasks": []
+      },
+      {
+        "id": 8,
+        "title": "반응형 디자인 구현",
+        "description": "데스크톱/태블릿/모바일에 최적화된 반응형 인터페이스를 구현합니다",
+        "details": "Tailwind CSS의 반응형 유틸리티(sm:, md:, lg:)를 사용하여 다양한 화면 크기에 대응합니다. 모바일에서는 모달이 전체 화면을 차지하고, 데스크톱에서는 중앙 정렬된 카드 형태로 표시합니다. 터치 디바이스를 위해 버튼 크기를 44px 이상으로 설정하고, 가상 키보드가 나타날 때 레이아웃이 깨지지 않도록 viewport 단위를 적절히 사용합니다.",
+        "testStrategy": "다양한 디바이스와 화면 크기에서 적절한 레이아웃이 표시되는지, 터치 인터페이스가 편리한지, 가상 키보드 대응이 올바른지 테스트합니다.",
+        "priority": "medium",
+        "dependencies": [
+          7
+        ],
+        "status": "done",
+        "subtasks": []
+      },
+      {
+        "id": 9,
+        "title": "성능 최적화 및 에러 핸들링",
+        "description": "검색 성능 최적화와 에러 상황에 대한 적절한 처리를 구현합니다",
+        "details": "React.memo로 불필요한 리렌더링을 방지하고, useMemo와 useCallback으로 연산 최적화를 수행합니다. 검색 API 호출 시 AbortController를 사용하여 이전 요청을 취소하고, 네트워크 에러나 서버 에러에 대한 적절한 에러 메시지를 표시합니다. 대용량 검색 결과는 가상화나 페이지네이션을 고려하여 성능을 보장합니다.",
+        "testStrategy": "검색 응답 시간이 500ms 이하인지, 메모리 사용량이 적절한지, 네트워크 에러 시 적절한 메시지가 표시되는지, 대용량 결과 처리가 원활한지 테스트합니다.",
+        "priority": "medium",
+        "dependencies": [
+          8
+        ],
+        "status": "done",
+        "subtasks": []
+      },
+      {
+        "id": 10,
+        "title": "접근성 및 최종 품질 보증",
+        "description": "웹 접근성 준수와 전체 기능의 품질 보증을 수행합니다",
+        "details": "WCAG 2.1 가이드라인에 따라 접근성을 구현합니다. 스크린 리더를 위한 적절한 ARIA 레이블과 역할을 설정하고, 키보드만으로 모든 기능에 접근할 수 있도록 보장합니다. focus trap을 구현하여 모달 내에서만 포커스가 순환하도록 하고, 색상 대비를 4.5:1 이상으로 유지합니다. 전체 기능에 대한 end-to-end 테스트를 수행하고, 크로스 브라우저 호환성을 확인합니다.",
+        "testStrategy": "스크린 리더로 모든 기능에 접근할 수 있는지, 키보드만으로 완전한 사용이 가능한지, 색상 대비가 적절한지, 다양한 브라우저에서 정상 작동하는지 테스트합니다.",
+        "priority": "high",
+        "dependencies": [
+          9
+        ],
+        "status": "done",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "WCAG 2.1 준수를 위한 의미적 마크업 및 ARIA 레이블 구현",
+            "description": "모든 컴포넌트에 적절한 의미적 HTML과 ARIA 속성을 추가하여 스크린 리더 접근성을 보장합니다",
+            "dependencies": [],
+            "details": "검색 모달에 role='dialog', aria-labelledby, aria-describedby 속성을 추가하고, 검색 결과에는 role='listbox'와 각 항목에 role='option'을 설정합니다. 검색창에는 aria-label 또는 연결된 label을 제공하고, 검색 상태(로딩, 결과 없음 등)를 aria-live 영역으로 알립니다. 모든 버튼과 링크에 명확한 텍스트나 aria-label을 제공합니다.",
+            "status": "done",
+            "testStrategy": "NVDA, JAWS 등 스크린 리더로 모든 요소에 접근할 수 있는지, 의미 있는 정보가 올바르게 전달되는지 테스트합니다"
+          },
+          {
+            "id": 2,
+            "title": "키보드 내비게이션 및 포커스 트랩 구현",
+            "description": "키보드만으로 모든 기능에 접근할 수 있도록 키보드 내비게이션을 구현하고 모달 내 포커스 트랩을 설정합니다",
+            "dependencies": [
+              "10.1"
+            ],
+            "details": "Tab, Shift+Tab으로 모든 인터랙티브 요소 간 이동이 가능하도록 하고, 모달이 열리면 첫 번째 포커스 가능한 요소(검색창)로 포커스를 이동시킵니다. focus-trap 라이브러리나 커스텀 구현으로 모달 내에서만 포커스가 순환하도록 하고, ESC 키로 모달을 닫을 수 있게 합니다. 검색 결과는 방향키(↑↓)로 탐색할 수 있도록 구현합니다.",
+            "status": "done",
+            "testStrategy": "마우스 없이 키보드만으로 모든 기능을 사용할 수 있는지, 포커스가 모달 밖으로 나가지 않는지, 방향키 탐색이 직관적인지 테스트합니다"
+          },
+          {
+            "id": 3,
+            "title": "색상 대비 및 시각적 접근성 개선",
+            "description": "WCAG 2.1 AA 기준에 맞는 색상 대비(4.5:1 이상)와 시각적 접근성을 보장합니다",
+            "dependencies": [
+              "10.1"
+            ],
+            "details": "모든 텍스트와 배경 색상의 대비를 4.5:1 이상으로 설정하고, 링크나 버튼의 호버/포커스 상태를 명확하게 표시합니다. 색상만으로 정보를 전달하지 않도록 아이콘이나 텍스트를 함께 사용하고, 포커스 링(focus ring)을 명확하게 표시합니다. 고대비 모드에서도 올바르게 작동하도록 CSS를 구성합니다.",
+            "status": "done",
+            "testStrategy": "WebAIM Contrast Checker나 axe-core로 색상 대비를 검증하고, Windows 고대비 모드에서 정상 작동하는지 테스트합니다"
+          },
+          {
+            "id": 4,
+            "title": "End-to-end 테스트 스위트 구현",
+            "description": "전체 검색 기능에 대한 포괄적인 end-to-end 테스트를 구현하여 기능 완성도를 검증합니다",
+            "dependencies": [
+              "10.1",
+              "10.2",
+              "10.3"
+            ],
+            "details": "Playwright나 Cypress를 사용하여 검색 모달 열기/닫기, 검색어 입력, 결과 표시, 키보드 탐색, 검색 결과 선택 등 전체 사용자 시나리오를 테스트합니다. 다양한 검색 상황(정상 결과, 결과 없음, 에러 상황)에 대한 테스트 케이스를 작성하고, 접근성 기능(스크린 리더, 키보드 탐색)도 자동화 테스트에 포함시킵니다.",
+            "status": "done",
+            "testStrategy": "실제 사용자 시나리오를 시뮬레이션하여 모든 기능이 정상 작동하는지, 예외 상황에서 적절한 처리가 되는지 테스트합니다"
+          },
+          {
+            "id": 5,
+            "title": "크로스 브라우저 호환성 검증 및 최종 품질 보증",
+            "description": "주요 브라우저에서의 호환성을 검증하고 전체 기능에 대한 최종 품질 보증을 수행합니다",
+            "dependencies": [
+              "10.1",
+              "10.2",
+              "10.3",
+              "10.4"
+            ],
+            "details": "Chrome, Firefox, Safari, Edge의 최신 버전과 이전 2개 버전에서 모든 기능이 정상 작동하는지 검증합니다. BrowserStack이나 직접 테스트로 브라우저별 차이점을 확인하고 필요시 polyfill이나 fallback을 추가합니다. 모바일 브라우저(iOS Safari, Android Chrome)에서도 터치 인터페이스와 가상 키보드 대응이 올바른지 확인합니다. Lighthouse 접근성 점수 90점 이상 달성을 목표로 합니다.",
+            "status": "done",
+            "testStrategy": "각 브라우저에서 핵심 기능을 테스트하고, Lighthouse 접근성 감사, axe-core 자동 테스트, 실제 사용자 테스트를 통해 최종 품질을 검증합니다"
           }
         ]
       }
     ],
     "metadata": {
-      "created": "2025-07-14T01:31:49.695Z",
-      "updated": "2025-07-18T00:12:50.899Z",
+      "created": "2025-07-22T03:45:10.257Z",
+      "updated": "2025-07-22T04:13:02.534Z",
       "description": "Tasks for master context"
     }
   }

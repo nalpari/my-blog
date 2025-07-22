@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { useTheme } from 'next-themes'
 import {
@@ -15,6 +16,7 @@ import { Input } from '@/components/ui/input'
 import { Search, Menu, Sun, Moon, Settings } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import { Category } from '@/types'
+import { SearchModal } from './search-modal'
 
 interface BlogHeaderProps {
   siteTitle?: string
@@ -24,10 +26,12 @@ interface BlogHeaderProps {
 const CATEGORY_ORDER = ['tech', 'lifestyle', 'review', 'tutorial']
 
 export const BlogHeader = ({ siteTitle = 'My Blog' }: BlogHeaderProps) => {
+  const router = useRouter()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
   const [mounted, setMounted] = useState(false)
   const [categories, setCategories] = useState<Category[]>([])
+  const [isSearchModalOpen, setIsSearchModalOpen] = useState(false)
   const { theme, setTheme } = useTheme()
 
   useEffect(() => {
@@ -70,8 +74,21 @@ export const BlogHeader = ({ siteTitle = 'My Blog' }: BlogHeaderProps) => {
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault()
     if (searchQuery.trim()) {
-      // 검색 기능 구현
+      // 검색 페이지로 이동
+      const params = new URLSearchParams()
+      params.set('q', searchQuery.trim())
+      router.push(`/search?${params.toString()}`)
+      setSearchQuery('') // 검색 후 입력 필드 초기화
     }
+  }
+
+  const handleSearchFocus = () => {
+    // 검색창에 포커스가 가면 검색 페이지로 이동
+    router.push('/search')
+  }
+
+  const handleSearchModalClose = () => {
+    setIsSearchModalOpen(false)
   }
 
   const toggleTheme = () => {
@@ -147,6 +164,14 @@ export const BlogHeader = ({ siteTitle = 'My Blog' }: BlogHeaderProps) => {
                 </NavigationMenuItem>
                 <NavigationMenuItem>
                   <Link
+                    href="/search"
+                    className="text-sm font-medium text-foreground hover:text-primary transition-colors"
+                  >
+                    검색
+                  </Link>
+                </NavigationMenuItem>
+                <NavigationMenuItem>
+                  <Link
                     href="/about"
                     className="text-sm font-medium text-foreground hover:text-primary transition-colors"
                   >
@@ -172,6 +197,7 @@ export const BlogHeader = ({ siteTitle = 'My Blog' }: BlogHeaderProps) => {
                   className="w-64 pl-10"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
+                  onFocus={handleSearchFocus}
                 />
               </div>
             </form>
@@ -241,6 +267,13 @@ export const BlogHeader = ({ siteTitle = 'My Blog' }: BlogHeaderProps) => {
               </div>
               
               <Link
+                href="/search"
+                className="block py-2 text-sm font-medium text-foreground hover:text-primary"
+              >
+                검색
+              </Link>
+              
+              <Link
                 href="/about"
                 className="block py-2 text-sm font-medium text-foreground hover:text-primary"
               >
@@ -266,12 +299,20 @@ export const BlogHeader = ({ siteTitle = 'My Blog' }: BlogHeaderProps) => {
                   className="w-full pl-10"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
+                  onFocus={handleSearchFocus}
                 />
               </div>
             </form>
           </div>
         )}
       </div>
+      
+      {/* 검색 모달 */}
+      <SearchModal
+        isOpen={isSearchModalOpen}
+        onClose={handleSearchModalClose}
+        initialQuery={searchQuery}
+      />
     </header>
   )
 }

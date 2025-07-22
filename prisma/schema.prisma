@@ -372,6 +372,8 @@ model posts {
   @@index([published_at], map: "idx_posts_published_at")
   @@index([slug], map: "idx_posts_slug")
   @@index([tags], map: "idx_posts_tags", type: Gin)
+  @@index([title], map: "idx_posts_title_search")
+  @@index([content], map: "idx_posts_content_search")
   @@schema("public")
 }
 
