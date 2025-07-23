@@ -74,21 +74,30 @@ export async function searchPosts(options: SearchOptions): Promise<{
     is_published: true,
     published_at: {
       lte: new Date()
-    },
-    OR: [
+    }
+  }
+  
+  // 검색어가 있는 경우 전문 검색 조건 추가
+  if (query) {
+    // PostgreSQL 전문 검색을 위한 조건 생성
+    // 제목과 내용에 대해 검색 수행
+    whereConditions.OR = [
       {
+        // 제목에 대한 검색 - contains 사용
         title: {
           contains: query,
           mode: 'insensitive'
         }
       },
       {
+        // 내용에 대한 검색 - contains 사용
         content: {
           contains: query,
           mode: 'insensitive'
         }
       },
       {
+        // 태그 검색은 기존 방식 유지
         tags: {
           hasSome: query.split(' ').filter(term => term.length > 0)
         }

@@ -45,7 +45,8 @@ export async function checkRateLimit(ip: string, limit = 30, windowMs = 60 * 100
   
   // Redis가 없는 경우 항상 허용 (개발 환경 등)
   if (!redis) {
-    logger.debug(`Redis 연결이 없어 레이트 리미팅이 비활성화되었습니다. IP: ${ip}`);
+    // 로거 대신 콘솔 사용
+    console.log(`Redis 연결이 없어 레이트 리미팅이 비활성화되었습니다. IP: ${ip}`);
     return { 
       allowed: true, 
       remaining: limit - 1, 
