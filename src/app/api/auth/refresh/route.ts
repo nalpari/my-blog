@@ -1,20 +1,36 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextRequest, NextResponse } from 'next/server'
+import logger from '@/lib/logger'
 
 export async function POST(request: NextRequest) {
   // 쿠키에서 리프레시 토큰 확인
   const refreshToken = request.cookies.get('sb-refresh-token')?.value;
   const accessToken = request.cookies.get('sb-access-token')?.value;
   
-  // 디버깅을 위한 로그
-  console.log('Refresh attempt with tokens:', { 
+  // 개발 환경에서만 상세 로그 기록
+  logger.debug('Refresh attempt with tokens', { 
     hasRefreshToken: !!refreshToken,
     hasAccessToken: !!accessToken 
   });
 
+  // 환경 변수 유효성 검사
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  
+  if (!supabaseUrl || !supabaseAnonKey) {
+    logger.error('Missing required environment variables', { 
+      hasSupabaseUrl: !!supabaseUrl,
+      hasSupabaseAnonKey: !!supabaseAnonKey 
+    });
+    return NextResponse.json(
+      { error: 'Server configuration error' },
+      { status: 500 }
+    );
+  }
+
   const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    supabaseUrl,
+    supabaseAnonKey,
     {
       cookies: {
         get(name: string) {
@@ -37,7 +53,7 @@ export async function POST(request: NextRequest) {
       
       // 세션이 있으면 그 세션 정보 반환
       if (sessionData.session) {
-        console.log('Found existing session without refresh token');
+        logger.debug('Found existing session without refresh token');
         const response = NextResponse.json(
           { 
             message: 'Using existing session',
@@ -73,11 +89,11 @@ export async function POST(request: NextRequest) {
     }
 
     // 세션 갱신 시도
-    console.log('Attempting to refresh session');
+    logger.debug('Attempting to refresh session');
     const { data, error } = await supabase.auth.refreshSession();
 
     if (error) {
-      console.error('Session refresh error:', error);
+      logger.error('Session refresh error:', error);
       
       // 리프레시 토큰 오류인 경우 쿠키 삭제 후 로그인 페이지로 안내
       if (error.message.includes('Refresh Token') || error.message.includes('Invalid Refresh Token')) {
@@ -108,7 +124,7 @@ export async function POST(request: NextRequest) {
     }
 
     if (data.session) {
-      console.log('Session refreshed successfully');
+      logger.info('Session refreshed successfully');
       const response = NextResponse.json(
         { 
           message: 'Session refreshed successfully',
@@ -142,14 +158,14 @@ export async function POST(request: NextRequest) {
       return response;
     }
 
-    console.log('No session found after refresh attempt');
+    logger.debug('No session found after refresh attempt');
     return NextResponse.json(
       { error: 'No session found', action: 'login_required' },
       { status: 401 }
     );
 
   } catch (err) {
-    console.error('Session refresh exception:', err);
+    logger.error('Session refresh exception:', err);
     return NextResponse.json(
       { error: 'Internal server error during session refresh' },
       { status: 500 }
