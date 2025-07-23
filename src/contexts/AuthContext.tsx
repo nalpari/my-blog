@@ -4,6 +4,7 @@ import { createContext, useContext, useReducer, useEffect, ReactNode } from 'rea
 import { Session, User as SupabaseUser } from '@supabase/supabase-js';
 import { supabase } from '@/lib/supabase';
 import { User, AuthState } from '@/types/supabase';
+import logger from '@/lib/logger';
 
 // 인증 액션 타입 정의
 type AuthAction =
@@ -135,11 +136,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
         if (!response.ok) {
           const errorData = await response.json();
-          console.warn('Sign out API error:', errorData.error);
+          logger.warn({ err: errorData.error }, 'Sign out API error:');
           // API 호출 실패해도 계속 진행
         }
       } catch (apiError) {
-        console.warn('Sign out API call failed:', apiError);
+        logger.warn({ err: apiError }, 'Sign out API call failed:');
         // API 호출 실패해도 계속 진행
       }
 
@@ -147,14 +148,14 @@ export function AuthProvider({ children }: AuthProviderProps) {
       try {
         await supabase.auth.signOut();
       } catch (supabaseError) {
-        console.warn('Supabase sign out error:', supabaseError);
+        logger.warn({ err: supabaseError }, 'Supabase sign out error:');
         // Supabase 로그아웃 실패해도 계속 진행
       }
 
       // 상태 초기화 (항상 실행)
       dispatch({ type: 'LOGOUT' });
     } catch (error) {
-      console.error('Signout error:', error);
+      logger.error({ err: error }, 'Signout error:');
       dispatch({ type: 'ERROR', payload: (error as Error).message });
       // 오류가 발생해도 로그아웃 상태로 설정
       dispatch({ type: 'LOGOUT' });
@@ -189,7 +190,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         const { data, error } = await supabase.auth.getSession();
         
         if (error) {
-          console.error('Session check error:', error);
+          logger.error({ err: error }, 'Session check error:');
           throw error;
         }
 
@@ -202,29 +203,36 @@ export function AuthProvider({ children }: AuthProviderProps) {
           const expiresAt = data.session.expires_at || 0;
           const timeToExpire = expiresAt - currentTime;
           
-          console.log(`Session expires at: ${new Date(expiresAt * 1000).toLocaleString()}, ${timeToExpire}초 남음`);
+          // 개발 환경에서만 로깅
+          if (process.env.NODE_ENV !== 'production') {
+            logger.info(`Session expires at: ${new Date(expiresAt * 1000).toLocaleString()}, ${timeToExpire}초 남음`);
+          }
           
           // 만료 10분 전이거나 이미 만료된 경우 갱신 시도
           if (timeToExpire < 600 || timeToExpire <= 0) {
-            console.log('Session expiring soon or expired, refreshing...');
+            if (process.env.NODE_ENV !== 'production') {
+              logger.info('Session expiring soon or expired, refreshing...');
+            }
             try {
               const { data: refreshData, error: refreshError } = await supabase.auth.refreshSession();
               
               if (refreshError) {
-                console.error('Error refreshing session:', refreshError);
+                logger.error({ err: refreshError }, 'Error refreshing session:');
                 // 리프레시 토큰 오류인 경우 로그아웃 처리
                 if (refreshError.message.includes('Refresh Token') || 
                     refreshError.message.includes('Invalid Refresh Token')) {
-                  console.warn('Invalid refresh token, signing out');
+                  logger.warn('Invalid refresh token, signing out');
                   await signOut();
                   return;
                 }
               } else if (refreshData.session) {
-                console.log('Session refreshed successfully');
+                if (process.env.NODE_ENV !== 'production') {
+                  logger.info('Session refreshed successfully');
+                }
                 dispatch({ type: 'LOGIN', payload: mapSupabaseUser(refreshData.session.user) });
               }
             } catch (refreshErr) {
-              console.error('Session refresh error:', refreshErr);
+              logger.error({ err: refreshErr }, 'Session refresh error:');
             }
           }
         } else {
@@ -232,7 +240,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
           dispatch({ type: 'LOGOUT' });
         }
       } catch (error) {
-        console.error('Session check exception:', error);
+        logger.error({ err: error }, 'Session check exception:');
         dispatch({ type: 'ERROR', payload: (error as Error).message });
         dispatch({ type: 'LOGOUT' });
       } finally {
@@ -249,14 +257,18 @@ export function AuthProvider({ children }: AuthProviderProps) {
     // 인증 상태 변경 리스너 설정
     const { data: authListener } = supabase.auth.onAuthStateChange(
       async (event, session) => {
-        console.log(`Auth event: ${event}`);
+        if (process.env.NODE_ENV !== 'production') {
+          logger.info(`Auth event: ${event}`);
+        }
         
         if (event === 'SIGNED_IN' && session?.user) {
           dispatch({ type: 'LOGIN', payload: mapSupabaseUser(session.user) });
         } else if (event === 'SIGNED_OUT') {
           dispatch({ type: 'LOGOUT' });
         } else if (event === 'TOKEN_REFRESHED' && session?.user) {
-          console.log('Token refreshed event received');
+          if (process.env.NODE_ENV !== 'production') {
+            logger.info('Token refreshed event received');
+          }
           dispatch({ type: 'LOGIN', payload: mapSupabaseUser(session.user) });
         }
       }
