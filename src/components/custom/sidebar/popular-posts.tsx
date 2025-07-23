@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { TrendingUp, Eye, Calendar } from 'lucide-react'
 import { Post } from '@/types'
+import { ClientDate } from '../client-date'
 
 export const PopularPosts = () => {
   const [popularPosts, setPopularPosts] = useState<Post[]>([])
@@ -32,12 +33,7 @@ export const PopularPosts = () => {
     fetchPopularPosts()
   }, [])
 
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('ko-KR', {
-      month: 'short',
-      day: 'numeric',
-    })
-  }
+  // 날짜 포맷팅은 ClientDate 컴포넌트로 대체
 
   if (loading) {
     return (
@@ -101,7 +97,7 @@ export const PopularPosts = () => {
                       </div>
                       <div className="flex items-center gap-1">
                         <Calendar className="h-3 w-3" />
-                        <span>{formatDate(post.published_at || post.created_at)}</span>
+                        <span><ClientDate date={post.published_at || post.created_at} format="short" /></span>
                       </div>
                     </div>
                   </div>

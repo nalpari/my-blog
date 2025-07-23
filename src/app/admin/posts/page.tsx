@@ -1,12 +1,37 @@
+'use client'
+
 import Link from 'next/link'
 import { AdminLayout } from '@/components/custom/admin/admin-layout'
 import { DeletePostButton } from '@/components/custom/admin/delete-post-button'
-import { adminApi } from '@/lib/prisma'
-import { formatDateTime } from '@/lib/utils'
+import { ClientDate } from '@/components/custom/client-date'
+import { useState, useEffect } from 'react'
+import { Post } from '@/types'
 
-export default async function AdminPostsPage() {
-  const postsResult = await adminApi.getAllPosts()
-  const posts = postsResult.success ? postsResult.data || [] : []
+export default function AdminPostsPage() {
+  const [posts, setPosts] = useState<Post[]>([])
+  const [loading, setLoading] = useState(true)
+  
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const response = await fetch('/api/admin/posts')
+        if (response.ok) {
+          const result = await response.json()
+          if (result.success) {
+            setPosts(result.data || [])
+          }
+        } else {
+          console.error('포스트 로딩 실패')
+        }
+      } catch (error) {
+        console.error('포스트 로딩 중 오류 발생:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+    
+    fetchPosts()
+  }, [])
 
   return (
     <AdminLayout>
@@ -27,7 +52,16 @@ export default async function AdminPostsPage() {
 
         {/* 포스트 목록 */}
         <div className="bg-white shadow-sm border rounded-lg overflow-hidden">
-          {posts.length === 0 ? (
+          {loading ? (
+            <div className="p-12 text-center">
+              <div className="text-gray-400 mb-4">
+                <svg className="mx-auto h-12 w-12 animate-spin" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                </svg>
+              </div>
+              <h3 className="text-lg font-medium text-gray-900 mb-2">포스트 로딩 중...</h3>
+            </div>
+          ) : posts.length === 0 ? (
             <div className="p-12 text-center">
               <div className="text-gray-400 mb-4">
                 <svg className="mx-auto h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -96,10 +130,10 @@ export default async function AdminPostsPage() {
                         {post.views.toLocaleString()}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {formatDateTime(post.created_at)}
+                        <ClientDate date={post.created_at} format="full" />
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {post.published_at ? formatDateTime(post.published_at) : '-'}
+                        {post.published_at ? <ClientDate date={post.published_at} format="full" /> : '-'}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2">
                         <Link

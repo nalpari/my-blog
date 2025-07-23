@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Calendar, Clock, Eye, User } from 'lucide-react'
 import { Post } from '@/types'
+import { ClientDate } from './client-date'
 
 interface BlogPostCardProps {
   post: Post
@@ -20,14 +21,6 @@ export const BlogPostCard = ({
   showViews = true,
   compact = false,
 }: BlogPostCardProps) => {
-  // 날짜 포맷팅
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('ko-KR', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    })
-  }
 
   // 읽기 시간 계산 (대략적)
   const calculateReadTime = (content: string) => {
@@ -101,7 +94,7 @@ export const BlogPostCard = ({
                 <div className="flex items-center gap-1">
                   <Calendar className="h-3 w-3" />
                   <span>
-                    {formatDate(post.published_at || post.created_at)}
+                    <ClientDate date={post.published_at || post.created_at} format="long" />
                   </span>
                 </div>
                 {showViews && (
@@ -147,7 +140,7 @@ export const BlogPostCard = ({
             <div className="flex items-center gap-3">
               <div className="flex items-center gap-1">
                 <Calendar className="h-4 w-4" />
-                <span>{formatDate(post.published_at || post.created_at)}</span>
+                <span><ClientDate date={post.published_at || post.created_at} format="long" /></span>
               </div>
               <div className="flex items-center gap-1">
                 <Clock className="h-4 w-4" />

@@ -9,6 +9,7 @@ import { Badge } from '@/components/ui/badge'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { CalendarIcon, EyeIcon, UserIcon } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { ClientDate } from './client-date'
 
 interface SearchResultsProps {
   results: SearchResult[]
@@ -53,14 +54,7 @@ function SearchResultSkeleton() {
  * 개별 검색 결과 아이템 컴포넌트
  */
 function SearchResultItem({ result, query }: { result: SearchResult; query: string }) {
-  const formatDate = (date: Date | null) => {
-    if (!date) return ''
-    return new Intl.DateTimeFormat('ko-KR', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    }).format(new Date(date))
-  }
+  // 날짜 포맷팅은 ClientDate 컴포넌트로 대체
 
   const getExcerpt = (content: string, maxLength: number = 150) => {
     if (content.length <= maxLength) return content
@@ -96,7 +90,7 @@ function SearchResultItem({ result, query }: { result: SearchResult; query: stri
           {result.published_at && (
             <div className="flex items-center space-x-1">
               <CalendarIcon className="h-4 w-4" />
-              <span>{formatDate(result.published_at)}</span>
+              <span><ClientDate date={result.published_at} format="long" /></span>
             </div>
           )}
           

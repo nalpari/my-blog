@@ -4,20 +4,13 @@ import Image from 'next/image'
 import { Calendar, Clock, Eye, Tag } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Post } from '@/types'
+import { ClientDate } from './client-date'
 
 interface PostDetailHeaderProps {
   post: Post
 }
 
 export function PostDetailHeader({ post }: PostDetailHeaderProps) {
-  // 날짜 포맷팅 (기존 BlogPostCard에서 재사용)
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('ko-KR', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    })
-  }
 
   // 읽기 시간 계산 (기존 BlogPostCard에서 재사용)
   const calculateReadTime = (content: string) => {
@@ -62,7 +55,7 @@ export function PostDetailHeader({ post }: PostDetailHeaderProps) {
               <div className="flex items-center gap-2">
                 <Calendar className="h-4 w-4" />
                 <span className="text-sm">
-                  {formatDate(post.published_at || post.created_at)}
+                  <ClientDate date={post.published_at || post.created_at} format="long" />
                 </span>
               </div>
               <div className="flex items-center gap-2">
@@ -99,4 +92,4 @@ export function PostDetailHeader({ post }: PostDetailHeaderProps) {
       </div>
     </section>
   )
-} 
+}
