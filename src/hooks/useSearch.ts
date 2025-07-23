@@ -222,7 +222,7 @@ export function useSearch(options: SearchOptions = {}) {
         error: null
       }))
     }
-  }, [debouncedQuery, performSearch])
+  }, [debouncedQuery, performSearch, searchState.query])
 
   // 컴포넌트 언마운트 시 진행 중인 요청 취소
   useEffect(() => {
