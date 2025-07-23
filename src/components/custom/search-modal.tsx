@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { useSearch } from '@/hooks/useSearch'
 import SearchResults from '@/components/search/SearchResults'
+import { useRouter } from 'next/navigation'
 
 interface SearchModalProps {
   isOpen: boolean
@@ -22,6 +23,7 @@ const SearchModalComponent = ({ isOpen, onClose, initialQuery = '' }: SearchModa
   const searchInputRef = useRef<HTMLInputElement>(null)
   const modalRef = useRef<HTMLDivElement>(null)
   const resultsRef = useRef<HTMLDivElement>(null)
+  const router = useRouter()
   
   // 검색 훅 사용
   const {
@@ -89,8 +91,8 @@ const SearchModalComponent = ({ isOpen, onClose, initialQuery = '' }: SearchModa
           event.preventDefault()
           if (selectedIndex >= 0 && selectedIndex < results.length) {
             const selectedResult = results[selectedIndex]
-            // 페이지 이동
-            window.location.href = `/blog/${selectedResult.slug}`
+            // 페이지 이동 (Next.js router 사용)
+            router.push(`/blog/${selectedResult.slug}`)
           }
           break
       }
@@ -125,8 +127,8 @@ const SearchModalComponent = ({ isOpen, onClose, initialQuery = '' }: SearchModa
   const handleResultClick = useCallback((result: any) => {
     onClose()
     // 페이지 이동 로직 (Next.js router 사용)
-    window.location.href = `/posts/${result.slug}`
-  }, [onClose])
+    router.push(`/blog/${result.slug}`)
+  }, [onClose, router])
 
   // 서버 사이드 렌더링 방지
   if (!mounted) {
