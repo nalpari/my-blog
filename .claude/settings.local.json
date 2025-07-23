@@ -24,7 +24,8 @@
       "Bash(find:*)",
       "Bash(git push:*)",
       "Bash(gh pr create:*)",
-      "Bash(gh auth:*)"
+      "Bash(gh auth:*)",
+      "Bash(npm uninstall:*)"
     ],
     "deny": []
   },

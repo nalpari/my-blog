@@ -24,32 +24,18 @@ const PostDetailContentComponent = ({ post }: PostDetailContentProps) => {
     // 조회수 증가 (클라이언트 사이드, 페이지 로드 시 한 번만)
     const incrementViews = async () => {
       try {
-        console.log('PostDetailContent에서 받은 post 데이터:', post);
-        console.log('PostDetailContent에서 post.id 상세 정보:', { 
-          id: post.id,
-          idType: typeof post.id,
-          idValue: String(post.id),
-          isNull: post.id === null,
-          isUndefined: post.id === undefined,
-          isFalsy: !post.id
-        });
-        
         // post.id 유효성 검사
         if (!post?.id) {
           console.error('조회수 증가 실패: 유효하지 않은 post.id', { post });
           return;
         }
-
-        console.log('조회수 증가 시도:', { postId: post.id, title: post.title });
         
         // API 호출로 조회수 증가
         const response = await fetch(`/api/posts/${post.id}/views`, {
           method: 'POST',
         });
         
-        if (response.ok) {
-          console.log('조회수 증가 완료:', post.title);
-        } else {
+        if (!response.ok) {
           const errorData = await response.json();
           console.error('조회수 증가 API 실패:', { error: errorData.error, postId: post.id });
         }

@@ -105,8 +105,6 @@ export default async function PostPage({ params }: PostPageProps) {
   const { slug } = await params
   const { data: post, error } = await blogApi.getPostBySlug(slug)
 
-  console.log('상세 페이지 포스트 데이터:', post)
-
   if (error || !post) {
     notFound()
   }

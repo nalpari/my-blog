@@ -1,153 +1,208 @@
-<context>
-# Overview  
-This project addresses a critical user experience issue in the blog post detail view where markdown content is displayed as raw text instead of properly formatted HTML. The problem affects readability and user engagement, making the blog posts difficult to read and unprofessional in appearance. The solution involves implementing proper markdown rendering using existing packages to transform markdown syntax into beautifully formatted content with syntax highlighting, proper typography, and responsive design.
+# PRD: 검색 모달 기능
 
-# Core Features  
-## Markdown Rendering Engine
-- **What it does**: Converts markdown syntax to properly formatted HTML in real-time
-- **Why it's important**: Essential for blog readability and professional appearance
-- **How it works**: Utilizes `@uiw/react-markdown-preview` to parse and render markdown content
+## 📋 문서 정보
+- **제품명**: 블로그 검색 모달 기능
+- **버전**: 1.0
+- **작성일**: 2024년
+- **작성자**: 개발팀
+- **상태**: 계획 단계
+- **우선순위**: High
 
-## Syntax Highlighting
-- **What it does**: Applies color coding and formatting to code blocks
-- **Why it's important**: Improves code readability for technical blog posts
-- **How it works**: Built-in feature of the markdown preview component
+## 🎯 제품 개요
 
-## Dark Mode Support
-- **What it does**: Dynamically adjusts markdown rendering based on user's theme preference
-- **Why it's important**: Maintains consistency with the overall site theme
-- **How it works**: Theme detection and conditional styling application
+### 목적
+메인 헤더의 검색 영역에 포커스가 들어가면 전체 화면에 마스크를 씌우고 중앙에 검색창이 뜨는 직관적이고 현대적인 검색 경험을 제공합니다.
 
-## Responsive Design
-- **What it does**: Ensures markdown content displays properly across all device sizes
-- **Why it's important**: Mobile-first approach for better user experience
-- **How it works**: Integration with Tailwind CSS responsive utilities
+### 배경
+- 현재 헤더의 작은 검색창은 사용성이 제한적
+- 사용자가 검색에 집중할 수 있는 환경 필요
+- 모던 웹사이트의 검색 UX 트렌드 반영
 
-# User Experience  
-## User Personas
-- **Primary**: Blog readers seeking well-formatted technical content
-- **Secondary**: Content creators who need to preview their markdown posts
+### 성공 지표
+- 검색 사용률 30% 증가
+- 검색 완료율 50% 향상
+- 사용자 만족도 4.5/5.0 이상
 
-## Key User Flows
-1. User navigates to blog post detail page
-2. Markdown content is automatically rendered as formatted HTML
-3. Code blocks are highlighted for better readability
-4. Links, images, and other elements are properly styled
-5. Content adapts to user's theme preference (light/dark mode)
+## 👥 대상 사용자
 
-## UI/UX Considerations
-- Maintain existing layout structure and spacing
-- Preserve accessibility features
-- Ensure consistent typography with site design
-- Optimize for reading experience with proper line spacing and font sizing
-</context>
-<PRD>
-# Technical Architecture  
-## System Components
-- **PostDetailContent Component**: Main container that handles markdown rendering
-- **MarkdownPreview Component**: Core rendering engine from @uiw/react-markdown-preview
-- **Theme Provider**: Manages dark/light mode state for proper styling
+### 주요 사용자
+- **블로그 방문자**: 특정 주제나 키워드로 콘텐츠를 찾는 사용자
+- **정기 독자**: 이전에 읽었던 글을 다시 찾는 사용자
+- **모바일 사용자**: 터치 기반 인터페이스를 선호하는 사용자
 
-## Data Models
-- **Post Content**: Existing markdown string stored in database
-- **Theme State**: Boolean flag for dark/light mode preference
-- **Rendering Options**: Configuration object for markdown preview settings
+### 사용자 니즈
+- 빠르고 정확한 검색 결과
+- 직관적이고 사용하기 쉬운 인터페이스
+- 모바일에서도 편리한 검색 경험
 
-## APIs and Integrations
-- **@uiw/react-markdown-preview**: Primary markdown rendering library
-- **@uiw/react-md-editor**: Secondary option with additional features
-- **Tailwind CSS**: Styling framework integration
-- **Next.js Theme Provider**: Dark mode state management
+## 🔧 기능 요구사항
 
-## Infrastructure Requirements
-- No additional infrastructure changes required
-- Existing packages already installed
-- Client-side rendering approach maintains performance
+### 핵심 기능 (Must Have)
+1. **모달 오버레이**
+   - 전체 화면 반투명 마스크
+   - 배경 블러 효과
+   - ESC 키 또는 배경 클릭으로 닫기
 
-# Development Roadmap  
-## Phase 1: Core Markdown Rendering (MVP)
-- Replace raw text rendering with MarkdownPreview component
-- Import and configure @uiw/react-markdown-preview
-- Basic markdown parsing and HTML output
-- Test with existing blog posts
+2. **검색 입력창**
+   - 화면 중앙에 위치한 큰 검색창
+   - 자동 포커스 설정
+   - 실시간 검색어 입력
 
-## Phase 2: Enhanced Styling and Theme Support
-- Implement dark mode detection and styling
-- Apply consistent typography and spacing
-- Integrate with existing Tailwind CSS classes
-- Responsive design optimization
+3. **검색 결과 표시**
+   - 제목, 요약, 카테고리, 날짜 정보
+   - 검색어 하이라이트
+   - 결과 클릭 시 해당 포스트로 이동
 
-## Phase 3: Advanced Features
-- Table of contents generation from headings
-- Enhanced link handling and security
-- Image optimization and lazy loading
-- Custom syntax highlighting themes
+### 부가 기능 (Should Have)
+1. **키보드 네비게이션**
+   - 화살표 키로 결과 탐색
+   - 엔터 키로 선택된 결과 이동
 
-## Phase 4: Performance and Accessibility
-- Optimize rendering performance
-- Implement accessibility features (ARIA labels, keyboard navigation)
-- Add loading states for large content
-- Testing across different devices and browsers
+2. **실시간 검색**
+   - Debounce를 활용한 타이핑 중 검색
+   - 로딩 상태 표시
 
-# Logical Dependency Chain
-## Foundation Layer (Must be built first)
-1. **Import and Setup**: Add MarkdownPreview component import
-2. **Basic Rendering**: Replace existing text rendering with markdown component
-3. **Configuration**: Set up basic rendering options
+3. **반응형 디자인**
+   - 데스크톱/태블릿/모바일 최적화
+   - 터치 친화적 인터페이스
 
-## Core Functionality Layer
-4. **Theme Integration**: Implement dynamic theme detection
-5. **Styling Application**: Apply consistent CSS classes and responsive design
-6. **Content Testing**: Validate rendering with various markdown formats
+### 향후 기능 (Could Have)
+1. **검색 히스토리**
+   - 최근 검색어 저장 및 표시
+   - 인기 검색어 추천
 
-## Enhancement Layer (Build upon foundation)
-7. **Advanced Features**: Add table of contents, enhanced links
-8. **Performance Optimization**: Implement lazy loading and caching
-9. **Accessibility**: Add ARIA labels and keyboard navigation
+2. **고급 검색**
+   - 카테고리별 필터링
+   - 날짜 범위 검색
+   - 태그 기반 검색
 
-## Quick Win Strategy
-- Start with basic markdown rendering to get immediate visual improvement
-- Focus on single file modification for minimal risk
-- Leverage existing packages to avoid reinventing functionality
-- Test incrementally with real blog content
+## 🎨 UI/UX 요구사항
 
-# Risks and Mitigations  
-## Technical Challenges
-- **Risk**: Markdown rendering breaks existing layout
-- **Mitigation**: Preserve existing CSS classes and test thoroughly
+### 디자인 원칙
+- **단순성**: 검색에 집중할 수 있는 깔끔한 인터페이스
+- **일관성**: 기존 블로그 디자인 시스템과 조화
+- **접근성**: 키보드 네비게이션 및 스크린 리더 지원
 
-- **Risk**: Performance impact on large blog posts
-- **Mitigation**: Implement lazy loading and content chunking
+### 시각적 요구사항
+- **모달 배경**: `bg-black/50 backdrop-blur-sm`
+- **검색 컨테이너**: 최대 너비 600px, 카드 스타일
+- **입력창**: 높이 48px 이상, 검색/닫기 아이콘
+- **애니메이션**: 부드러운 fade-in/out 효과
 
-## MVP Scope Management
-- **Risk**: Feature creep during implementation
-- **Mitigation**: Focus on core rendering first, add features incrementally
+### 상호작용 요구사항
+- 헤더 검색창 포커스 시 즉시 모달 열림
+- ESC 키 또는 배경 클릭으로 모달 닫기
+- 검색 결과 호버 시 시각적 피드백
+- 로딩 중 스켈레톤 UI 표시
 
-- **Risk**: Breaking existing functionality
-- **Mitigation**: Maintain backward compatibility and test with existing content
+## 🛠️ 기술 요구사항
 
-## Resource Constraints
-- **Risk**: Complex integration with existing theme system
-- **Mitigation**: Use existing theme provider patterns and documentation
+### 프론트엔드
+- **프레임워크**: React 18+ with Next.js
+- **스타일링**: Tailwind CSS + shadcn/ui
+- **상태 관리**: React useState/useEffect
+- **애니메이션**: CSS transitions 또는 Framer Motion
 
-- **Risk**: Browser compatibility issues
-- **Mitigation**: Test across major browsers and implement fallbacks
+### 백엔드
+- **검색 API**: 기존 `/api/search` 엔드포인트 활용
+- **데이터베이스**: Prisma ORM with PostgreSQL
+- **검색 로직**: 제목, 내용, 태그 기반 전문 검색
 
-# Appendix  
-## Research Findings
-- @uiw/react-markdown-preview is already installed and maintained
-- Component supports theme switching out of the box
-- Performance benchmarks show minimal impact on render time
-- Accessibility features are built-in with proper ARIA support
+### 성능 요구사항
+- 검색 응답 시간: 500ms 이하
+- 모달 열기/닫기: 200ms 이하
+- 첫 번째 검색 결과 표시: 1초 이하
 
-## Technical Specifications
-- **Target File**: `src/components/custom/post-detail-content.tsx`
-- **Lines to Modify**: 77-80 (current text rendering)
-- **Dependencies**: No additional packages required
-- **Testing Strategy**: Manual testing with existing blog posts
-- **Rollback Plan**: Simple revert to original text rendering
+## 📱 플랫폼 지원
 
-## Implementation Priority
-1. **High Priority**: Basic markdown rendering functionality
-2. **Medium Priority**: Theme support and responsive design
-3. **Low Priority**: Advanced features and performance optimization 
+### 데스크톱
+- Chrome 90+, Firefox 88+, Safari 14+, Edge 90+
+- 키보드 네비게이션 완전 지원
+- 마우스 호버 효과
+
+### 모바일
+- iOS Safari 14+, Android Chrome 90+
+- 터치 최적화 인터페이스
+- 가상 키보드 대응
+
+## 🚀 구현 계획
+
+### Phase 1: 기본 구조 (1주)
+- 모달 컴포넌트 생성
+- 기본 오버레이 및 검색창
+- 열기/닫기 기능
+
+### Phase 2: 검색 기능 (1주)
+- 검색 API 연동
+- 결과 표시 및 스타일링
+- 로딩 상태 처리
+
+### Phase 3: 고도화 (1주)
+- 키보드 네비게이션
+- 애니메이션 효과
+- 반응형 최적화
+
+### Phase 4: 테스트 및 배포 (0.5주)
+- 기능 테스트
+- 성능 최적화
+- 프로덕션 배포
+
+## 📊 측정 지표
+
+### 사용성 지표
+- 검색 모달 열기율
+- 검색 완료율 (검색 후 결과 클릭)
+- 평균 검색 세션 시간
+
+### 성능 지표
+- 모달 로딩 시간
+- 검색 응답 시간
+- 페이지 성능 영향도
+
+### 사용자 만족도
+- 사용자 피드백 점수
+- 검색 기능 재사용률
+- 이탈률 변화
+
+## 🧪 테스트 계획
+
+### 기능 테스트
+- [ ] 모달 열기/닫기 동작
+- [ ] 검색 API 연동 확인
+- [ ] 키보드 네비게이션
+- [ ] 검색 결과 정확성
+
+### 성능 테스트
+- [ ] 로딩 시간 측정
+- [ ] 메모리 사용량 확인
+- [ ] 대용량 결과 처리
+
+### 사용성 테스트
+- [ ] 다양한 디바이스에서 테스트
+- [ ] 접근성 검증
+- [ ] 사용자 시나리오 테스트
+
+## 🔒 보안 고려사항
+
+- 검색어 입력 시 XSS 방지
+- 검색 결과 출력 시 HTML 이스케이프
+- 검색 API 호출 시 Rate Limiting
+- 사용자 검색 히스토리 개인정보 보호
+
+## 📚 참고 자료
+
+### 기술 문서
+- [Next.js Documentation](https://nextjs.org/docs)
+- [Tailwind CSS](https://tailwindcss.com/docs)
+- [shadcn/ui Components](https://ui.shadcn.com/)
+
+### 디자인 참고
+- Algolia DocSearch
+- GitHub Search
+- Notion Quick Find
+
+---
+
+**승인자**: 개발팀 리드  
+**검토자**: UX 디자이너, 백엔드 개발자  
+**다음 검토일**: 구현 완료 후

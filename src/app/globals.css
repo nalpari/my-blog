@@ -320,4 +320,119 @@
   .gradient-text {
     @apply bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent;
   }
+
+  /* 검색 모달 애니메이션 */
+  .modal-backdrop {
+    @apply fixed inset-0 z-50 bg-black/60 backdrop-blur-sm;
+    animation: fadeIn 0.3s ease-out;
+  }
+
+  .modal-content {
+    @apply relative w-full mx-4 bg-background border-2 border-border rounded-lg shadow-xl;
+    /* 반응형 최대 너비 */
+    @apply max-w-sm sm:max-w-md md:max-w-lg lg:max-w-2xl;
+    /* 모바일에서는 전체 높이 사용 */
+    @apply h-[90vh] sm:h-auto;
+    /* 모바일에서는 상단 여백 최소화 */
+    @apply mt-4 sm:mt-0;
+    animation: slideInFromTop 0.3s ease-out, scaleIn 0.3s ease-out;
+    transform-origin: center top;
+  }
+
+  /* 접근성 개선을 위한 고대비 스타일 */
+  .search-input-focus {
+    @apply ring-2 ring-primary ring-offset-2 ring-offset-background;
+  }
+
+  .search-result-focus {
+    @apply ring-2 ring-primary ring-offset-1 ring-offset-background bg-primary/10;
+  }
+
+  .search-result-selected {
+    @apply bg-primary/15 border-primary/30;
+  }
+
+  /* 에러 메시지 고대비 */
+  .error-message {
+    @apply text-destructive bg-destructive/10 border border-destructive/20 rounded-md p-3;
+  }
+
+  /* 로딩 상태 고대비 */
+  .loading-skeleton {
+    @apply bg-muted/80 animate-pulse;
+  }
+
+  .search-result-item {
+    animation: slideInFromLeft 0.3s ease-out;
+    animation-fill-mode: both;
+  }
+
+  .search-result-item:nth-child(1) { animation-delay: 0ms; }
+  .search-result-item:nth-child(2) { animation-delay: 50ms; }
+  .search-result-item:nth-child(3) { animation-delay: 100ms; }
+  .search-result-item:nth-child(4) { animation-delay: 150ms; }
+  .search-result-item:nth-child(5) { animation-delay: 200ms; }
+  .search-result-item:nth-child(n+6) { animation-delay: 250ms; }
+
+  /* 키프레임 정의 */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes slideInFromTop {
+    from {
+      transform: translateY(-20px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes scaleIn {
+    from {
+      transform: scale(0.95);
+    }
+    to {
+      transform: scale(1);
+    }
+  }
+
+  @keyframes slideInFromLeft {
+    from {
+      transform: translateX(-20px);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+
+  /* 부드러운 전환 효과 */
+  .smooth-transition {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* 선택된 검색 결과 애니메이션 */
+  .selected-result {
+    @apply ring-2 ring-primary/30 scale-[1.02];
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* 호버 효과 개선 */
+  .hover-lift {
+    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+  }
+
+  .hover-lift:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  }
 }

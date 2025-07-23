@@ -17,7 +17,6 @@ export const blogApi = {
   ): Promise<ApiResponse<Post[]>> {
     try {
       const { page, limit } = options
-      console.log('getPosts 함수 호출됨:', { page, limit })
 
       const posts = await prisma.posts.findMany({
         where: {
@@ -58,13 +57,7 @@ export const blogApi = {
         } : undefined,
       }))
 
-      if (transformedPosts.length > 0) {
-        console.log('getPosts 결과 첫 번째 항목:', {
-          id: transformedPosts[0].id,
-          title: transformedPosts[0].title,
-          slug: transformedPosts[0].slug,
-        })
-      }
+
 
       return {
         data: transformedPosts,
@@ -84,7 +77,6 @@ export const blogApi = {
   // 슬러그로 특정 포스팅 조회
   async getPostBySlug(slug: string): Promise<ApiResponse<Post>> {
     try {
-      console.log('getPostBySlug 함수 호출됨:', { slug })
 
       const post = await prisma.posts.findUnique({
         where: {
@@ -114,11 +106,7 @@ export const blogApi = {
         author_id: post.author_id,
       }
 
-      console.log('getPostBySlug 결과:', {
-        id: transformedPost.id,
-        title: transformedPost.title,
-        slug: transformedPost.slug,
-      })
+
 
       return { data: transformedPost, error: null, success: true }
     } catch (error) {
@@ -229,10 +217,7 @@ export const blogApi = {
   // 포스팅 조회수 증가
   async incrementViews(postId: number): Promise<ApiResponse<void>> {
     try {
-      console.log('incrementViews 호출됨:', {
-        postId,
-        postIdType: typeof postId,
-      })
+
 
       if (!postId || typeof postId !== 'number' || !Number.isInteger(postId) || postId <= 0) {
         console.error('incrementViews: postId가 유효하지 않음', { postId, type: typeof postId })
@@ -252,7 +237,6 @@ export const blogApi = {
         },
       })
 
-      console.log('조회수 업데이트 성공:', { postId })
       return { data: null, error: null, success: true }
     } catch (error) {
       console.error('incrementViews 예외 발생:', error)

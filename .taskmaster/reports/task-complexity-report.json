@@ -1,9 +1,9 @@
 {
 	"meta": {
-		"generatedAt": "2025-07-14T01:33:19.783Z",
+		"generatedAt": "2025-07-16T08:00:39.751Z",
 		"tasksAnalyzed": 10,
 		"totalTasks": 10,
-		"analysisCount": 10,
+		"analysisCount": 20,
 		"thresholdScore": 5,
 		"projectName": "Taskmaster",
 		"usedResearch": false
@@ -88,6 +88,86 @@
 			"recommendedSubtasks": 6,
 			"expansionPrompt": "단위 테스트 작성, E2E 테스트 구현, 크로스 브라우저 테스트, 모바일 테스트, 성능 테스트, 회귀 테스트를 분리하세요.",
 			"reasoning": "포괄적인 테스트 전략과 다양한 환경에서의 검증이 필요하여 매우 높은 복잡도입니다."
+		},
+		{
+			"taskId": 11,
+			"taskTitle": "Supabase 프로젝트 설정 및 환경 변수 구성",
+			"complexityScore": 4,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Supabase 프로젝트 생성부터 환경 변수 설정까지의 초기 설정 과정을 단계별로 세분화하여 각 설정 단계를 명확히 구분하고 보안 설정을 포함한 작업으로 분할해주세요.",
+			"reasoning": "Supabase 프로젝트 생성과 환경 변수 설정은 표준적인 초기 설정 작업으로 복잡도가 중간 수준입니다. 프로젝트 생성, 환경 변수 설정, 보안 설정으로 나누어 진행하는 것이 적절합니다."
+		},
+		{
+			"taskId": 12,
+			"taskTitle": "Supabase 클라이언트 초기화 및 의존성 설치",
+			"complexityScore": 5,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "패키지 설치, 클라이언트 초기화 파일 생성, TypeScript 타입 설정을 각각 독립적인 서브태스크로 분리하여 단계별로 진행할 수 있도록 세분화해주세요.",
+			"reasoning": "의존성 설치와 클라이언트 초기화는 기본적인 설정 작업이지만 TypeScript 타입 설정과 환경 변수 연동이 포함되어 중간 복잡도입니다. 설치, 초기화, 타입 설정으로 분할하는 것이 효율적입니다."
+		},
+		{
+			"taskId": 13,
+			"taskTitle": "AuthProvider 컨텍스트 구현",
+			"complexityScore": 7,
+			"recommendedSubtasks": 4,
+			"expansionPrompt": "React Context API를 활용한 인증 상태 관리 시스템을 인터페이스 정의, 컨텍스트 구현, 커스텀 훅 생성, 상태 리스너 구현으로 세분화하여 각 기능을 독립적으로 개발할 수 있도록 분할해주세요.",
+			"reasoning": "Context API와 useReducer를 활용한 전역 상태 관리는 복잡한 로직을 포함하며, 인증 상태 변경 리스너와 세션 확인 로직이 추가되어 높은 복잡도를 가집니다. 여러 개의 서브태스크로 분할이 필요합니다."
+		},
+		{
+			"taskId": 14,
+			"taskTitle": "로그인 폼 컴포넌트 생성",
+			"complexityScore": 6,
+			"recommendedSubtasks": 4,
+			"expansionPrompt": "로그인 폼 컴포넌트를 기본 폼 구조 생성, 유효성 검사 로직 구현, Supabase 연동 및 인증 처리, 접근성 및 반응형 디자인 적용으로 세분화하여 각 기능을 단계별로 완성할 수 있도록 분할해주세요.",
+			"reasoning": "React Hook Form과 shadcn/ui를 활용한 폼 구현은 유효성 검사, 인증 연동, 접근성 고려사항이 포함되어 중상 복잡도입니다. 폼 구조, 검증, 연동, 디자인으로 분할하는 것이 적절합니다."
+		},
+		{
+			"taskId": 15,
+			"taskTitle": "Next.js 미들웨어 구현",
+			"complexityScore": 6,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Next.js 미들웨어를 기본 미들웨어 구조 및 경로 매칭, 인증 상태 확인 및 리다이렉트 로직, 세션 갱신 및 보안 설정으로 세분화하여 각 기능을 독립적으로 구현할 수 있도록 분할해주세요.",
+			"reasoning": "Next.js 미들웨어는 인증 상태 확인, 리다이렉트 처리, 세션 갱신 등 복잡한 로직을 포함하며 보안이 중요한 부분입니다. 구조 설정, 인증 로직, 세션 관리로 분할하는 것이 효율적입니다."
+		},
+		{
+			"taskId": 16,
+			"taskTitle": "로그인 페이지 구현",
+			"complexityScore": 4,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "로그인 페이지를 기본 페이지 구조 및 레이아웃 생성, LoginForm 컴포넌트 통합 및 기능 연동, 리다이렉트 로직 및 사용자 경험 최적화로 세분화하여 단계별로 완성할 수 있도록 분할해주세요.",
+			"reasoning": "로그인 페이지는 이미 구현된 LoginForm 컴포넌트를 통합하는 작업이 주를 이루며, 페이지 레이아웃과 리다이렉트 로직 구현이 포함되어 중간 복잡도입니다. 3개의 서브태스크로 분할이 적절합니다."
+		},
+		{
+			"taskId": 17,
+			"taskTitle": "API 라우트 핸들러 구현",
+			"complexityScore": 5,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "API 라우트 핸들러를 OAuth 콜백 처리 엔드포인트 구현, 로그아웃 처리 엔드포인트 구현, 에러 처리 및 보안 헤더 설정으로 세분화하여 각 엔드포인트의 기능을 독립적으로 구현할 수 있도록 분할해주세요.",
+			"reasoning": "API 라우트 핸들러는 OAuth 콜백과 로그아웃 두 가지 주요 기능을 포함하며, 세션 처리와 보안 설정이 필요한 중간 복잡도 작업입니다. 콜백, 로그아웃, 보안 설정으로 분할하는 것이 적절합니다."
+		},
+		{
+			"taskId": 18,
+			"taskTitle": "관리자 페이지 기본 구조 구현",
+			"complexityScore": 5,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "관리자 페이지를 기본 페이지 구조 및 레이아웃 생성, 사용자 정보 표시 및 로그아웃 기능 구현, 인증 가드 및 에러 처리 로직 구현으로 세분화하여 각 기능을 단계별로 완성할 수 있도록 분할해주세요.",
+			"reasoning": "관리자 페이지는 기본 레이아웃, 사용자 정보 표시, 인증 가드 등 여러 기능을 포함하지만 각각이 독립적으로 구현 가능한 중간 복잡도 작업입니다. 3개의 서브태스크로 분할이 적절합니다."
+		},
+		{
+			"taskId": 19,
+			"taskTitle": "에러 처리 및 사용자 피드백 시스템",
+			"complexityScore": 6,
+			"recommendedSubtasks": 4,
+			"expansionPrompt": "에러 처리 및 피드백 시스템을 Toast 알림 컴포넌트 구현, 에러 타입별 메시지 정의 및 처리 로직, 에러 바운더리 및 전역 에러 핸들러 구현, 네트워크 오류 및 세션 관련 에러 처리로 세분화하여 각 에러 처리 영역을 독립적으로 구현할 수 있도록 분할해주세요.",
+			"reasoning": "에러 처리 시스템은 다양한 에러 타입과 상황을 처리해야 하며, 사용자 피드백 컴포넌트와 전역 에러 핸들러 구현이 포함되어 중상 복잡도입니다. 컴포넌트, 메시지 처리, 바운더리, 특수 에러로 분할하는 것이 효율적입니다."
+		},
+		{
+			"taskId": 20,
+			"taskTitle": "세션 관리 및 자동 갱신 시스템",
+			"complexityScore": 8,
+			"recommendedSubtasks": 5,
+			"expansionPrompt": "세션 관리 시스템을 세션 만료 감지 및 자동 갱신 메커니즘 구현, 세션 상태 변경 리스너 및 백업 시스템 구현, 사용자 활동 감지 및 세션 복원 로직 구현, 세션 만료 경고 알림 시스템 구현, 강제 로그아웃 및 보안 처리 로직 구현으로 세분화하여 각 세션 관리 기능을 독립적으로 구현할 수 있도록 분할해주세요.",
+			"reasoning": "세션 관리 시스템은 자동 갱신, 상태 감지, 사용자 활동 추적, 복원 로직 등 복잡한 기능들이 상호 연관되어 있어 높은 복잡도를 가집니다. 세밀한 분할을 통해 각 기능을 안정적으로 구현하는 것이 필요합니다."
 		}
 	]
 }

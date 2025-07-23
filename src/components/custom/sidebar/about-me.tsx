@@ -14,12 +14,12 @@ export const AboutMe = () => {
       <CardContent className="space-y-4">
         <div className="flex items-center justify-center mb-4">
           <div className="w-16 h-16 bg-gradient-to-br from-primary to-purple-600 rounded-full flex items-center justify-center">
-            <span className="text-white font-bold text-xl">개</span>
+            <span className="text-white font-bold text-xl">D</span>
           </div>
         </div>
 
         <div className="text-center space-y-2">
-          <h3 className="font-semibold text-lg">개발자</h3>
+          <h3 className="font-semibold text-lg">Devgrr</h3>
           <p className="text-sm text-muted-foreground">
             새로운 기술을 배우고 성장하는 것을 좋아하는 개발자입니다.
           </p>
@@ -32,12 +32,12 @@ export const AboutMe = () => {
           </div>
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <Calendar className="h-4 w-4" />
-            <span>2024년부터 블로깅</span>
+            <span>2025년부터 블로깅</span>
           </div>
         </div>
 
         <div className="space-y-2">
-          <h4 className="font-medium text-sm">주요 기술</h4>
+          <h4 className="font-medium text-sm">보유 기술</h4>
           <div className="flex flex-wrap gap-1">
             <Badge variant="secondary" className="text-xs">
               React
@@ -46,10 +46,55 @@ export const AboutMe = () => {
               Next.js
             </Badge>
             <Badge variant="secondary" className="text-xs">
+              Vue
+            </Badge>
+            <Badge variant="secondary" className="text-xs">
+              Nuxt.js
+            </Badge>
+            <Badge variant="secondary" className="text-xs">
               TypeScript
             </Badge>
             <Badge variant="secondary" className="text-xs">
               Tailwind CSS
+            </Badge>
+            <Badge variant="secondary" className="text-xs">
+              Node.js
+            </Badge>
+            <Badge variant="secondary" className="text-xs">
+              Nest.js
+            </Badge>
+            <Badge variant="secondary" className="text-xs">
+              Spring Boot
+            </Badge>
+            <Badge variant="secondary" className="text-xs">
+              FastAPI
+            </Badge>
+            <Badge variant="secondary" className="text-xs">
+              Laravel
+            </Badge>
+            <Badge variant="secondary" className="text-xs">
+              Ruby on Rails
+            </Badge>
+            <Badge variant="secondary" className="text-xs">
+              RDB
+            </Badge>
+            <Badge variant="secondary" className="text-xs">
+              NoSQL
+            </Badge>
+            <Badge variant="secondary" className="text-xs">
+              Supabase
+            </Badge>
+            <Badge variant="secondary" className="text-xs">
+              Docker
+            </Badge>
+            <Badge variant="secondary" className="text-xs">
+              k8s
+            </Badge>
+            <Badge variant="secondary" className="text-xs">
+              AWS
+            </Badge>
+            <Badge variant="secondary" className="text-xs">
+              GCP
             </Badge>
           </div>
         </div>
