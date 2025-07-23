@@ -54,11 +54,9 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
     try {
       await signIn(data.email, data.password);
       
-      // 성공 시 폼 리셋 및 콜백 실행
-      if (!error) {
-        reset();
-        onSuccess?.();
-      }
+      // signIn이 예외를 던지지 않았다면 성공으로 간주하고 바로 성공 로직 실행
+      reset();
+      onSuccess?.();
     } catch (err) {
       console.error('Login error:', err);
       // 리프레시 토큰 오류인 경우 특별 처리
@@ -157,6 +155,13 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
           >
             {isLoading ? '로그인 중...' : '로그인'}
           </Button>
+          <div 
+            id="login-button-status" 
+            className="sr-only" 
+            aria-live="polite"
+          >
+            {isLoading ? '로그인 처리 중입니다. 잠시만 기다려주세요.' : '로그인 버튼입니다.'}
+          </div>
           
           <div className="flex flex-col space-y-2 text-sm text-center text-gray-500">
             <div>

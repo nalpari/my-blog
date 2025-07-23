@@ -44,8 +44,14 @@ export function AdminLayout({ children }: AdminLayoutProps) {
 
   // 로그아웃 핸들러
   const handleLogout = async () => {
-    await signOut()
-    router.push('/auth/login')
+    try {
+      await signOut()
+      router.push('/auth/login')
+    } catch (error) {
+      console.error('로그아웃 중 오류가 발생했습니다:', error)
+      // 사용자에게 오류 알림 (선택적)
+      alert('로그아웃 중 문제가 발생했습니다. 다시 시도해주세요.')
+    }
   }
 
   return (
