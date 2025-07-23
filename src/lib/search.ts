@@ -191,10 +191,25 @@ export async function searchPosts(options: SearchOptions): Promise<{
 }
 
 /**
- * 검색어 하이라이트 함수
+ * HTML 엔티티를 이스케이프하는 함수
+ */
+function escapeHtml(text: string): string {
+  return text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;')
+}
+
+/**
+ * 검색어 하이라이트 함수 - XSS 방지를 위해 HTML 엔티티를 이스케이프 처리
  */
 export function highlightSearchTerms(text: string, query: string): string {
-  if (!query.trim()) return text
+  if (!query.trim()) return escapeHtml(text)
+  
+  // 먼저 HTML 엔티티를 이스케이프
+  const escapedText = escapeHtml(text)
   
   const terms = query
     .trim()
@@ -202,10 +217,10 @@ export function highlightSearchTerms(text: string, query: string): string {
     .filter(term => term.length > 0)
     .map(term => term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')) // 정규식 특수문자 이스케이프
   
-  if (terms.length === 0) return text
+  if (terms.length === 0) return escapedText
   
   const regex = new RegExp(`(${terms.join('|')})`, 'gi')
-  return text.replace(regex, '<mark class="bg-yellow-200 dark:bg-yellow-800">$1</mark>')
+  return escapedText.replace(regex, '<mark class="bg-yellow-200 dark:bg-yellow-800">$1</mark>')
 }
 
 /**
