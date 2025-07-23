@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 
 /**
  * 디바운스 훅 - 입력값의 변경을 지연시켜 불필요한 API 호출을 방지
@@ -35,18 +35,29 @@ export function useDebouncedCallback<T extends (...args: any[]) => any>(
   callback: T,
   delay: number,
   deps: React.DependencyList = []
-): T {
-  const [debouncedCallback, setDebouncedCallback] = useState<T>(() => callback)
-
+): (...args: Parameters<T>) => void {
+  // 타이머 ID를 저장할 ref
+  const timerRef = useRef<NodeJS.Timeout | null>(null)
+  
+  // 원본 콜백 함수를 저장할 ref
+  const callbackRef = useRef<T>(callback)
+  
+  // 콜백이 변경되면 ref 업데이트
   useEffect(() => {
-    const handler = setTimeout(() => {
-      setDebouncedCallback(() => callback)
-    }, delay)
-
-    return () => {
-      clearTimeout(handler)
+    callbackRef.current = callback
+  }, [callback, ...deps])
+  
+  // 디바운스된 콜백 함수 생성
+  return useCallback((...args: Parameters<T>) => {
+    // 이전 타이머가 있으면 취소
+    if (timerRef.current) {
+      clearTimeout(timerRef.current)
     }
-  }, [callback, delay, ...deps])
-
-  return debouncedCallback
+    
+    // 새로운 타이머 설정
+    timerRef.current = setTimeout(() => {
+      // ref에서 최신 콜백 함수 가져와서 실행
+      callbackRef.current(...args)
+    }, delay)
+  }, [delay]) as (...args: Parameters<T>) => void
 }
