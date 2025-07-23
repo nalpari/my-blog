@@ -106,12 +106,32 @@ export default function SearchPage() {
     handleSearch(searchTerm)
   }
 
-  // 인기 검색어 (실제로는 API에서 가져와야 함)
-  const popularSearches = [
-    'React', 'Next.js', 'TypeScript', 'JavaScript',
-    'CSS', 'Node.js', 'Python', 'AI', 'Machine Learning',
-    'Web Development', 'Frontend', 'Backend'
-  ]
+  // 인기 검색어를 API에서 가져오기
+  const [popularSearches, setPopularSearches] = useState<string[]>([])
+  const [isLoadingPopular, setIsLoadingPopular] = useState(false)
+  
+  useEffect(() => {
+    const fetchPopularSearches = async () => {
+      setIsLoadingPopular(true)
+      try {
+        const response = await fetch('/api/search/popular?limit=12')
+        if (response.ok) {
+          const result = await response.json()
+          if (result.success && result.data) {
+            setPopularSearches(result.data)
+          }
+        } else {
+          console.error('인기 검색어 API 호출 실패')
+        }
+      } catch (error) {
+        console.error('인기 검색어 로딩 실패:', error)
+      } finally {
+        setIsLoadingPopular(false)
+      }
+    }
+    
+    fetchPopularSearches()
+  }, [])
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">

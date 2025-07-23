@@ -271,6 +271,8 @@ export function SearchBar({
 }) {
   const [query, setQuery] = useState('')
   const [recentSearches, setRecentSearches] = useState<string[]>([])
+  const [popularSearches, setPopularSearches] = useState<string[]>([])
+  const [isLoadingPopular, setIsLoadingPopular] = useState(false)
   
   // 로컬 스토리지에서 최근 검색어 로드
   useEffect(() => {
@@ -282,6 +284,30 @@ export function SearchBar({
     } catch (error) {
       console.error('Failed to load recent searches:', error)
     }
+  }, [])
+  
+  // API에서 인기 검색어 가져오기
+  useEffect(() => {
+    const fetchPopularSearches = async () => {
+      setIsLoadingPopular(true)
+      try {
+        const response = await fetch('/api/search/popular?limit=8')
+        if (response.ok) {
+          const result = await response.json()
+          if (result.success && result.data) {
+            setPopularSearches(result.data)
+          }
+        } else {
+          console.error('인기 검색어 API 호출 실패')
+        }
+      } catch (error) {
+        console.error('인기 검색어 로딩 실패:', error)
+      } finally {
+        setIsLoadingPopular(false)
+      }
+    }
+    
+    fetchPopularSearches()
   }, [])
 
   const handleSearch = (searchQuery: string) => {
@@ -303,12 +329,6 @@ export function SearchBar({
   const handleClear = () => {
     setQuery('')
   }
-
-  // 인기 검색어 (실제로는 API에서 가져와야 함)
-  const popularSearches = [
-    'React', 'Next.js', 'TypeScript', 'JavaScript', 
-    'CSS', 'Node.js', 'Python', 'AI'
-  ]
 
   return (
     <SearchInput

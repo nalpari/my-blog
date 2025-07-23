@@ -213,7 +213,17 @@ export function highlightSearchTerms(text: string, query: string): string {
  */
 export async function getPopularSearchTerms(limit: number = 10): Promise<string[]> {
   // TODO: 검색 로그 테이블이 구현되면 실제 인기 검색어를 반환
-  return []
+  // 임시로 인기 검색어 목록 반환
+  const popularTerms = [
+    'React', 'Next.js', 'TypeScript', 'JavaScript',
+    'CSS', 'Node.js', 'Python', 'AI', 'Machine Learning',
+    'Web Development', 'Frontend', 'Backend', 'Database',
+    'GraphQL', 'REST API', 'Authentication', 'Redux',
+    'React Hooks', 'Tailwind CSS', 'Responsive Design'
+  ]
+  
+  // 요청된 limit 수만큼 반환
+  return popularTerms.slice(0, limit)
 }
 
 /**
