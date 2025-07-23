@@ -8,7 +8,7 @@ export type Json =
 
 export interface Database {
   public: {
-    Tables: {
+    Tables: Record<string, never> | {
       // 여기에 데이터베이스 테이블 타입을 정의합니다.
       // 예시:
       // users: {
@@ -32,13 +32,13 @@ export interface Database {
       //   };
       // };
     };
-    Views: {
+    Views: Record<string, never> | {
       // 여기에 데이터베이스 뷰 타입을 정의합니다.
     };
-    Functions: {
+    Functions: Record<string, never> | {
       // 여기에 데이터베이스 함수 타입을 정의합니다.
     };
-    Enums: {
+    Enums: Record<string, never> | {
       // 여기에 데이터베이스 열거형 타입을 정의합니다.
     };
   };
