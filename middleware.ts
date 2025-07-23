@@ -9,9 +9,26 @@ export async function middleware(request: NextRequest) {
     },
   })
 
+  // 환경 변수 검증 로직 추가
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  
+  if (!supabaseUrl || !supabaseAnonKey) {
+    console.error('필수 환경 변수가 누락되었습니다: ' + 
+      (!supabaseUrl ? 'NEXT_PUBLIC_SUPABASE_URL ' : '') + 
+      (!supabaseAnonKey ? 'NEXT_PUBLIC_SUPABASE_ANON_KEY' : ''));
+    
+    // 환경 변수가 없는 경우 기본 응답 반환
+    return NextResponse.next({
+      request: {
+        headers: request.headers,
+      },
+    });
+  }
+  
   const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    supabaseUrl,
+    supabaseAnonKey,
     {
       cookies: {
         get(name: string) {
@@ -56,9 +73,21 @@ export async function middleware(request: NextRequest) {
   )
 
   // 현재 세션 확인
-  const {
-    data: { session },
-  } = await supabase.auth.getSession()
+  let session = null;
+  try {
+    const { data } = await supabase.auth.getSession();
+    session = data.session;
+  } catch (error) {
+    // 에러 로깅
+    console.error('세션 확인 중 오류가 발생했습니다:', error);
+    
+    // 에러 발생 시 기본 응답 반환 (미들웨어 안정성 유지)
+    return NextResponse.next({
+      request: {
+        headers: request.headers,
+      },
+    });
+  }
 
   // /admin 경로 보호
   if (request.nextUrl.pathname.startsWith('/admin')) {
