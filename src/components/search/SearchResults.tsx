@@ -1,4 +1,4 @@
-import React, { memo, useMemo, useCallback } from 'react';
+import React, { memo, useMemo, useCallback, ReactNode } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { formatDistanceToNow } from 'date-fns';
@@ -7,7 +7,6 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Calendar, Tag, CalendarIcon, EyeIcon, UserIcon, TagIcon } from 'lucide-react';
-import { highlightSearchTerms } from '@/lib/search';
 import { cn } from '@/lib/utils';
 
 interface SearchResult {
@@ -81,6 +80,69 @@ const NoResults = memo(({ searchQuery }: { searchQuery: string }) => (
   </div>
 ));
 NoResults.displayName = 'NoResults';
+
+/**
+ * 안전하게 텍스트를 하이라이트하는 컴포넌트
+ */
+interface HighlightedTextProps {
+  text: string;
+  query: string;
+  className?: string;
+  [key: string]: any; // 추가 props를 위한 인덱스 시그니처
+}
+
+const HighlightedText: React.FC<HighlightedTextProps> = ({ text, query, className, ...props }) => {
+  // 특수 문자 이스케이프 함수
+  const escapeHtml = (str: string): string => {
+    return str
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  };
+
+  // 검색어가 없으면 이스케이프만 처리하고 반환
+  if (!query.trim()) {
+    return <span className={className} {...props}>{escapeHtml(text)}</span>;
+  }
+
+  // 검색어 정규식 패턴 생성
+  const terms = query
+    .trim()
+    .split(' ')
+    .filter(term => term.length > 0)
+    .map(term => term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')); // 정규식 특수문자 이스케이프
+
+  if (terms.length === 0) {
+    return <span className={className} {...props}>{escapeHtml(text)}</span>;
+  }
+
+  const regex = new RegExp(`(${terms.join('|')})`, 'gi');
+  
+  // 텍스트를 검색어 기준으로 분할
+  const parts = escapeHtml(text).split(regex);
+
+  return (
+    <span className={className} {...props}>
+      {parts.map((part, index) => {
+        // 검색어와 일치하는 부분인지 확인
+        const isMatch = terms.some(term => {
+          const termRegex = new RegExp(term, 'i');
+          return termRegex.test(part);
+        });
+
+        return isMatch ? (
+          <mark key={index} className="bg-yellow-200 dark:bg-yellow-800">{part}</mark>
+        ) : (
+          <React.Fragment key={index}>{part}</React.Fragment>
+        );
+      })}
+    </span>
+  );
+};
+
+HighlightedText.displayName = 'HighlightedText';
 
 // 에러 컴포넌트
 const ErrorMessage = memo(({ error }: { error: string }) => (
@@ -173,8 +235,9 @@ const SearchResults: React.FC<SearchResultsProps> = ({
           )}>
           <CardHeader className="pb-3 p-4 sm:p-6">
             <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-gray-100 line-clamp-2 mb-2 sm:mb-3">
-              <span 
-                dangerouslySetInnerHTML={{ __html: highlightSearchTerms(result.title, searchQuery) }} 
+              <HighlightedText 
+                text={result.title} 
+                query={searchQuery} 
                 aria-label={result.title}
               />
             </h3>
@@ -219,8 +282,9 @@ const SearchResults: React.FC<SearchResultsProps> = ({
           
           <CardContent className="pt-0 px-4 sm:px-6 pb-4 sm:pb-6">
             <p className="text-sm sm:text-base text-gray-700 dark:text-gray-300 line-clamp-3 mb-3 sm:mb-4 leading-relaxed">
-              <span 
-                dangerouslySetInnerHTML={{ __html: highlightSearchTerms(result.content.slice(0, 150) + '...', searchQuery) }} 
+              <HighlightedText 
+                text={result.content.slice(0, 150) + '...'} 
+                query={searchQuery} 
                 aria-label={`내용 미리보기: ${result.content.slice(0, 150)}...`}
               />
             </p>
