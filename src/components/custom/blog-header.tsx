@@ -83,6 +83,8 @@ export const BlogHeader = ({ siteTitle = 'My Blog' }: BlogHeaderProps) => {
   }
 
   const handleSearchFocus = () => {
+    // 이미 모달이 열려있으면 무시 (이벤트 루프 방지)
+    if (isSearchModalOpen) return
     // 검색창에 포커스가 가면 검색 모달 열기
     setIsSearchModalOpen(true)
   }
@@ -161,14 +163,6 @@ export const BlogHeader = ({ siteTitle = 'My Blog' }: BlogHeaderProps) => {
                       </div>
                     </div>
                   </NavigationMenuContent>
-                </NavigationMenuItem>
-                <NavigationMenuItem>
-                  <Link
-                    href="/search"
-                    className="text-sm font-medium text-foreground hover:text-primary transition-colors"
-                  >
-                    검색
-                  </Link>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
                   <Link
@@ -265,13 +259,6 @@ export const BlogHeader = ({ siteTitle = 'My Blog' }: BlogHeaderProps) => {
                   ))}
                 </div>
               </div>
-              
-              <Link
-                href="/search"
-                className="block py-2 text-sm font-medium text-foreground hover:text-primary"
-              >
-                검색
-              </Link>
               
               <Link
                 href="/about"
