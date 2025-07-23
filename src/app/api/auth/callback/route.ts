@@ -38,7 +38,7 @@ export async function GET(request: NextRequest) {
         const response = NextResponse.redirect(`${origin}${next}`)
         
         // 세션 쿠키 설정
-        const expires = new Date(data.session.expires_at! * 1000)
+        const expires = data.session.expires_at ? new Date(data.session.expires_at * 1000) : new Date(0);
         
         response.cookies.set('sb-access-token', data.session.access_token, {
           httpOnly: true,
