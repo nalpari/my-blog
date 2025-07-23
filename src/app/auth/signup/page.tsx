@@ -42,7 +42,13 @@ export default function SignUpPage() {
     }
     
     setPasswordError('');
-    await signUp(email, password);
+    const result = await signUp(email, password);
+    
+    if (result.success) {
+      // 성공 시 자동으로 user 상태가 업데이트되어 리다이렉션됨
+      setIsRedirecting(true);
+    }
+    // 실패 시 error 상태가 업데이트되어 화면에 표시됨
   };
 
   return (

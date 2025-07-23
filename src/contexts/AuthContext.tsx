@@ -55,8 +55,8 @@ function authReducer(state: AuthState, action: AuthAction): AuthState {
 
 // AuthContext 인터페이스 정의
 interface AuthContextType extends AuthState {
-  signIn: (email: string, password: string) => Promise<void>;
-  signUp: (email: string, password: string) => Promise<void>;
+  signIn: (email: string, password: string) => Promise<{ success: boolean; error?: string }>;
+  signUp: (email: string, password: string) => Promise<{ success: boolean; error?: string }>;
   signOut: () => Promise<void>;
   resetPassword: (email: string) => Promise<void>;
 }
@@ -84,38 +84,54 @@ export function AuthProvider({ children }: AuthProviderProps) {
   };
 
   // 이메일/비밀번호로 로그인
-  const signIn = async (email: string, password: string) => {
+  const signIn = async (email: string, password: string): Promise<{ success: boolean; error?: string }> => {
     try {
       dispatch({ type: 'LOADING', payload: true });
       const { data, error } = await supabase.auth.signInWithPassword({ email, password });
       
       if (error) {
-        throw error;
+        dispatch({ type: 'ERROR', payload: error.message });
+        return { success: false, error: error.message };
       }
 
       if (data.user) {
         dispatch({ type: 'LOGIN', payload: mapSupabaseUser(data.user) });
+        return { success: true };
       }
+      
+      // 사용자 데이터가 없는 경우 (드문 케이스)
+      dispatch({ type: 'ERROR', payload: '로그인 처리 중 오류가 발생했습니다.' });
+      return { success: false, error: '로그인 처리 중 오류가 발생했습니다.' };
     } catch (error) {
-      dispatch({ type: 'ERROR', payload: (error as Error).message });
+      const errorMessage = (error as Error).message;
+      dispatch({ type: 'ERROR', payload: errorMessage });
+      return { success: false, error: errorMessage };
     }
   };
 
   // 회원가입
-  const signUp = async (email: string, password: string) => {
+  const signUp = async (email: string, password: string): Promise<{ success: boolean; error?: string }> => {
     try {
       dispatch({ type: 'LOADING', payload: true });
       const { data, error } = await supabase.auth.signUp({ email, password });
       
       if (error) {
-        throw error;
+        dispatch({ type: 'ERROR', payload: error.message });
+        return { success: false, error: error.message };
       }
 
       if (data.user) {
         dispatch({ type: 'LOGIN', payload: mapSupabaseUser(data.user) });
+        return { success: true };
       }
+      
+      // 사용자 데이터가 없는 경우 (드문 케이스)
+      dispatch({ type: 'ERROR', payload: '회원가입 처리 중 오류가 발생했습니다.' });
+      return { success: false, error: '회원가입 처리 중 오류가 발생했습니다.' };
     } catch (error) {
-      dispatch({ type: 'ERROR', payload: (error as Error).message });
+      const errorMessage = (error as Error).message;
+      dispatch({ type: 'ERROR', payload: errorMessage });
+      return { success: false, error: errorMessage };
     }
   };
 

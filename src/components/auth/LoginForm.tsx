@@ -52,20 +52,23 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
     setCustomError(null); // 새 요청 시 커스텀 에러 초기화
     
     try {
-      await signIn(data.email, data.password);
+      const result = await signIn(data.email, data.password);
       
-      // signIn이 예외를 던지지 않았다면 성공으로 간주하고 바로 성공 로직 실행
-      reset();
-      onSuccess?.();
+      if (result.success) {
+        // 로그인 성공 시 폼 초기화 및 성공 콜백 실행
+        reset();
+        onSuccess?.();
+      } else if (result.error) {
+        // 리프레시 토큰 오류인 경우 특별 처리
+        if (result.error.includes('Refresh Token') || 
+            result.error.includes('Invalid Refresh Token')) {
+          setCustomError('인증 세션이 만료되었습니다. 다시 로그인해 주세요.');
+        }
+        // 다른 에러는 useAuth 내부에서 처리됨 (error 상태로 설정됨)
+      }
     } catch (err) {
       console.error('Login error:', err);
-      // 리프레시 토큰 오류인 경우 특별 처리
-      if (err instanceof Error && 
-          (err.message.includes('Refresh Token') || 
-           err.message.includes('Invalid Refresh Token'))) {
-        setCustomError('인증 세션이 만료되었습니다. 다시 로그인해 주세요.');
-      }
-      // 다른 에러는 useAuth 내부에서 처리됨
+      setCustomError('로그인 처리 중 예상치 못한 오류가 발생했습니다.');
     } finally {
       setIsSubmitting(false);
     }
