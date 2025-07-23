@@ -37,20 +37,11 @@ export const metadata: Metadata = {
     title: '개발 블로그',
     description: '개발과 일상을 기록하는 개인 블로그입니다.',
     siteName: '개발 블로그',
-    images: [
-      {
-        url: '/og-image.jpg',
-        width: 1200,
-        height: 630,
-        alt: '개발 블로그',
-      },
-    ],
   },
   twitter: {
-    card: 'summary_large_image',
+    card: 'summary',
     title: '개발 블로그',
     description: '개발과 일상을 기록하는 개인 블로그입니다.',
-    images: ['/og-image.jpg'],
   },
   robots: {
     index: true,

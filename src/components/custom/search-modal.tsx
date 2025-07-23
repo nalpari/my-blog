@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, useRef, useCallback, useMemo, memo } from 'react'
+import { useEffect, useState, useRef, useCallback, memo } from 'react'
 import { createPortal } from 'react-dom'
 import FocusTrap from 'focus-trap-react'
 import { Search, X } from 'lucide-react'
@@ -146,9 +146,9 @@ const SearchModalComponent = ({ isOpen, onClose, initialQuery = '' }: SearchModa
       focusTrapOptions={{
         initialFocus: () => searchInputRef.current,
         allowOutsideClick: true,
-        clickOutsideDeactivates: true,
+        clickOutsideDeactivates: false, // 배경 클릭은 handleBackgroundClick에서 처리
         escapeDeactivates: false, // ESC 키는 직접 처리
-        returnFocusOnDeactivate: true
+        returnFocusOnDeactivate: false // 포커스 복귀로 인한 이벤트 루프 방지
       }}
     >
       <div
