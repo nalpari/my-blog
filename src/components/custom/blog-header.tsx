@@ -83,8 +83,8 @@ export const BlogHeader = ({ siteTitle = 'My Blog' }: BlogHeaderProps) => {
   }
 
   const handleSearchFocus = () => {
-    // 검색창에 포커스가 가면 검색 페이지로 이동
-    router.push('/search')
+    // 검색창에 포커스가 가면 검색 모달 열기
+    setIsSearchModalOpen(true)
   }
 
   const handleSearchModalClose = () => {

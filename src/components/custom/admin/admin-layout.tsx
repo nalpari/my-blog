@@ -70,7 +70,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
             </div>
             <div className="flex items-center space-x-4">
               <div className="text-sm text-gray-600">
-                {user.email}
+                {user && user.email ? user.email : '사용자 이메일 없음'}
               </div>
               <Button 
                 variant="destructive" 

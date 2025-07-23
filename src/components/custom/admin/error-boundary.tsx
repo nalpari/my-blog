@@ -35,7 +35,9 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
     if (this.state.hasError) {
       if (this.props.fallback) {
         const FallbackComponent = this.props.fallback;
-        return <FallbackComponent error={this.state.error!} resetError={this.resetError} />;
+        // 안전하게 error 객체 처리 - null일 경우 기본 Error 객체 제공
+        const errorToPass = this.state.error || new Error('알 수 없는 오류가 발생했습니다');
+        return <FallbackComponent error={errorToPass} resetError={this.resetError} />;
       }
 
       return (
