@@ -1,22 +1,23 @@
 'use client';
 
 import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import { LoginForm } from '@/components/auth/LoginForm';
 
 
 export default function LoginPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { user, loading, error } = useAuth();
 
   // 이미 로그인된 경우 대시보드로 리다이렉트 (useEffect 사용)
   useEffect(() => {
     if (user && !loading) {
-      const redirectTo = new URLSearchParams(window.location.search).get('redirectTo');
+      const redirectTo = searchParams.get('redirectTo');
       router.push(redirectTo || '/admin');
     }
-  }, [user, loading, router]);
+  }, [user, loading, router, searchParams]);
 
   // 로딩 중이거나 이미 로그인된 경우 로딩 표시
   if (loading || user) {
@@ -33,7 +34,7 @@ export default function LoginPage() {
   }
 
   const handleLoginSuccess = () => {
-    const redirectTo = new URLSearchParams(window.location.search).get('redirectTo');
+    const redirectTo = searchParams.get('redirectTo');
     router.push(redirectTo || '/admin');
   };
 
