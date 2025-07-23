@@ -128,8 +128,8 @@ export async function OPTIONS(request: NextRequest) {
     headers: {
       'Allow': 'GET, POST, OPTIONS',
       'Access-Control-Allow-Origin': process.env.NODE_ENV === 'production' 
-        ? process.env.NEXT_PUBLIC_SITE_URL || 'https://your-domain.com'
-        : '*',
+        ? process.env.NEXT_PUBLIC_SITE_URL
+        : 'http://localhost:3000',
       'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
       'Access-Control-Allow-Headers': 'Content-Type, Authorization',
       'Access-Control-Allow-Credentials': 'true',
