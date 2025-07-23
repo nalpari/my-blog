@@ -288,17 +288,22 @@ const SearchResults: React.FC<SearchResultsProps> = ({
                     className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0"
                     aria-hidden="true"
                   />
-                  <time
-                    dateTime={result.published_at ? new Date(result.published_at).toISOString() : undefined}
-                    className="truncate"
-                  >
-                    {result.published_at
-                      ? formatDistanceToNow(new Date(result.published_at), {
-                          addSuffix: true,
-                          locale: ko,
-                        })
-                      : '날짜 없음'}
-                  </time>
+                  {(() => {
+                    const publishedDate = result.published_at ? new Date(result.published_at) : null
+                    return (
+                      <time
+                        dateTime={publishedDate?.toISOString()}
+                        className="truncate"
+                      >
+                        {publishedDate
+                          ? formatDistanceToNow(publishedDate, {
+                              addSuffix: true,
+                              locale: ko,
+                            })
+                          : '날짜 없음'}
+                      </time>
+                    )
+                  })()}
                 </div>
 
                 <div className="flex items-center gap-1.5">
