@@ -1,5 +1,6 @@
 import React, { memo, useMemo, useCallback } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { formatDistanceToNow } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
@@ -121,6 +122,9 @@ const SearchResults: React.FC<SearchResultsProps> = ({
     );
   }, [isLoading, results.length]);
 
+  // 라우터 초기화
+  const router = useRouter();
+
   // 검색 결과 렌더링 최적화
   const searchResultItems = useMemo(() => {
     return results.map((result, index) => {
@@ -131,9 +135,9 @@ const SearchResults: React.FC<SearchResultsProps> = ({
         if (onResultClick) {
           onResultClick(result);
         } else {
-          window.location.href = `/blog/${result.slug}`;
+          router.push(`/blog/${result.slug}`);
         }
-      }, [result, onResultClick]);
+      }, [result, onResultClick, router]);
       
       return (
         <div
