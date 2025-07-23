@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { searchPosts, SearchOptions } from '@/lib/search'
 import { z } from 'zod'
+import { checkRateLimit } from '@/lib/redis'
 
 // 검색 요청 스키마 정의
 const searchSchema = z.object({
@@ -11,32 +12,9 @@ const searchSchema = z.object({
   tags: z.string().optional().nullable() // 쉼표로 구분된 태그 문자열
 })
 
-// Rate limiting을 위한 간단한 메모리 저장소
-const rateLimitMap = new Map<string, { count: number; resetTime: number }>()
-
-// Rate limiting 함수
-function checkRateLimit(ip: string): { allowed: boolean; remaining: number; resetTime: number } {
-  const now = Date.now()
-  const windowMs = 60 * 1000 // 1분
-  const maxRequests = 30 // 분당 30회
-  
-  const record = rateLimitMap.get(ip)
-  
-  if (!record || now > record.resetTime) {
-    // 새로운 윈도우 시작
-    const resetTime = now + windowMs
-    rateLimitMap.set(ip, { count: 1, resetTime })
-    return { allowed: true, remaining: maxRequests - 1, resetTime }
-  }
-  
-  if (record.count >= maxRequests) {
-    return { allowed: false, remaining: 0, resetTime: record.resetTime }
-  }
-  
-  // 요청 카운트 증가
-  record.count++
-  return { allowed: true, remaining: maxRequests - record.count, resetTime: record.resetTime }
-}
+// 레이트 리미팅 설정
+const RATE_LIMIT = 30 // 분당 최대 요청 수
+const RATE_LIMIT_WINDOW_MS = 60 * 1000 // 1분
 
 // GET 요청 핸들러
 export async function GET(request: NextRequest) {
@@ -46,8 +24,8 @@ export async function GET(request: NextRequest) {
               request.headers.get('x-real-ip') || 
               'unknown'
     
-    // Rate limiting 체크
-    const rateLimit = checkRateLimit(ip)
+    // Rate limiting 체크 (Redis 기반)
+    const rateLimit = await checkRateLimit(ip, RATE_LIMIT, RATE_LIMIT_WINDOW_MS)
     
     if (!rateLimit.allowed) {
       return NextResponse.json(
@@ -58,7 +36,7 @@ export async function GET(request: NextRequest) {
         { 
           status: 429,
           headers: {
-            'X-RateLimit-Limit': '30',
+            'X-RateLimit-Limit': RATE_LIMIT.toString(),
             'X-RateLimit-Remaining': rateLimit.remaining.toString(),
             'X-RateLimit-Reset': Math.ceil(rateLimit.resetTime / 1000).toString()
           }

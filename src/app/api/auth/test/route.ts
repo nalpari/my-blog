@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
+import logger from '@/lib/logger';
 
 // Supabase 인증 시스템 헬스체크를 위한 API 엔드포인트
 export async function GET(request: NextRequest) {
@@ -56,7 +57,16 @@ export async function GET(request: NextRequest) {
     });
 
   } catch (error) {
-    console.error('Auth system health check error:', error);
+    // 에러 객체에서 민감하지 않은 정보만 추출
+    const sanitizedError = {
+      name: (error as Error).name,
+      message: (error as Error).message,
+      stack: process.env.NODE_ENV !== 'production' ? (error as Error).stack?.split('\n').slice(0, 3).join('\n') : undefined
+    };
+    
+    // 안전하게 필터링된 에러 정보만 로깅
+    logger.error({ error: sanitizedError }, 'Auth system health check error');
+    
     return NextResponse.json({ 
       success: false, 
       error: 'Auth system health check failed',

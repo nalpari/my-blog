@@ -9,14 +9,24 @@ import { Label } from '@/components/ui/label';
 import Link from 'next/link';
 
 export default function ResetPasswordPage() {
-  const { resetPassword, loading, error } = useAuth();
+  const { resetPassword, loading, error: authError } = useAuth();
   const [email, setEmail] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await resetPassword(email);
-    setIsSubmitted(true);
+    setError(null); // 이전 오류 메시지 초기화
+    
+    try {
+      await resetPassword(email);
+      setIsSubmitted(true);
+    } catch (err: any) {
+      // 오류 메시지 설정
+      console.error('비밀번호 재설정 요청 중 오류 발생:', err);
+      // 사용자 친화적인 오류 메시지 표시
+      setError(err?.message || '비밀번호 재설정 요청 중 오류가 발생했습니다. 다시 시도해주세요.');
+    }
   };
 
   return (
@@ -40,11 +50,19 @@ export default function ResetPasswordPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
+                  aria-label="이메일 주소 입력"
+                  aria-describedby="email-error"
+                  aria-invalid={!!(error || authError)}
                 />
               </div>
-              {error && (
-                <div className="text-sm text-red-500">
-                  {error}
+              {(error || authError) && (
+                <div 
+                  id="email-error"
+                  className="text-sm text-red-500"
+                  role="alert"
+                  aria-live="polite"
+                >
+                  {error || authError}
                 </div>
               )}
             </CardContent>
