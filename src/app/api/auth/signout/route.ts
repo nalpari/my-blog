@@ -17,7 +17,7 @@ export async function POST(request: NextRequest) {
           // Will be handled by the response
         },
       },
-    }
+    },
   )
 
   try {
@@ -28,14 +28,14 @@ export async function POST(request: NextRequest) {
       console.error('Signout error:', error)
       return NextResponse.json(
         { error: 'Failed to sign out', details: error.message },
-        { status: 500 }
+        { status: 500 },
       )
     }
 
     // 성공적으로 로그아웃됨 - 쿠키 삭제
     const response = NextResponse.json(
       { message: 'Successfully signed out' },
-      { status: 200 }
+      { status: 200 },
     )
 
     // 세션 쿠키들 삭제
@@ -58,17 +58,16 @@ export async function POST(request: NextRequest) {
       'supabase.auth.token',
     ]
 
-    supabaseCookies.forEach(cookieName => {
+    supabaseCookies.forEach((cookieName) => {
       response.cookies.set(cookieName, '', cookieOptions)
     })
 
     return response
-
   } catch (err) {
     console.error('Signout exception:', err)
     return NextResponse.json(
       { error: 'Internal server error during signout' },
-      { status: 500 }
+      { status: 500 },
     )
   }
 }
@@ -93,7 +92,7 @@ export async function GET(request: NextRequest) {
           // Will be handled by the redirect response
         },
       },
-    }
+    },
   )
 
   try {
@@ -114,7 +113,6 @@ export async function GET(request: NextRequest) {
     response.cookies.set('sb-refresh-token', '', cookieOptions)
 
     return response
-
   } catch (err) {
     console.error('GET signout error:', err)
     return NextResponse.redirect(`${origin}/auth/login?error=signout_failed`)
@@ -126,13 +124,14 @@ export async function OPTIONS(request: NextRequest) {
   return new NextResponse(null, {
     status: 200,
     headers: {
-      'Allow': 'GET, POST, OPTIONS',
-      'Access-Control-Allow-Origin': process.env.NODE_ENV === 'production' 
-        ? process.env.NEXT_PUBLIC_SITE_URL
-        : 'http://localhost:3000',
-      'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+      Allow: 'GET, POST, OPTIONS',
+      'Access-Control-Allow-Origin':
+        process.env.NODE_ENV === 'production'
+          ? process.env.NEXT_PUBLIC_SITE_URL
+          : 'http://localhost:3000',
+      'Access-Control-Allow-Methods': 'GET, POST, OPTIONS, PUT, PATCH, DELETE',
       'Access-Control-Allow-Headers': 'Content-Type, Authorization',
       'Access-Control-Allow-Credentials': 'true',
-    },
+    } as Record<string, string>,
   })
 }

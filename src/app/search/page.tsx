@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, Suspense } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import { SearchInput } from '@/components/custom/search-input'
 import { SearchResults } from '@/components/custom/search-results'
@@ -9,10 +9,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { TrendingUp, Clock, Search as SearchIcon } from 'lucide-react'
 
-/**
- * 검색 페이지 메인 컴포넌트
- */
-export default function SearchPage() {
+// SearchContent 컴포넌트로 분리하여 Suspense로 감싸기 위한 컴포넌트
+function SearchContent() {
   const searchParams = useSearchParams()
   const router = useRouter()
   const initialQuery = searchParams.get('q') || ''
@@ -258,5 +256,16 @@ export default function SearchPage() {
         )}
       </div>
     </div>
+  )
+}
+
+/**
+ * 검색 페이지 메인 컴포넌트
+ */
+export default function SearchPage() {
+  return (
+    <Suspense fallback={<div className="p-8 text-center">검색 페이지 로딩 중...</div>}>
+      <SearchContent />
+    </Suspense>
   )
 }
