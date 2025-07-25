@@ -1,12 +1,12 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import { LoginForm } from '@/components/auth/LoginForm';
 
-
-export default function LoginPage() {
+// useSearchParams를 사용하는 컴포넌트를 분리
+function LoginContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { user, loading, error } = useAuth();
@@ -48,5 +48,21 @@ export default function LoginPage() {
         <LoginForm onSuccess={handleLoginSuccess} />
       </div>
     </div>
+  );
+}
+
+// 메인 페이지 컴포넌트
+export default function LoginPage() {
+  return (
+    <Suspense fallback={
+      <div className="flex min-h-screen items-center justify-center bg-gray-50">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto mb-4"></div>
+          <p className="text-gray-600">로딩 중...</p>
+        </div>
+      </div>
+    }>
+      <LoginContent />
+    </Suspense>
   );
 }
