@@ -129,7 +129,7 @@ export async function OPTIONS(request: NextRequest) {
         process.env.NODE_ENV === 'production'
           ? process.env.NEXT_PUBLIC_SITE_URL
           : 'http://localhost:3000',
-      'Access-Control-Allow-Methods': 'GET, POST, OPTIONS, PUT, PATCH, DELETE',
+      'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
       'Access-Control-Allow-Headers': 'Content-Type, Authorization',
       'Access-Control-Allow-Credentials': 'true',
     } as Record<string, string>,

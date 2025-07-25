@@ -264,7 +264,14 @@ function SearchContent() {
  */
 export default function SearchPage() {
   return (
-    <Suspense fallback={<div className="p-8 text-center">검색 페이지 로딩 중...</div>}>
+    <Suspense fallback={
+      <div className="flex min-h-screen items-center justify-center bg-gray-50 dark:bg-gray-900">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 dark:border-blue-400 mx-auto mb-4"></div>
+          <p className="text-gray-600 dark:text-gray-400">검색 페이지 로딩 중...</p>
+        </div>
+      </div>
+    }>
       <SearchContent />
     </Suspense>
   )
